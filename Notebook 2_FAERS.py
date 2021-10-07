@@ -39,7 +39,7 @@ from matplotlib.colors import ListedColormap
 
 # COMMAND ----------
 
-# MAGIC %md #Reload data
+# MAGIC %md #Load data
 
 # COMMAND ----------
 
@@ -183,6 +183,40 @@ df2.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess2.csv', index=False)
 
 # COMMAND ----------
 
+# MAGIC %md ##Recode variables
+
+# COMMAND ----------
+
+# check weight code
+
+df2['wt_cod'].value_counts()
+
+# COMMAND ----------
+
+# spot inspect the data
+
+df2[df2['wt_cod'] == "LBS"].head(5)
+
+# COMMAND ----------
+
+# weight in lbs
+
+# insert new column next to 'wt' column
+
+df2.insert(loc = 20, 
+  column = 'wt_in_lbs', 
+  value = 0)
+
+for index, row in df2.iterrows():
+  if (df2['wt_cod'] == "KG").all(): # https://www.learndatasci.com/solutions/python-valueerror-truth-value-series-ambiguous-use-empty-bool-item-any-or-all/
+    df2['wt_in_lbs'] = df2['wt']*2.20462262
+  else:
+    df2['wt_in_lbs'] = df2['wt']
+
+display(df2)
+
+# COMMAND ----------
+
 # MAGIC %md ##Drop NULL columns
 
 # COMMAND ----------
@@ -246,7 +280,7 @@ df4 = df3.copy()
 imputer = SimpleImputer(missing_values=np.nan, strategy= 'median')
 
 df4.age = imputer.fit_transform(df4['age'].values.reshape(-1,1))
-df4.wt = imputer.fit_transform(df4['wt'].values.reshape(-1,1))
+df4.wt_in_lbs = imputer.fit_transform(df4['wt_in_lbs'].values.reshape(-1,1))
 df4.dose_amt = imputer.fit_transform(df4['dose_amt'].values.reshape(-1,1))
 
 display(df4)
@@ -279,7 +313,7 @@ df5.route = imputer.fit_transform(df5['route'].values.reshape(-1,1))
 df5.dechal = imputer.fit_transform(df5['dechal'].values.reshape(-1,1))
 df5.dose_freq = imputer.fit_transform(df5['dose_freq'].values.reshape(-1,1))
 
-display(df4)
+display(df5)
 
 # COMMAND ----------
 
@@ -297,14 +331,6 @@ msno.matrix(df5)
 
 # COMMAND ----------
 
-# MAGIC %md ##Drop NULL rows
-
-# COMMAND ----------
-
-#df5.isnull()
-
-# COMMAND ----------
-
 # drop rows where age_cod <> 'YR'
 
 # https://www.statology.org/pandas-drop-rows-with-value
@@ -315,7 +341,170 @@ display(df3)
 
 # COMMAND ----------
 
+# MAGIC %md #Build a baseline model
+
+# COMMAND ----------
+
+# curate feature set
+
+df6 = df5.select_dtypes(exclude='object') \
+                            .drop(['primaryid','caseid','caseversion','event_dt','mfr_dt','init_fda_dt','fda_dt','wt', \
+                                    'rept_dt','last_case_version','val_vbm','start_dt','end_dt','drug_seq','dsg_drug_seq'], axis=1)
+
+# COMMAND ----------
+
+# X = input
+X = df6.drop("outc_cod_DE" ,axis= 1)
+
+# y = output
+y = df6['outc_cod_DE']
+
+# COMMAND ----------
+
+from sklearn.model_selection import train_test_split
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.3, random_state = 0)
+
+# show size of each dataset (records, columns)
+print("Dataset sizes: \nX_train", X_train.shape," \nX_test", X_test.shape, " \ny_train", y_train.shape, "\ny_test", y_test.shape)
+
+data = {
+    "train":{"X": X_train, "y": y_train},        
+    "test":{"X": X_test, "y": y_test}
+}
+
+print ("Data contains", len(data['train']['X']), "training samples and",len(data['test']['X']), "test samples")
+
+# COMMAND ----------
+
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+import time
+
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler, LabelEncoder
+
+from sklearn.linear_model import LogisticRegression
+from sklearn.svm import SVC
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn import tree
+from sklearn.neural_network import MLPClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.gaussian_process.kernels import RBF
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import AdaBoostClassifier
+from sklearn.naive_bayes import GaussianNB
+from sklearn.gaussian_process import GaussianProcessClassifier
+
+#from xgboost import XGBClassifier
+
+from sklearn.metrics import precision_score, recall_score, f1_score, fbeta_score, classification_report
+
+# COMMAND ----------
+
+# https://ataspinar.com/2017/05/26/classification-with-scikit-learn/
+# https://scikit-learn.org/stable/auto_examples/classification/plot_classifier_comparison.html#sphx-glr-auto-examples-classification-plot-classifier-comparison-py
+
+dict_classifiers = {
+    "Logistic Regression": LogisticRegression(),
+    "Nearest Neighbors": KNeighborsClassifier(),
+    "Linear SVM": SVC(),
+    "Gradient Boosting Classifier": GradientBoostingClassifier(n_estimators=1000),
+    "Decision Tree": tree.DecisionTreeClassifier(),
+    "Random Forest": RandomForestClassifier(n_estimators=100),
+    "Neural Net": MLPClassifier(alpha = 1),
+    "Naive Bayes": GaussianNB(),
+    "AdaBoost": AdaBoostClassifier(),
+    #"QDA": QuadraticDiscriminantAnalysis(),
+    "Gaussian Process": GaussianProcessClassifier() #http://www.ideal.ece.utexas.edu/seminar/GP-austin.pdf
+}
+
+def batch_classify(X_train, y_train, X_test, y_test, no_classifiers = 10, verbose = True):
+    """
+    This method, takes as input the X, Y matrices of the Train and Test set.
+    And fits them on all of the Classifiers specified in the dict_classifier.
+    The trained models, and accuracies are saved in a dictionary. The reason to use a dictionary
+    is because it is very easy to save the whole dictionary with the pickle module.
+    
+    Usually, the SVM, Random Forest and Gradient Boosting Classifier take quiet some time to train. 
+    So it is best to train them on a smaller dataset first and 
+    decide whether you want to comment them out or not based on the test accuracy score.
+    """
+
+# https://datascience.stackexchange.com/questions/28426/train-accuracy-vs-test-accuracy-vs-confusion-matrix
+
+    dict_models = {}
+    for classifier_name, classifier in list(dict_classifiers.items())[:no_classifiers]:
+        t_start = time.process_time()
+        classifier.fit(X_train, y_train)
+        predictions = classifier.predict(X_test)
+        t_end = time.process_time()
+        
+        t_diff = t_end - t_start
+        train_score = classifier.score(X_train, y_train) # training accuracy
+        test_score = classifier.score(X_test, y_test) # test accuracy
+        precision = precision_score(y_test, predictions) # fraction of positive predictions that were correct. TP / (TP + FP)
+        recall = recall_score(y_test, predictions) # fraction of positive predictions that were correctly identified.  TP / (TP + FN)
+        f1 = f1_score(y_test, predictions) # avg of precision + recall ratios
+        fbeta = fbeta_score(y_test, predictions, beta=0.5)
+        class_report = classification_report(y_test, predictions)
+        
+        dict_models[classifier_name] = {'model': classifier, \
+                                        'train_score': train_score, \
+                                        'test_score': test_score, \
+                                        'precision': precision_score, \
+                                        'recall': recall_score, \
+                                        'f1': f1, \
+                                        'fbeta': fbeta, \
+                                        'train_time': t_diff, 
+                                        'class_report': class_report}
+        if verbose:
+            print("trained {c} in {f:.2f} s".format(c=classifier_name, f=t_diff))
+    return dict_models
+
+
+def display_dict_models(dict_models, sort_by='test_score'):
+    cls = [key for key in dict_models.keys()]
+    test_s = [dict_models[key]['test_score'] for key in cls]
+    training_s = [dict_models[key]['train_score'] for key in cls]
+    precision_s = [dict_models[key]['precision'] for key in cls]
+    recall_s = [dict_models[key]['recall'] for key in cls]
+    f1_s = [dict_models[key]['f1'] for key in cls]
+    fbeta_s = [dict_models[key]['fbeta'] for key in cls]
+    training_t = [dict_models[key]['train_time'] for key in cls]
+    report = [dict_models[key]['class_report'] for key in cls]
+    
+    #df_ = pd.DataFrame(data=np.zeros(shape=(len(cls),9)), columns = ['classifier', 'train_score', 'test_score', 'precision', 'recall', 'f1', 'fbeta', 'train_time', 'class_report'])
+    df_ = pd.DataFrame(data=np.zeros(shape=(len(cls),7)), columns = ['classifier', 'train_score', 'test_score', 'f1', 'fbeta', 'class_report', 'train_time'])
+    for ii in range(0,len(cls)):
+        df_.loc[ii, 'classifier'] = cls[ii]
+        df_.loc[ii, 'train_score'] = training_s[ii]
+        df_.loc[ii, 'test_score'] = test_s[ii]
+        df_.loc[ii, 'precision'] = precision_s[ii]
+        df_.loc[ii, 'recall'] = recall_s[ii]
+        df_.loc[ii, 'f1'] = f1_s[ii]
+        df_.loc[ii, 'fbeta'] = fbeta_s[ii]
+        df_.loc[ii, 'class_report'] = report[ii]
+        df_.loc[ii, 'train_time'] = training_t[ii]
+    
+    display(df_.sort_values(by=sort_by, ascending=False))
+
+# COMMAND ----------
+
+dict_models = batch_classify(X_train, y_train, X_test, y_test, no_classifiers = 10)
+
+display_dict_models(dict_models)
+
+# COMMAND ----------
+
 # MAGIC %md #Feature Engineering
+
+# COMMAND ----------
+
+# MAGIC %md ##Interaction Features
 
 # COMMAND ----------
 
@@ -359,28 +548,6 @@ df_converted = pd.get_dummies(df4, columns=['mfr_sndr','sex','occp_cod',
                                     'occr_country','role_cod','drugname','prod_ai','route','dechal','rechal','dose_freq'])
 
 df_converted.head(2)
-
-# COMMAND ----------
-
-# MAGIC %md ##Recode features
-
-# COMMAND ----------
-
-# MAGIC %md ###Weight in lbs
-
-# COMMAND ----------
-
-# new feature - weight in lbs
-
-# insert new columns next to 'wt' column 
-df3.insert(loc = 16, 
-          column = 'wt_in_lbs', 
-          value = 0)
-
-for index, row in df3.iterrows():
-  df3['wt_in_lbs'] = df3['wt']*2.20462262
-
-display(df3)
 
 # COMMAND ----------
 
