@@ -17,7 +17,7 @@ sys.version
 
 # COMMAND ----------
 
-pip install missingno pandasql
+pip install missingno pandasql pycaret[full]
 
 # COMMAND ----------
 
@@ -151,7 +151,7 @@ df2 = df1.sort_values(by=['outc_cod_DE'], ascending = False) \
 
 # COMMAND ----------
 
-# re-inspect same case
+# re-inspect case
 
 df2[df2['caseid'] == 18322071].head(5)
 
@@ -177,6 +177,17 @@ df2['outc_cod_DE'].value_counts()
 
 # COMMAND ----------
 
+# check label ratios
+
+# https://dataaspirant.com/handle-imbalanced-data-machine-learning/
+
+# 0 is majority class
+# 1 is minority class
+
+sns.countplot(x='outc_cod_DE', data=df2) # data already looks wildly imbalanced but let us continue
+
+# COMMAND ----------
+
 # export for Azure ML autoML
 
 df2.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess2.csv', index=False)
@@ -184,6 +195,10 @@ df2.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess2.csv', index=False)
 # COMMAND ----------
 
 # MAGIC %md ##Recode variables
+
+# COMMAND ----------
+
+df2.dtypes
 
 # COMMAND ----------
 
@@ -199,13 +214,15 @@ df2[df2['wt_cod'] == "LBS"].head(5)
 
 # COMMAND ----------
 
-# weight in lbs
-
-# insert new column next to 'wt' column
+# weight in lbs - insert new column next to 'wt' column
 
 df2.insert(loc = 20, 
   column = 'wt_in_lbs', 
   value = 0)
+
+# COMMAND ----------
+
+# convert to lbs
 
 for index, row in df2.iterrows():
   if (df2['wt_cod'] == "KG").all(): # https://www.learndatasci.com/solutions/python-valueerror-truth-value-series-ambiguous-use-empty-bool-item-any-or-all/
@@ -213,7 +230,13 @@ for index, row in df2.iterrows():
   else:
     df2['wt_in_lbs'] = df2['wt']
 
-display(df2)
+df2.head(1)
+
+# COMMAND ----------
+
+# check dose unit
+
+df2['dose_unit'].value_counts()
 
 # COMMAND ----------
 
@@ -303,11 +326,13 @@ df4.select_dtypes(include='object').isnull().sum()
 
 # COMMAND ----------
 
-# we are interested to impute for sex, route, dechal, dose_freq
+# we are interested to impute for sex, route, dechal, dose_freq, age_cod
 
+# impute with most frequent
 df5 = df4.copy()
 
 imputer = SimpleImputer(missing_values=None, strategy= 'most_frequent')
+
 df5.sex = imputer.fit_transform(df5['sex'].values.reshape(-1,1))
 df5.route = imputer.fit_transform(df5['route'].values.reshape(-1,1))
 df5.dechal = imputer.fit_transform(df5['dechal'].values.reshape(-1,1))
@@ -317,9 +342,38 @@ display(df5)
 
 # COMMAND ----------
 
+# update age code to years
+
+# impute with constant
+imputer = SimpleImputer(missing_values=None, strategy= 'constant', fill_value = 'YR')
+
+df5.age_cod = imputer.fit_transform(df5['age_cod'].values.reshape(-1,1))
+
+display(df5)
+
+# COMMAND ----------
+
+# check age code - make sure all records are in years
+
+# https://www.statology.org/pandas-drop-rows-with-value
+
+df5['age_cod'].value_counts(dropna = False)
+
+# COMMAND ----------
+
+# drop rows where age_cod <> 'YR'
+
+# https://www.statology.org/pandas-drop-rows-with-value
+
+df5 = df5[df5.age_cod == 'YR']
+
+display(df5)
+
+# COMMAND ----------
+
 # check nulls again
 
-df5.select_dtypes(exclude='object').isnull().sum()
+df5.select_dtypes(include='object').isnull().sum()
 
 # COMMAND ----------
 
@@ -331,25 +385,27 @@ msno.matrix(df5)
 
 # COMMAND ----------
 
-# drop rows where age_cod <> 'YR'
-
-# https://www.statology.org/pandas-drop-rows-with-value
-
-df3 = df3[df3.age_cod == 'YR']
-
-display(df3)
+# MAGIC %md #Build a baseline model
 
 # COMMAND ----------
 
-# MAGIC %md #Build a baseline model
+df5.select_dtypes(exclude='object').dtypes
 
 # COMMAND ----------
 
 # curate feature set
 
+df6 = df5.copy() 
+
+# df6 = df5.select_dtypes(exclude='object').drop(['mfr_dt','wt','start_dt','end_dt'], axis=1)
+
 df6 = df5.select_dtypes(exclude='object') \
                             .drop(['primaryid','caseid','caseversion','event_dt','mfr_dt','init_fda_dt','fda_dt','wt', \
-                                    'rept_dt','last_case_version','val_vbm','start_dt','end_dt','drug_seq','dsg_drug_seq'], axis=1)
+                                    'rept_dt','last_case_version','val_vbm','start_dt','end_dt'], axis=1)
+
+# COMMAND ----------
+
+display(df6)
 
 # COMMAND ----------
 
@@ -504,50 +560,39 @@ display_dict_models(dict_models)
 
 # COMMAND ----------
 
-# MAGIC %md ##Interaction Features
+# https://pycaret.org
+
+# Importing module and initializing setup
+
+from pycaret.regression import *
+reg1 = setup(data = df6, target = 'outc_cod_DE', feature_interaction = True, feature_ratio = True)
 
 # COMMAND ----------
 
-# MAGIC %md ##Encode categorical variables
+# MAGIC %md ##Create dummy variables
 
 # COMMAND ----------
 
-# MAGIC %md Using categorical data in training machine learning models
-# MAGIC 
-# MAGIC One of the major problems with machine learning is that a lot of algorithms cannot work directly with categorical data. Categorical data [1] are variables that can take on one of a limited number of possible values. Some examples are:
-# MAGIC 
-# MAGIC - The sex of a person: female or male.
-# MAGIC - The airline travel class: First Class, Business Class, and Economy Class.
-# MAGIC - The computer vendor: Lenovo, HP, Dell, Apple, Acer, Asus, and Others.
-# MAGIC 
-# MAGIC Therefore, we need a way to convert categorical data into a numerical form and our machine learning algorithm can take in that as input.
-# MAGIC 
-# MAGIC https://towardsdatascience.com/what-is-one-hot-encoding-and-how-to-use-pandas-get-dummies-function-922eb9bd4970
+# identify columns that are categorical (no intrinsic ordering to the categories) and convert to numerical
+
+# https://stats.idre.ucla.edu/other/mult-pkg/whatstat/what-is-the-difference-between-categorical-ordinal-and-numerical-variables/
+
+df5.select_dtypes(include='object').head(5).T
 
 # COMMAND ----------
-
-# convert categorical features to numerical
-
-# https://towardsdatascience.com/encoding-categorical-features-21a2651a065c
-
-# use pandas dummies method
-df5 = pd.get_dummies(df4)
-
-df5.head(5)
-
-# COMMAND ----------
-
-# 2021-09-27 - Dropped reporter country as not relevant
 
 # convert select categorical features to numerical as these will be useful features for modeling
 
-#df_converted = pd.get_dummies(df4, columns=['mfr_sndr','sex','occp_cod','reporter_country', 
-#                                    'occr_country','role_cod','drugname','prod_ai','route','dechal','rechal','dose_freq'], drop_first = True)
+# 2021-09-27 - Dropped reporter country as not relevant
 
-df_converted = pd.get_dummies(df4, columns=['mfr_sndr','sex','occp_cod', 
-                                    'occr_country','role_cod','drugname','prod_ai','route','dechal','rechal','dose_freq'])
+df_converted = pd.get_dummies(df5, columns=['mfr_sndr','sex','occp_cod', 
+                                    'occr_country','role_cod','drugname','prod_ai','route','dechal','dose_freq'])
 
 df_converted.head(2)
+
+# COMMAND ----------
+
+# MAGIC %md ##Interaction variables
 
 # COMMAND ----------
 
@@ -555,7 +600,7 @@ df_converted.head(2)
 
 # COMMAND ----------
 
-# MAGIC %md ###Correct skew & kurtosis
+# MAGIC %md ###Skew & Kurtosis
 
 # COMMAND ----------
 
@@ -569,13 +614,47 @@ df_converted.head(2)
 
 # COMMAND ----------
 
+#pd.option_context('display.max_rows', None, 'display.max_columns', None)
+#https://stackoverflow.com/questions/19124601/pretty-print-an-entire-pandas-series-dataframe
+df_converted.dtypes
+
+# COMMAND ----------
+
+# detect outliers
+
+# review selected numerical variables of interest
+num_cols = ['age','wt','drug_seq','dose_amt','dsg_drug_seq']
+
+plt.figure(figsize=(18,9))
+df_converted[num_cols].boxplot()
+plt.title("Numerical variables in the Corticosteroid dataset", fontsize=20)
+plt.show()
+
+# COMMAND ----------
+
+df_converted['dose_amt'].max()
+
+# COMMAND ----------
+
+# inspect record
+
+df_converted['dose_amt'] == 30000.head(5)
+
+# COMMAND ----------
+
+# get all records with IU dose unit
+
+df_converted[df_converted['dose_unit'] == 'IU'].head(10)
+
+# COMMAND ----------
+
 # visualize skew for a sample feature
 
 # https://towardsdatascience.com/top-3-methods-for-handling-skewed-data-1334e0debf45
 # https://www.analyticsvidhya.com/blog/2021/05/shape-of-data-skewness-and-kurtosis/
 # https://opendatascience.com/transforming-skewed-data-for-machine-learning/
 
-sns.distplot(df4['age'])
+sns.distplot(df_converted['dose_amt'])
 
 # COMMAND ----------
 
@@ -590,13 +669,13 @@ sns.distplot(df4['age'])
 # https://vivekrai1011.medium.com/skewness-and-kurtosis-in-machine-learning-c19f79e2d7a5
 # If the peak of the distribution is in right side that means our data is negatively skewed and most of the people reported with AEs weigh more than the average.
 
-df4['dose_amt'].skew()
+df_converted['dose_amt'].skew()
 
 # COMMAND ----------
 
 # calculate kurtosis value
 
-df4['dose_amt'].kurtosis() # platykurtic distribution (low degree of peakedness)
+df_converted['dose_amt'].kurtosis() # platykurtic distribution (low degree of peakedness)
 
 # COMMAND ----------
 
@@ -780,10 +859,6 @@ print(z)
 
 # COMMAND ----------
 
-df_converted.shape
-
-# COMMAND ----------
-
 # save data to ADLS Gen2
 
 df_converted.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess3.csv', index=False)
@@ -840,30 +915,6 @@ display(df2)
 # results show the need to consolidate the PT terms
 
 df3[df3['caseid'] == 17639954].head(5)
-
-# COMMAND ----------
-
-# drop rows where null - age, sex, weight
-
-# https://www.journaldev.com/33492/pandas-dropna-drop-null-na-values-from-dataframe
-
-#df3 = df3.dropna(subset=['age','sex','wt','route','dose_amt','dechal','rechal'], axis = 0)
-#df3 = df3.dropna(subset=['age','sex','wt','route','dose_amt'], axis = 0)
-#df3 = df3.dropna(subset=['age','sex','wt'], axis = 0)
-
-#display(df3)
-
-# COMMAND ----------
-
-# check label ratios
-# https://dataaspirant.com/handle-imbalanced-data-machine-learning/
-
-#sns.countplot(x='outc_cod_DE', data=df4) 
-
-# 0 is majority class
-# 1 is minority class
-
-# data already looks wildly imbalanced but let us continue
 
 # COMMAND ----------
 
