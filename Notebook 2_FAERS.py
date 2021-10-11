@@ -199,10 +199,6 @@ df2.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess2.csv', index=False)
 
 # COMMAND ----------
 
-df2.dtypes
-
-# COMMAND ----------
-
 # age code
 
 # https://www.statology.org/pandas-drop-rows-with-value
@@ -218,16 +214,20 @@ df2[df2['age_cod'] == "DEC"].head(5)
 
 # COMMAND ----------
 
+# recode all other age_cod types to null
+
+df2['age_cod'] = df2['age_cod'].replace('DY',np.nan)
+df2['age_cod'] = df2['age_cod'].replace('DEC',np.nan)
+df2['age_cod'] = df2['age_cod'].replace('MON',np.nan)
+df2['age_cod'] = df2['age_cod'].replace('WK',np.nan)
+
+# COMMAND ----------
+
 # age in years - insert new column next to 'age' column
 
-#df2.insert(loc = 15, 
-#  column = 'age_in_yrs', 
-#  value = '0')
-
-# convert from object to float
-df2['age_in_yrs'] = df2['age_in_yrs'].astype(float)
-
-df2.display()
+df2.insert(loc = 15, 
+  column = 'age_in_yrs', 
+  value = '0')
 
 # COMMAND ----------
 
@@ -361,7 +361,7 @@ df4.select_dtypes(include='object').isnull().sum()
 
 # COMMAND ----------
 
-# we are interested to impute for sex, route, dechal, dose_freq, age_cod
+# we are interested to impute for sex, route, dechal, dose_freq
 
 # impute with most frequent
 df5 = df4.copy()
@@ -377,19 +377,21 @@ display(df5)
 
 # COMMAND ----------
 
-# drop rows where age_cod <> 'YR'
-
-# https://www.statology.org/pandas-drop-rows-with-value
-
-df5 = df5[df5.age_cod == 'YR']
-
-display(df5)
-
-# COMMAND ----------
-
 # check nulls again
 
 df5.select_dtypes(include='object').isnull().sum()
+
+# COMMAND ----------
+
+# MAGIC %md ##Drop NULL rows
+
+# COMMAND ----------
+
+# drop remaining rows where imputing missing values is not possible
+
+df5 = df5.dropna(subset=['age_cod','dose_amt'], axis = 0)
+
+display(df5)
 
 # COMMAND ----------
 
@@ -576,17 +578,6 @@ display_dict_models(dict_models)
 
 # COMMAND ----------
 
-# https://pycaret.org
-# https://pycaret.readthedocs.io/en/latest/api/classification.html
-# https://github.com/pycaret/pycaret/blob/master/examples/PyCaret%202%20Classification.ipynb
-
-# Importing module and initializing setup
-
-from pycaret.classification import *
-reg1 = setup(data = df6, target = 'outc_cod_DE')
-
-# COMMAND ----------
-
 # MAGIC %md ##Create dummy variables
 
 # COMMAND ----------
@@ -611,6 +602,17 @@ df_converted.head(2)
 # COMMAND ----------
 
 # MAGIC %md ##Interaction variables
+
+# COMMAND ----------
+
+# https://pycaret.org
+# https://pycaret.readthedocs.io/en/latest/api/classification.html
+# https://github.com/pycaret/pycaret/blob/master/examples/PyCaret%202%20Classification.ipynb
+
+# Importing module and initializing setup
+
+from pycaret.classification import *
+reg1 = setup(data = df6, target = 'outc_cod_DE')
 
 # COMMAND ----------
 
