@@ -207,7 +207,7 @@ df2['age_cod'].value_counts(dropna = False)
 
 # COMMAND ----------
 
-# spot inspect data
+# spot inspect
 
 df2[df2['age_cod'] == "DEC"].head(5)
 #df2[df2['occr_country'] == "JP"].head(5)
@@ -249,7 +249,7 @@ df2['wt_cod'].value_counts()
 
 # COMMAND ----------
 
-# spot inspect data
+# spot inspect
 
 df2[df2['wt_cod'] == "LBS"].head(5)
 
@@ -299,6 +299,18 @@ df3.shape
 
 # COMMAND ----------
 
+# MAGIC %md ##Drop NULL rows
+
+# COMMAND ----------
+
+# drop null rows where age code, dose amount is NULL
+
+df3 = df3.dropna(subset=['age_cod','dose_amt'], axis = 0)
+
+display(df3)
+
+# COMMAND ----------
+
 # inspect remaining missing values in data
 
 import missingno as msno
@@ -345,12 +357,6 @@ display(df4)
 
 # COMMAND ----------
 
-# check nulls again
-
-df4.select_dtypes(exclude='object').isnull().sum()
-
-# COMMAND ----------
-
 # MAGIC %md ###Categorical
 
 # COMMAND ----------
@@ -372,24 +378,6 @@ df5.sex = imputer.fit_transform(df5['sex'].values.reshape(-1,1))
 df5.route = imputer.fit_transform(df5['route'].values.reshape(-1,1))
 df5.dechal = imputer.fit_transform(df5['dechal'].values.reshape(-1,1))
 #df5.dose_freq = imputer.fit_transform(df5['dose_freq'].values.reshape(-1,1))
-
-display(df5)
-
-# COMMAND ----------
-
-# check nulls again
-
-df5.select_dtypes(include='object').isnull().sum()
-
-# COMMAND ----------
-
-# MAGIC %md ##Drop NULL rows
-
-# COMMAND ----------
-
-# drop remaining rows where imputing missing values is not possible
-
-df5 = df5.dropna(subset=['age_cod','dose_amt'], axis = 0)
 
 display(df5)
 
@@ -594,7 +582,7 @@ df5.select_dtypes(include='object').head(5).T
 
 # 2021-09-27 - Dropped reporter country as not relevant
 
-df_converted = pd.get_dummies(df5, columns=['mfr_sndr','sex','occp_cod', 
+df_converted = pd.get_dummies(df5, columns=['mfr_sndr','sex',
                                     'occr_country','role_cod','drugname','prod_ai','route','dechal','dose_freq'])
 
 df_converted.head(2)
@@ -668,7 +656,7 @@ df_converted[df_converted['dose_unit'] == 'IU'].head(10)
 
 # COMMAND ----------
 
-# drop this record
+# this looks to be an outlier, drop this record
 
 
 # COMMAND ----------
