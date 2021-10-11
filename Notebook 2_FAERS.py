@@ -5,6 +5,7 @@
 
 # https://docs.microsoft.com/en-us/azure/machine-learning/how-to-understand-automated-ml
 # https://towardsdatascience.com/feature-engineering-for-machine-learning-3a5e293a5114
+# https://matthewrocklin.com/blog/work/2017/10/16/streaming-dataframes-1
 
 # COMMAND ----------
 
@@ -202,13 +203,53 @@ df2.dtypes
 
 # COMMAND ----------
 
-# check weight code
+# age code
+
+# https://www.statology.org/pandas-drop-rows-with-value
+
+df2['age_cod'].value_counts(dropna = False)
+
+# COMMAND ----------
+
+# spot inspect data
+
+df2[df2['age_cod'] == "DEC"].head(5)
+#df2[df2['occr_country'] == "JP"].head(5)
+
+# COMMAND ----------
+
+# age in years - insert new column next to 'age' column
+
+#df2.insert(loc = 15, 
+#  column = 'age_in_yrs', 
+#  value = '0')
+
+# convert from object to float
+df2['age_in_yrs'] = df2['age_in_yrs'].astype(float)
+
+df2.display()
+
+# COMMAND ----------
+
+# convert to years
+
+for index, row in df2.iterrows():
+  if (df2['age_cod'] == "YR").any(): 
+    df2['age_in_yrs'] = df2['age']
+  else:
+    df2['age_in_yrs'] = df2['age_in_yrs']
+
+df2.head(1)
+
+# COMMAND ----------
+
+# weight code
 
 df2['wt_cod'].value_counts()
 
 # COMMAND ----------
 
-# spot inspect the data
+# spot inspect data
 
 df2[df2['wt_cod'] == "LBS"].head(5)
 
@@ -216,7 +257,7 @@ df2[df2['wt_cod'] == "LBS"].head(5)
 
 # weight in lbs - insert new column next to 'wt' column
 
-df2.insert(loc = 20, 
+df2.insert(loc = 21, 
   column = 'wt_in_lbs', 
   value = 0)
 
@@ -225,18 +266,12 @@ df2.insert(loc = 20,
 # convert to lbs
 
 for index, row in df2.iterrows():
-  if (df2['wt_cod'] == "KG").all(): # https://www.learndatasci.com/solutions/python-valueerror-truth-value-series-ambiguous-use-empty-bool-item-any-or-all/
+  if (df2['wt_cod'] == "KG").any(): # https://www.learndatasci.com/solutions/python-valueerror-truth-value-series-ambiguous-use-empty-bool-item-any-or-all/
     df2['wt_in_lbs'] = df2['wt']*2.20462262
   else:
     df2['wt_in_lbs'] = df2['wt']
 
 df2.head(1)
-
-# COMMAND ----------
-
-# check dose unit
-
-df2['dose_unit'].value_counts()
 
 # COMMAND ----------
 
@@ -302,9 +337,9 @@ df4 = df3.copy()
 
 imputer = SimpleImputer(missing_values=np.nan, strategy= 'median')
 
-df4.age = imputer.fit_transform(df4['age'].values.reshape(-1,1))
+df4.age_in_yrs = imputer.fit_transform(df4['age_in_yrs'].values.reshape(-1,1)) # only convert age if age_cod is in years.
 df4.wt_in_lbs = imputer.fit_transform(df4['wt_in_lbs'].values.reshape(-1,1))
-df4.dose_amt = imputer.fit_transform(df4['dose_amt'].values.reshape(-1,1))
+#df4.dose_amt = imputer.fit_transform(df4['dose_amt'].values.reshape(-1,1))
 
 display(df4)
 
@@ -336,28 +371,9 @@ imputer = SimpleImputer(missing_values=None, strategy= 'most_frequent')
 df5.sex = imputer.fit_transform(df5['sex'].values.reshape(-1,1))
 df5.route = imputer.fit_transform(df5['route'].values.reshape(-1,1))
 df5.dechal = imputer.fit_transform(df5['dechal'].values.reshape(-1,1))
-df5.dose_freq = imputer.fit_transform(df5['dose_freq'].values.reshape(-1,1))
+#df5.dose_freq = imputer.fit_transform(df5['dose_freq'].values.reshape(-1,1))
 
 display(df5)
-
-# COMMAND ----------
-
-# update age code to years
-
-# impute with constant
-imputer = SimpleImputer(missing_values=None, strategy= 'constant', fill_value = 'YR')
-
-df5.age_cod = imputer.fit_transform(df5['age_cod'].values.reshape(-1,1))
-
-display(df5)
-
-# COMMAND ----------
-
-# check age code - make sure all records are in years
-
-# https://www.statology.org/pandas-drop-rows-with-value
-
-df5['age_cod'].value_counts(dropna = False)
 
 # COMMAND ----------
 
@@ -475,10 +491,10 @@ dict_classifiers = {
     "Naive Bayes": GaussianNB(),
     "AdaBoost": AdaBoostClassifier(),
     #"QDA": QuadraticDiscriminantAnalysis(),
-    "Gaussian Process": GaussianProcessClassifier() #http://www.ideal.ece.utexas.edu/seminar/GP-austin.pdf
+    #"Gaussian Process": GaussianProcessClassifier() #http://www.ideal.ece.utexas.edu/seminar/GP-austin.pdf
 }
 
-def batch_classify(X_train, y_train, X_test, y_test, no_classifiers = 10, verbose = True):
+def batch_classify(X_train, y_train, X_test, y_test, no_classifiers = 9, verbose = True):
     """
     This method, takes as input the X, Y matrices of the Train and Test set.
     And fits them on all of the Classifiers specified in the dict_classifier.
@@ -561,11 +577,13 @@ display_dict_models(dict_models)
 # COMMAND ----------
 
 # https://pycaret.org
+# https://pycaret.readthedocs.io/en/latest/api/classification.html
+# https://github.com/pycaret/pycaret/blob/master/examples/PyCaret%202%20Classification.ipynb
 
 # Importing module and initializing setup
 
-from pycaret.regression import *
-reg1 = setup(data = df6, target = 'outc_cod_DE', feature_interaction = True, feature_ratio = True)
+from pycaret.classification import *
+reg1 = setup(data = df6, target = 'outc_cod_DE')
 
 # COMMAND ----------
 
@@ -645,6 +663,11 @@ df_converted['dose_amt'] == 30000.head(5)
 # get all records with IU dose unit
 
 df_converted[df_converted['dose_unit'] == 'IU'].head(10)
+
+# COMMAND ----------
+
+# drop this record
+
 
 # COMMAND ----------
 
@@ -865,51 +888,6 @@ df_converted.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess3.csv', index=False
 
 # COMMAND ----------
 
-# https://learningactors.com/how-to-use-sql-with-pandas/
-
-from pandasql import sqldf
-pysqldf = lambda q: sqldf(q, globals())
-
-q = """SELECT * \
-      FROM df3 where caseid = 18255075;"""
-
-#q = """SELECT *, MAX(outc_cod_DE) OVER (PARTITION BY caseid) as max_outc_cod_DE \
-#         FROM df3 \
-#         WHERE caseid = '18255075';"""
-
-#q = """
-#    SELECT * FROM \
-#      (SELECT *, \
-#         MAX(outc_cod_DE) OVER (PARTITION BY caseid) as max_outc_cod_DE \
-#         FROM df3 \
-#         WHERE caseid = '18255075') \
-#      WHERE outc_cod_DE = max_outc_cod_DE;"""
-
-#display(pysqldf(q))
-
-# COMMAND ----------
-
-# null values per column
-
-# https://datatofish.com/count-nan-pandas-dataframe/
-
-#for col in df1.columns:
-#    count = df1[col].isnull().sum()
-#    print(col,df1[col].dtype,count)
-
-# COMMAND ----------
-
-# drop columns with too many null values > ~28,000
-
-df2 = df1.drop(['auth_num','lit_ref','to_mfr','lot_num','exp_dt','nda_num','drug_rec_act','dur','dur_cod'], axis = 1)
-
-#drop any column that has null values
-#df2 = df1.dropna(axis=1)
-
-display(df2)
-
-# COMMAND ----------
-
 # spot inspect the data
 
 # results show the need to consolidate the PT terms
@@ -926,3 +904,11 @@ df6 = df5.drop(['dose_form'], axis = 1)
 #df2 = df1.dropna(axis=1)
 
 display(df6)
+
+# COMMAND ----------
+
+# find all rows with null values
+
+# https://datatofish.com/rows-with-nan-pandas-dataframe/
+
+print(df3[df3.isnull().any(axis=1)])
