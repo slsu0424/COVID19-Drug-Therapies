@@ -299,6 +299,14 @@ df3.shape
 
 # COMMAND ----------
 
+# inspect remaining missing values in data
+
+import missingno as msno
+
+msno.matrix(df3)
+
+# COMMAND ----------
+
 # MAGIC %md ##Drop NULL rows
 
 # COMMAND ----------
@@ -308,14 +316,6 @@ df3.shape
 df3 = df3.dropna(subset=['age_cod','dose_amt'], axis = 0)
 
 display(df3)
-
-# COMMAND ----------
-
-# inspect remaining missing values in data
-
-import missingno as msno
-
-msno.matrix(df3)
 
 # COMMAND ----------
 
@@ -406,7 +406,7 @@ df6 = df5.copy()
 # df6 = df5.select_dtypes(exclude='object').drop(['mfr_dt','wt','start_dt','end_dt'], axis=1)
 
 df6 = df5.select_dtypes(exclude='object') \
-                            .drop(['primaryid','caseid','caseversion','event_dt','mfr_dt','init_fda_dt','fda_dt','wt', \
+                            .drop(['primaryid','caseid','caseversion','event_dt','mfr_dt','init_fda_dt','fda_dt','age','wt', \
                                     'rept_dt','last_case_version','val_vbm','start_dt','end_dt'], axis=1)
 
 # COMMAND ----------
