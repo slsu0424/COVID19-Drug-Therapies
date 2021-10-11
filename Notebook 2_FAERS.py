@@ -886,17 +886,6 @@ df3[df3['caseid'] == 17639954].head(5)
 
 # COMMAND ----------
 
-# drop additional irrelevant columns that have too many missing values
-
-df6 = df5.drop(['dose_form'], axis = 1)
-
-#drop any column that has null values
-#df2 = df1.dropna(axis=1)
-
-display(df6)
-
-# COMMAND ----------
-
 # find all rows with null values
 
 # https://datatofish.com/rows-with-nan-pandas-dataframe/
