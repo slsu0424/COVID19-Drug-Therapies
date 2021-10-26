@@ -178,11 +178,11 @@ df2['outc_cod_DE'].value_counts()
 
 # COMMAND ----------
 
-# MAGIC %md ### Check ratios
+# MAGIC %md ### Check target ratios
 
 # COMMAND ----------
 
-# check target variable ratios
+# check for imbalance
 
 # https://dataaspirant.com/handle-imbalanced-data-machine-learning/
 
@@ -570,6 +570,39 @@ display_dict_models(dict_models)
 
 # COMMAND ----------
 
+# MAGIC %md ##Encode categorical variables
+
+# COMMAND ----------
+
+df_converted.select_dtypes(exclude='object').dtypes
+
+# COMMAND ----------
+
+# identify columns that are categorical (no intrinsic ordering to the categories) and convert to numerical
+
+# https://stats.idre.ucla.edu/other/mult-pkg/whatstat/what-is-the-difference-between-categorical-ordinal-and-numerical-variables/
+
+df5.select_dtypes(include='object').head(5).T
+
+# COMMAND ----------
+
+# convert select categorical features to numerical as these will be useful features for modeling
+
+# 2021-09-27 - Dropped reporter country as not relevant
+
+df_converted = pd.get_dummies(df5, columns=['sex',
+                                    'occr_country','role_cod','drugname','prod_ai','route','dechal','dose_freq'])
+
+df_converted.head(2)
+
+# COMMAND ----------
+
+# save data to ADLS Gen2
+
+df_converted.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess3.csv', index=False)
+
+# COMMAND ----------
+
 # MAGIC %md ##Scale Data
 
 # COMMAND ----------
@@ -833,33 +866,6 @@ print(z)
 
 # COMMAND ----------
 
-# MAGIC %md ##Create dummy variables
-
-# COMMAND ----------
-
-# identify columns that are categorical (no intrinsic ordering to the categories) and convert to numerical
-
-# https://stats.idre.ucla.edu/other/mult-pkg/whatstat/what-is-the-difference-between-categorical-ordinal-and-numerical-variables/
-
-df5.select_dtypes(include='object').head(5).T
-
-# COMMAND ----------
-
-# convert select categorical features to numerical as these will be useful features for modeling
-
-# 2021-09-27 - Dropped reporter country as not relevant
-
-df_converted = pd.get_dummies(df5, columns=['sex',
-                                    'occr_country','role_cod','drugname','prod_ai','route','dechal','dose_freq'])
-
-df_converted.head(2)
-
-# COMMAND ----------
-
-df_converted.select_dtypes(exclude='object').dtypes
-
-# COMMAND ----------
-
 # MAGIC %md ##Interaction variables
 
 # COMMAND ----------
@@ -872,12 +878,6 @@ df_converted.select_dtypes(exclude='object').dtypes
 
 #from pycaret.classification import *
 #reg1 = setup(data = df6, target = 'outc_cod_DE')
-
-# COMMAND ----------
-
-# save data to ADLS Gen2
-
-df_converted.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess3.csv', index=False)
 
 # COMMAND ----------
 
