@@ -178,7 +178,11 @@ df2['outc_cod_DE'].value_counts()
 
 # COMMAND ----------
 
-# check label ratios
+# MAGIC %md ### Check ratios
+
+# COMMAND ----------
+
+# check target variable ratios
 
 # https://dataaspirant.com/handle-imbalanced-data-machine-learning/
 
@@ -407,7 +411,7 @@ df6 = df5.copy()
 
 df6 = df5.select_dtypes(exclude='object') \
                             .drop(['primaryid','caseid','caseversion','event_dt','mfr_dt','init_fda_dt','fda_dt','age','wt', \
-                                    'rept_dt','last_case_version','val_vbm','start_dt','end_dt'], axis=1)
+                                    'rept_dt','last_case_version','val_vbm','start_dt','end_dt','drug_seq','dsg_drug_seq'], axis=1)
 
 # COMMAND ----------
 
@@ -481,7 +485,7 @@ dict_classifiers = {
     "Naive Bayes": GaussianNB(),
     "AdaBoost": AdaBoostClassifier(),
     #"QDA": QuadraticDiscriminantAnalysis(),
-    #"Gaussian Process": GaussianProcessClassifier() #http://www.ideal.ece.utexas.edu/seminar/GP-austin.pdf
+    "Gaussian Process": GaussianProcessClassifier() #http://www.ideal.ece.utexas.edu/seminar/GP-austin.pdf
 }
 
 def batch_classify(X_train, y_train, X_test, y_test, no_classifiers = 9, verbose = True):
@@ -566,44 +570,6 @@ display_dict_models(dict_models)
 
 # COMMAND ----------
 
-# MAGIC %md ##Create dummy variables
-
-# COMMAND ----------
-
-# identify columns that are categorical (no intrinsic ordering to the categories) and convert to numerical
-
-# https://stats.idre.ucla.edu/other/mult-pkg/whatstat/what-is-the-difference-between-categorical-ordinal-and-numerical-variables/
-
-df5.select_dtypes(include='object').head(5).T
-
-# COMMAND ----------
-
-# convert select categorical features to numerical as these will be useful features for modeling
-
-# 2021-09-27 - Dropped reporter country as not relevant
-
-df_converted = pd.get_dummies(df5, columns=['mfr_sndr','sex',
-                                    'occr_country','role_cod','drugname','prod_ai','route','dechal','dose_freq'])
-
-df_converted.head(2)
-
-# COMMAND ----------
-
-# MAGIC %md ##Interaction variables
-
-# COMMAND ----------
-
-# https://pycaret.org
-# https://pycaret.readthedocs.io/en/latest/api/classification.html
-# https://github.com/pycaret/pycaret/blob/master/examples/PyCaret%202%20Classification.ipynb
-
-# Importing module and initializing setup
-
-from pycaret.classification import *
-reg1 = setup(data = df6, target = 'outc_cod_DE')
-
-# COMMAND ----------
-
 # MAGIC %md ##Scale Data
 
 # COMMAND ----------
@@ -624,40 +590,43 @@ reg1 = setup(data = df6, target = 'outc_cod_DE')
 
 #pd.option_context('display.max_rows', None, 'display.max_columns', None)
 #https://stackoverflow.com/questions/19124601/pretty-print-an-entire-pandas-series-dataframe
-df_converted.dtypes
+df5.dtypes
 
 # COMMAND ----------
 
-# detect outliers
+# drop data entry errors
 
 # review selected numerical variables of interest
 num_cols = ['age','wt','drug_seq','dose_amt','dsg_drug_seq']
 
 plt.figure(figsize=(18,9))
-df_converted[num_cols].boxplot()
+df5[num_cols].boxplot()
 plt.title("Numerical variables in the Corticosteroid dataset", fontsize=20)
 plt.show()
 
 # COMMAND ----------
 
-df_converted['dose_amt'].max()
+df5['dose_amt'].max()
 
 # COMMAND ----------
 
 # inspect record
 
-df_converted['dose_amt'] == 30000.head(5)
+df5[df5['dose_amt'] == 30000].head(5)
 
 # COMMAND ----------
 
 # get all records with IU dose unit
 
-df_converted[df_converted['dose_unit'] == 'IU'].head(10)
+df5[df5['dose_unit'] == 'IU'].head(10)
 
 # COMMAND ----------
 
 # this looks to be an outlier, drop this record
 
+# https://thispointer.com/python-pandas-how-to-drop-rows-in-dataframe-by-conditions-on-column-values/
+
+df5.drop(df5[df5['dose_amt'] == 30000].index, inplace=True)
 
 # COMMAND ----------
 
@@ -667,7 +636,7 @@ df_converted[df_converted['dose_unit'] == 'IU'].head(10)
 # https://www.analyticsvidhya.com/blog/2021/05/shape-of-data-skewness-and-kurtosis/
 # https://opendatascience.com/transforming-skewed-data-for-machine-learning/
 
-sns.distplot(df_converted['dose_amt'])
+sns.distplot(df5['dose_amt'])
 
 # COMMAND ----------
 
@@ -682,13 +651,13 @@ sns.distplot(df_converted['dose_amt'])
 # https://vivekrai1011.medium.com/skewness-and-kurtosis-in-machine-learning-c19f79e2d7a5
 # If the peak of the distribution is in right side that means our data is negatively skewed and most of the people reported with AEs weigh more than the average.
 
-df_converted['dose_amt'].skew()
+df5['dose_amt'].skew()
 
 # COMMAND ----------
 
 # calculate kurtosis value
 
-df_converted['dose_amt'].kurtosis() # platykurtic distribution (low degree of peakedness)
+df5['dose_amt'].kurtosis() # platykurtic distribution (low degree of peakedness)
 
 # COMMAND ----------
 
@@ -700,7 +669,7 @@ df_converted['dose_amt'].kurtosis() # platykurtic distribution (low degree of pe
 
 # https://datatofish.com/convert-pandas-dataframe-to-list
 
-num_col = df4.select_dtypes(exclude='object') \
+num_col = df5.select_dtypes(exclude='object') \
               .columns.drop(['outc_cod_DE']) \
               .values.tolist()
 
@@ -731,13 +700,13 @@ log_transform_needed = []
 log_type = []
 
 for i in num_col:
-    skewval = df4[i].skew()
+    skewval = df5[i].skew()
     skew_before.append(skewval)
     
-    kurtval = df4[i].kurtosis()
+    kurtval = df5[i].kurtosis()
     kurt_before.append(kurtval)
     
-    sdval = df4[i].std()
+    sdval = df5[i].std()
     standard_deviation_before.append(sdval)
     
     # https://quick-adviser.com/what-does-the-kurtosis-value-tell-us
@@ -745,15 +714,15 @@ for i in num_col:
         log_transform_needed.append('Yes')
         
         # are there any features that have values of 0 (no predictive power)?
-        if len(df4[df4[i] == 0])/len(df4) <= 0.02:
+        if len(df5[df5[i] == 0])/len(df5) <= 0.02:
             log_type.append('log')
-            skewvalnew = np.log(pd.DataFrame(df4[df4[i] > 0])[i]).skew()
+            skewvalnew = np.log(pd.DataFrame(df5[df5[i] > 0])[i]).skew()
             skew_after.append(skewvalnew)
             
-            kurtvalnew = np.log(pd.DataFrame(df4[df4[i] > 0])[i]).kurtosis()
+            kurtvalnew = np.log(pd.DataFrame(df5[df5[i] > 0])[i]).kurtosis()
             kurt_after.append(kurtvalnew)
             
-            sdvalnew = np.log(pd.DataFrame(df4[df4[i] > 0])[i]).std()
+            sdvalnew = np.log(pd.DataFrame(df5[df5[i] > 0])[i]).std()
             standard_deviation_after.append(sdvalnew)
             
     else:
@@ -850,14 +819,6 @@ df5 = df5[(np.abs(sp.stats.zscore(df5[numerics])) < 3).all(axis=1)]
 
 # COMMAND ----------
 
-display(df5)
-
-# COMMAND ----------
-
-df5.shape
-
-# COMMAND ----------
-
 import seaborn as sns
 
 sns.boxplot(x=df4['wt_in_lbs'])
@@ -869,6 +830,48 @@ from scipy import stats
 import numpy as np
 z = np.abs(stats.zscore(df4))
 print(z)
+
+# COMMAND ----------
+
+# MAGIC %md ##Create dummy variables
+
+# COMMAND ----------
+
+# identify columns that are categorical (no intrinsic ordering to the categories) and convert to numerical
+
+# https://stats.idre.ucla.edu/other/mult-pkg/whatstat/what-is-the-difference-between-categorical-ordinal-and-numerical-variables/
+
+df5.select_dtypes(include='object').head(5).T
+
+# COMMAND ----------
+
+# convert select categorical features to numerical as these will be useful features for modeling
+
+# 2021-09-27 - Dropped reporter country as not relevant
+
+df_converted = pd.get_dummies(df5, columns=['sex',
+                                    'occr_country','role_cod','drugname','prod_ai','route','dechal','dose_freq'])
+
+df_converted.head(2)
+
+# COMMAND ----------
+
+df_converted.select_dtypes(exclude='object').dtypes
+
+# COMMAND ----------
+
+# MAGIC %md ##Interaction variables
+
+# COMMAND ----------
+
+# https://pycaret.org
+# https://pycaret.readthedocs.io/en/latest/api/classification.html
+# https://github.com/pycaret/pycaret/blob/master/examples/PyCaret%202%20Classification.ipynb
+
+# Importing module and initializing setup
+
+#from pycaret.classification import *
+#reg1 = setup(data = df6, target = 'outc_cod_DE')
 
 # COMMAND ----------
 
