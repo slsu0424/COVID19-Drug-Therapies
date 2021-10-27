@@ -178,11 +178,11 @@ df2['outc_cod_DE'].value_counts()
 
 # COMMAND ----------
 
-# MAGIC %md ### Check target ratios
+# MAGIC %md ### Check for imbalance
 
 # COMMAND ----------
 
-# check for imbalance
+# Is the target variables classes imbalanced?
 
 # https://dataaspirant.com/handle-imbalanced-data-machine-learning/
 
@@ -395,6 +395,16 @@ msno.matrix(df5)
 
 # COMMAND ----------
 
+df5.shape
+
+# COMMAND ----------
+
+# save data to ADLS Gen2
+
+df5.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess3a.csv', index=False)
+
+# COMMAND ----------
+
 # MAGIC %md #Build a baseline model
 
 # COMMAND ----------
@@ -574,10 +584,6 @@ display_dict_models(dict_models)
 
 # COMMAND ----------
 
-df_converted.select_dtypes(exclude='object').dtypes
-
-# COMMAND ----------
-
 # identify columns that are categorical (no intrinsic ordering to the categories) and convert to numerical
 
 # https://stats.idre.ucla.edu/other/mult-pkg/whatstat/what-is-the-difference-between-categorical-ordinal-and-numerical-variables/
@@ -591,9 +597,17 @@ df5.select_dtypes(include='object').head(5).T
 # 2021-09-27 - Dropped reporter country as not relevant
 
 df_converted = pd.get_dummies(df5, columns=['sex',
-                                    'occr_country','role_cod','drugname','prod_ai','route','dechal','dose_freq'])
+                                    'occr_country','role_cod','drugname','prod_ai','route','dechal','dose_freq','mfr_sndr'])
 
 df_converted.head(2)
+
+# COMMAND ----------
+
+df_converted.select_dtypes(exclude='object').dtypes
+
+# COMMAND ----------
+
+df_converted.shape
 
 # COMMAND ----------
 

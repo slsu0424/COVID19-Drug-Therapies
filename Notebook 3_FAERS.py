@@ -32,11 +32,12 @@ pd.set_option('display.max_colwidth', None)
 
 # COMMAND ----------
 
-# MAGIC %md #Reload data
+# MAGIC %md #Load data
 
 # COMMAND ----------
 
-df = spark.read.csv("/mnt/adls/FAERS_CSteroid_preprocess3.csv", header="true", nullValue = "NA", inferSchema="true")
+#df = spark.read.csv("/mnt/adls/FAERS_CSteroid_preprocess3.csv", header="true", nullValue = "NA", inferSchema="true")
+df = spark.read.csv("/mnt/adls/FAERS_CSteroid_preprocess3_5589.csv", header="true", nullValue = "NA", inferSchema="true")
 
 display(df)
 
@@ -326,8 +327,12 @@ display_dict_models(dict_models)
 
 # COMMAND ----------
 
-#model = tree.DecisionTreeClassifier()
-model = GaussianProcessClassifier()
+# MAGIC %md ### 1. Gaussian Process
+
+# COMMAND ----------
+
+model = tree.DecisionTreeClassifier()
+#model = GaussianProcessClassifier()
 
 # train the model
 model.fit(X_train, y_train)
@@ -434,6 +439,140 @@ plt.savefig("confusion-matrix.png")
 # MAGIC  * Support: How many instances of this class are there in the test dataset?
 # MAGIC 
 # MAGIC The classification report also includes averages for these metrics, including a weighted average that allows for the imbalance in the number of cases of each class.
+
+# COMMAND ----------
+
+from sklearn.metrics import classification_report
+
+print(classification_report(y_test, predictions))
+
+# COMMAND ----------
+
+# MAGIC %md #### Accuracy, Precision, Recall, and F1-score
+
+# COMMAND ----------
+
+from sklearn.metrics import precision_score, accuracy_score, recall_score, f1_score
+
+accuracy = accuracy_score(y_test, predictions)
+precision = precision_score(y_test, predictions, average=None) # returns precision for each class; default is pos class (1)
+recall = recall_score(y_test, predictions)
+f1 = f1_score(y_test, predictions)
+
+print("Accuracy:", accuracy) 
+print("Precision:", precision)
+print("Recall:", recall)
+print("F1_score:", f1)
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC #### Precision-Recall Curves
+
+# COMMAND ----------
+
+# example of a precision-recall curve for a predictive model
+
+# https://machinelearningmastery.com/roc-curves-and-precision-recall-curves-for-imbalanced-classification/
+# https://www.codespeedy.com/predict_proba-for-classification-problem-in-python/
+
+#from sklearn.metrics import precision_recall_curve
+#from matplotlib import pyplot
+
+# predict probabilities of the occurrence of each target
+yhat = model.predict_proba(X_test)
+
+# print probabilities
+print(yhat)
+
+# COMMAND ----------
+
+# retrieve just the probabilities for the positive class (outcome of Death = 1)
+pos_probs = yhat[:, 1]
+
+pos_probs
+
+# COMMAND ----------
+
+from sklearn.metrics import precision_recall_curve
+from matplotlib import pyplot
+
+# calculate the no skill line as the proportion of the positive class
+no_skill = len(y[y==1]) / len(y)
+
+# plot the no skill precision-recall curve
+pyplot.plot([0, 1], [no_skill, no_skill], linestyle='--', label='No Skill')
+
+# calculate model precision-recall curve
+precision, recall, _ = precision_recall_curve(y_test, pos_probs)
+
+# plot the model precision-recall curve
+pyplot.plot(recall, precision, marker='.', label='Classifier')
+
+# axis labels
+pyplot.xlabel('Recall')
+pyplot.ylabel('Precision')
+
+# show the legend
+pyplot.legend()
+
+# show the plot
+pyplot.show()
+
+# COMMAND ----------
+
+# MAGIC %md ### 2. Decision Tree
+
+# COMMAND ----------
+
+model = tree.DecisionTreeClassifier()
+
+# train the model
+model.fit(X_train, y_train)
+
+# make predictions based on the trained model
+predictions = model.predict(X_test)
+
+# COMMAND ----------
+
+# test set outcomes
+y_test
+
+# COMMAND ----------
+
+# test set outcomes
+predictions
+
+# COMMAND ----------
+
+# some labels in y_test don't appear in predictions
+
+# https://stackoverflow.com/questions/43162506/undefinedmetricwarning-f-score-is-ill-defined-and-being-set-to-0-0-in-labels-wi
+
+set(y_test) - set(predictions) # Specifically in this case, label '1' is never predicted
+
+# COMMAND ----------
+
+# MAGIC %md 
+# MAGIC #### Confusion Matrix
+
+# COMMAND ----------
+
+from sklearn.metrics import confusion_matrix
+
+sns.heatmap(confusion_matrix(y_test, predictions), annot = True, fmt ='d', cmap='Blues')
+
+plt.ylabel('Actual Death')
+plt.xlabel('Predicted Death')
+plt.title('Confusion Matrix')
+
+# save as image
+plt.savefig("confusion-matrix.png")
+
+# COMMAND ----------
+
+# MAGIC %md 
+# MAGIC #### Classification Report
 
 # COMMAND ----------
 
@@ -712,10 +851,6 @@ plt.yticks(range(len(most_imp_features)), most_imp_features.Feature, fontsize=14
 plt.xlabel('Importance')
 plt.title('Most important features - Decision Tree (entropy function, complex model)')
 plt.show()
-
-# COMMAND ----------
-
-# MAGIC %md ### 2. Decision Tree
 
 # COMMAND ----------
 
