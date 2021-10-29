@@ -956,7 +956,7 @@ df5.head(5)
 #df_converted = pd.get_dummies(df4, columns=['mfr_sndr','sex','occp_cod','reporter_country', 
 #                                    'occr_country','role_cod','drugname','prod_ai','route','dechal','rechal','dose_freq'], drop_first = True)
 
-df_converted = pd.get_dummies(df4, columns=['mfr_sndr','sex', 
+df_converted = pd.get_dummies(df4, columns=['sex', 
                                  'occr_country','role_cod','drugname','prod_ai','route','dechal','rechal','dose_freq'])
 
 
