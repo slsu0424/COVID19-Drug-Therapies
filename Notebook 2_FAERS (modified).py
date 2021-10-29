@@ -133,6 +133,10 @@ df1['outc_cod_DE'].value_counts()
 
 # COMMAND ----------
 
+# MAGIC %md ###Remove dup caseid
+
+# COMMAND ----------
+
 # merge dup caseid where outc_cod = DE is present
 
 # return some records where outcome of death = 1
