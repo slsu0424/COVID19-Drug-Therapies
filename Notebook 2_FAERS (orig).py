@@ -60,6 +60,10 @@ print((df.count(), len(df.columns)))
 
 # COMMAND ----------
 
+# MAGIC %md ##Create target variable
+
+# COMMAND ----------
+
 # convert to pandas
 
 df1 = df.toPandas()
@@ -69,7 +73,7 @@ df1 = df.toPandas()
 # new feature - outcome code
 # add as a new column
 
-df1.insert(loc = 47, 
+df1.insert(loc = 52, 
           column = 'outc_cod_DE', 
           value = 0)
 
@@ -87,268 +91,15 @@ df1['outc_cod_DE'].value_counts()
 
 # COMMAND ----------
 
-df1.shape
-
-# COMMAND ----------
-
-# export for Azure ML autoML
-
-df1.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess2a.csv', index=False)
-
-# COMMAND ----------
-
-# MAGIC %md ##Drop columns
-
-# COMMAND ----------
-
-# null values per column
-
-# https://datatofish.com/count-nan-pandas-dataframe/
-
-for col in df1.columns:
-    count = df1[col].isnull().sum()
-    print(col,df1[col].dtype,count)
-    
-#display(df4.sort_values(by='age', ascending=False))
-
-# COMMAND ----------
-
-# drop columns with too many null values > ~28,000
-
-df2 = df1.drop(['auth_num','lit_ref','to_mfr','lot_num','exp_dt','nda_num','drug_rec_act','dur','dur_cod'], axis = 1)
-
-#drop any column that has null values
-#df2 = df1.dropna(axis=1)
-
-display(df2)
-
-# COMMAND ----------
-
-# inspect remaining missing values in data
-
-import missingno as msno
-
-msno.matrix(df2)
-
-# COMMAND ----------
-
-df2.shape
-#df3.shape
-
-# COMMAND ----------
-
-# drop additional irrelevant columns that have too many missing values
-
-df3 = df2.drop(['age_grp','cum_dose_chr','cum_dose_unit'], axis = 1)
-
-#drop any column that has null values
-#df2 = df1.dropna(axis=1)
-
-display(df3)
-
-# COMMAND ----------
-
-# MAGIC %md ##Drop rows
-
-# COMMAND ----------
-
-# drop rows where null - age, sex, weight
-
-# https://www.journaldev.com/33492/pandas-dropna-drop-null-na-values-from-dataframe
-
-#df3 = df3.dropna(subset=['age','sex','wt','route','dose_amt','dechal','rechal'], axis = 0)
-df3 = df3.dropna(subset=['age','sex','wt','route','dose_amt'], axis = 0)
-#df3 = df3.dropna(subset=['age','sex','wt'], axis = 0)
-
-#display(df3)
-
-# COMMAND ----------
-
-# drop rows where age_cod <> 'YR'
-
-# https://www.statology.org/pandas-drop-rows-with-value
-
-df3 = df3[df3.age_cod == 'YR']
-
-display(df3)
-
-# COMMAND ----------
-
-df3.shape
-
-# COMMAND ----------
-
-# inspect remaining missing values in data
-
-import missingno as msno
-
-msno.matrix(df3)
-
-# COMMAND ----------
-
-# spot inspect the data
-
-# results show the need to consolidate the PT terms
-
-df3[df3['caseid'] == 17639954].head(5)
-
-# COMMAND ----------
-
-# MAGIC %md ##New/recode features
-
-# COMMAND ----------
-
-df3.dtypes
-
-# COMMAND ----------
-
-# MAGIC %md ###Weight in lbs
-
-# COMMAND ----------
-
-# new feature - weight in lbs
-
-# insert new columns next to 'wt' column 
-df3.insert(loc = 18, 
-          column = 'wt_in_lbs', 
-          value = 0)
-
-for index, row in df3.iterrows():
-  df3['wt_in_lbs'] = df3['wt']*2.20462262
-
-display(df3)
-
-# COMMAND ----------
-
-# MAGIC %md ###Preferred terms
-
-# COMMAND ----------
-
-# new feature - consolidate preferred terms
-
-# insert new columns next to 'pt' column 
-df3.insert(loc = 40, 
-          column = 'pt_consolidated', 
-          value = 0)
-
-display(df3)
-
-# COMMAND ----------
-
-# MAGIC %md ###Dechallenge
-
-# COMMAND ----------
-
-# recode feature - Dechallenge (if reaction abated when drug therapy was stopped)
-
-# https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.value_counts.html
-
-df3['dechal'].value_counts(dropna = False)
-
-# COMMAND ----------
-
-#df3.insert(loc = 18, 
-#          column = 'wt_in_lbs', 
-#          value = 0)
-
-#for index, row in df3.iterrows():
-#  df3['wt_in_lbs'] = df3['wt']*2.20462262
-
-#display(df3)
-
-# COMMAND ----------
-
-# consolidate all records with 'U' (Unknown), 'D' (Does Not Apply), and NaN to a single category 'U'
-
-# https://www.geeksforgeeks.org/replace-all-the-nan-values-with-zeros-in-a-column-of-a-pandas-dataframe
-
-df3['dechal'] = df3['dechal'].replace('D','U')
-df3['dechal'] = df3['dechal'].replace(np.nan,'U')
-
-# COMMAND ----------
-
-df3['dechal'].value_counts(dropna = False)
-
-# COMMAND ----------
-
-# MAGIC %md ###Rechallenge
-
-# COMMAND ----------
-
-df3['rechal'].value_counts(dropna = False)
-
-# COMMAND ----------
-
-# consolidate all records with 'U' (Unknown), 'D' (Does Not Apply), and NaN to a single category 'U'
-
-df3['rechal'] = df3['rechal'].replace('D','U')
-df3['rechal'] = df3['dechal'].replace(np.nan,'U')
-
-# COMMAND ----------
-
-df3['rechal'].value_counts(dropna = False)
-
-# COMMAND ----------
-
-df3.shape
-
-# COMMAND ----------
-
-df3['route'].value_counts(dropna = False)
-
-# COMMAND ----------
-
-df3['dose_amt'].value_counts(dropna = False)
-
-# COMMAND ----------
-
-# MAGIC %md ##Create target variable
-
-# COMMAND ----------
-
-# outcome values
-
-df3['outc_cod'].value_counts()
-
-# COMMAND ----------
-
-# new feature - outcome code
-# add as a new column
-
-#df3.insert(loc = 42, 
-#          column = 'outc_cod_DE', 
-#          value = 0)
-
-#display(df3)
-
-# COMMAND ----------
-
-# target will be binary classification - did a patient die?
-
-#df3['outc_cod_DE'] = np.where(df3['outc_cod']=='DE',1,0)
-
-# COMMAND ----------
-
-#df3['outc_cod_DE'].value_counts()
-
-# COMMAND ----------
-
 # MAGIC %md ###Remove dup caseid
 
 # COMMAND ----------
 
+# merge dup caseid where outc_cod = DE is present
+
 # return all record where outcome of death = 1
 
-display(df3.loc[df3['outc_cod_DE'] == 1])
-
-# COMMAND ----------
-
-# duplicate cases with multiple outcomes (including death)
-
-# how to treat 2 different reactions (pt) that resulted in death?
-# ignore pt field and take 1st record where outc_code_DE = 1
-
-df3[df3['caseid'] == 18322071].head(5)
+df1.loc[df1['outc_cod_DE'] == 1].head(5)
 
 # COMMAND ----------
 
@@ -358,51 +109,27 @@ df3[df3['caseid'] == 18322071].head(5)
 
 #https://stackoverflow.com/questions/49343860/how-to-drop-duplicate-values-based-in-specific-columns-using-pandas
 
-df4 = df3.sort_values(by=['outc_cod_DE'], ascending = False) \
+df2 = df1.sort_values(by=['outc_cod_DE'], ascending = False) \
         .drop_duplicates(subset=['caseid'], keep = 'first')
-
-# COMMAND ----------
-
-# https://learningactors.com/how-to-use-sql-with-pandas/
-
-from pandasql import sqldf
-pysqldf = lambda q: sqldf(q, globals())
-
-q = """SELECT * \
-      FROM df3 where caseid = 18255075;"""
-
-#q = """SELECT *, MAX(outc_cod_DE) OVER (PARTITION BY caseid) as max_outc_cod_DE \
-#         FROM df3 \
-#         WHERE caseid = '18255075';"""
-
-#q = """
-#    SELECT * FROM \
-#      (SELECT *, \
-#         MAX(outc_cod_DE) OVER (PARTITION BY caseid) as max_outc_cod_DE \
-#         FROM df3 \
-#         WHERE caseid = '18255075') \
-#      WHERE outc_cod_DE = max_outc_cod_DE;"""
-
-#display(pysqldf(q))
 
 # COMMAND ----------
 
 # re-inspect same case
 
-df4[df4['caseid'] == 18322071].head(5)
+df2[df2['caseid'] == 15954362].head(5)
 
 # COMMAND ----------
 
 # how many records after removing dups
-df4.shape
+df2.shape
 
 # COMMAND ----------
 
 # count distinct cases
 
-# https://datascienceparichay.com/article/pandas-count-of-unique-values-in-each-column/#:~:text=By%20default%2C%20the%20pandas%20dataframe%20nunique%20%28%29%20function,the%20count%20of%20distinct%20values%20in%20each%20column
+# https://datascienceparichay.com/article/pandas-count-of-unique-values-in-each-column
 
-print(df4.nunique())
+print(df2.nunique())
 
 #from pyspark.sql.functions import countDistinct
 
@@ -414,16 +141,189 @@ print(df4.nunique())
 
 # COMMAND ----------
 
-# value counts now
-
-df4['outc_cod_DE'].value_counts()
-
-# COMMAND ----------
-
 # check label ratios
 # https://dataaspirant.com/handle-imbalanced-data-machine-learning/
 
-sns.countplot(x='outc_cod_DE', data=df4) # data already looks wildly imbalanced but let us continue
+sns.countplot(x='outc_cod_DE', data=df2) # data already looks wildly imbalanced but let us continue
+
+# COMMAND ----------
+
+# MAGIC %md ##Drop columns
+
+# COMMAND ----------
+
+# null values per column
+
+# https://datatofish.com/count-nan-pandas-dataframe/
+
+for col in df2.columns:
+    count = df2[col].isnull().sum()
+    print(col,df2[col].dtype,count)
+
+# COMMAND ----------
+
+# drop columns with too many null values > ~28,000
+
+df3 = df2.drop(['auth_num','lit_ref','to_mfr','lot_num','exp_dt','nda_num','drug_rec_act','dur','dur_cod'], axis = 1)
+
+display(df3)
+
+# COMMAND ----------
+
+# inspect remaining missing values in data
+
+import missingno as msno
+
+msno.matrix(df3)
+
+# COMMAND ----------
+
+df3.shape
+
+# COMMAND ----------
+
+# drop additional irrelevant columns that have too many missing values
+
+df4 = df3.drop(['age_grp','cum_dose_chr','cum_dose_unit'], axis = 1)
+
+display(df4)
+
+# COMMAND ----------
+
+# MAGIC %md ##Drop rows
+
+# COMMAND ----------
+
+# drop rows where null - age, sex, weight
+
+# https://www.journaldev.com/33492/pandas-dropna-drop-null-na-values-from-dataframe
+
+#df4 = df4.dropna(subset=['age','sex','wt','route','dose_amt','dechal','rechal'], axis = 0)
+df4 = df4.dropna(subset=['age','sex','wt','route','dose_amt'], axis = 0)
+#df4 = df4.dropna(subset=['age','sex','wt','route'], axis = 0)
+
+# COMMAND ----------
+
+df4.shape
+
+# COMMAND ----------
+
+# drop rows where age_cod <> 'YR'
+
+# https://www.statology.org/pandas-drop-rows-with-value
+
+df4 = df4[df4.age_cod == 'YR']
+
+display(df4)
+
+# COMMAND ----------
+
+df4.shape
+
+# COMMAND ----------
+
+# inspect remaining missing values in data
+
+import missingno as msno
+
+msno.matrix(df4)
+
+# COMMAND ----------
+
+# spot inspect the data
+
+# results show the need to consolidate the PT terms
+
+df4[df4['caseid'] == 17639954].head(5)
+
+# COMMAND ----------
+
+# MAGIC %md ##New/recode features
+
+# COMMAND ----------
+
+df4.dtypes
+
+# COMMAND ----------
+
+# MAGIC %md ###Weight in lbs
+
+# COMMAND ----------
+
+# new feature - weight in lbs
+
+# insert new columns next to 'wt' column 
+df4.insert(loc = 18, 
+          column = 'wt_in_lbs', 
+          value = 0)
+
+for index, row in df4.iterrows():
+  df4['wt_in_lbs'] = df4['wt']*2.20462262
+
+display(df4)
+
+# COMMAND ----------
+
+# MAGIC %md ###Preferred terms
+
+# COMMAND ----------
+
+# new feature - consolidate preferred terms
+
+# insert new columns next to 'pt' column 
+df4.insert(loc = 40, 
+          column = 'pt_consolidated', 
+          value = 0)
+
+display(df4)
+
+# COMMAND ----------
+
+# MAGIC %md ###Dechallenge
+
+# COMMAND ----------
+
+# recode feature - Dechallenge (if reaction abated when drug therapy was stopped)
+
+# https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.value_counts.html
+
+df4['dechal'].value_counts(dropna = False)
+
+# COMMAND ----------
+
+# consolidate all records with 'U' (Unknown), 'D' (Does Not Apply), and NaN to a single category 'U'
+
+# https://www.geeksforgeeks.org/replace-all-the-nan-values-with-zeros-in-a-column-of-a-pandas-dataframe
+
+df4['dechal'] = df4['dechal'].replace('D','U')
+df4['dechal'] = df4['dechal'].replace(np.nan,'U')
+
+# COMMAND ----------
+
+df4['dechal'].value_counts(dropna = False)
+
+# COMMAND ----------
+
+# MAGIC %md ###Rechallenge
+
+# COMMAND ----------
+
+df4['rechal'].value_counts(dropna = False)
+
+# COMMAND ----------
+
+# consolidate all records with 'U' (Unknown), 'D' (Does Not Apply), and NaN to a single category 'U'
+
+df4['rechal'] = df4['rechal'].replace('D','U')
+df4['rechal'] = df4['dechal'].replace(np.nan,'U')
+
+# COMMAND ----------
+
+df4['rechal'].value_counts(dropna = False)
+
+# COMMAND ----------
+
+df4.shape
 
 # COMMAND ----------
 
@@ -1056,8 +956,8 @@ df5.head(5)
 #df_converted = pd.get_dummies(df4, columns=['mfr_sndr','sex','occp_cod','reporter_country', 
 #                                    'occr_country','role_cod','drugname','prod_ai','route','dechal','rechal','dose_freq'], drop_first = True)
 
-df_converted = pd.get_dummies(df4, columns=['mfr_sndr','sex','occp_cod','reporter_country', 
-                                    'occr_country','role_cod','drugname','prod_ai','route','dechal','rechal','dose_freq'])
+df_converted = pd.get_dummies(df4, columns=['mfr_sndr','sex', 
+                                 'occr_country','role_cod','drugname','prod_ai','route','dechal','rechal','dose_freq'])
 
 
 df_converted.head(2)
@@ -1070,4 +970,5 @@ df_converted.shape
 
 # save data to ADLS Gen2
 
-df_converted.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess3_5589.csv', index=False)
+#df_converted.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess3_5589.csv', index=False)
+df_converted.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess3_5429.csv', index=False)
