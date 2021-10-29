@@ -71,8 +71,12 @@ df1.select_dtypes(exclude='object').dtypes
 
 # curate feature set
 
+#df2 = df1.select_dtypes(exclude='object') \
+                            #.drop(['primaryid','caseid','caseversion','event_dt','mfr_dt','init_fda_dt','fda_dt','age','wt', \
+                                   # 'rept_dt','last_case_version','val_vbm','start_dt','end_dt','drug_seq','dsg_drug_seq'], axis=1)
+
 df2 = df1.select_dtypes(exclude='object') \
-                            .drop(['primaryid','caseid','caseversion','event_dt','mfr_dt','init_fda_dt','fda_dt','age','wt', \
+                            .drop(['primaryid','caseid','caseversion','event_dt','mfr_dt','init_fda_dt','fda_dt','wt', \
                                     'rept_dt','last_case_version','val_vbm','start_dt','end_dt','drug_seq','dsg_drug_seq'], axis=1)
 
 #cols =  df_converted.columns[~df_converted.columns.str.endswith('dt')].tolist()
