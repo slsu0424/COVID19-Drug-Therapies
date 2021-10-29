@@ -37,7 +37,8 @@ pd.set_option('display.max_colwidth', None)
 # COMMAND ----------
 
 #df = spark.read.csv("/mnt/adls/FAERS_CSteroid_preprocess3.csv", header="true", nullValue = "NA", inferSchema="true")
-df = spark.read.csv("/mnt/adls/FAERS_CSteroid_preprocess3_5589.csv", header="true", nullValue = "NA", inferSchema="true")
+#df = spark.read.csv("/mnt/adls/FAERS_CSteroid_preprocess3_5589.csv", header="true", nullValue = "NA", inferSchema="true")
+df = spark.read.csv("/mnt/adls/FAERS_CSteroid_preprocess3_5429.csv", header="true", nullValue = "NA", inferSchema="true")
 
 display(df)
 
@@ -239,7 +240,7 @@ dict_classifiers = {
     "Naive Bayes": GaussianNB(),
     "AdaBoost": AdaBoostClassifier(),
     #"QDA": QuadraticDiscriminantAnalysis(),
-    "Gaussian Process": GaussianProcessClassifier() #http://www.ideal.ece.utexas.edu/seminar/GP-austin.pdf
+    #"Gaussian Process": GaussianProcessClassifier() #http://www.ideal.ece.utexas.edu/seminar/GP-austin.pdf
 }
 
 # COMMAND ----------
