@@ -302,7 +302,7 @@ df3['dose_amt'].value_counts(dropna = False)
 
 # COMMAND ----------
 
-# MAGIC %md ##Create class labels
+# MAGIC %md ##Create target variable
 
 # COMMAND ----------
 
@@ -410,7 +410,7 @@ print(df4.nunique())
 
 # COMMAND ----------
 
-# MAGIC %md ###Are the classes balanced?
+# MAGIC %md ###Check for imbalance
 
 # COMMAND ----------
 
