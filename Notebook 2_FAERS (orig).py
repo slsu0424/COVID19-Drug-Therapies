@@ -441,11 +441,172 @@ df4.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess2_5589.csv', index=False)
 
 # COMMAND ----------
 
-# MAGIC %md #Build baseline
+# MAGIC %md #Build a baseline model
 
 # COMMAND ----------
 
-# MAGIC %md ##Export for AML
+df4.select_dtypes(exclude='object').dtypes
+
+# COMMAND ----------
+
+# curate feature set
+
+df5 = df4.copy() 
+
+# df6 = df5.select_dtypes(exclude='object').drop(['mfr_dt','wt','start_dt','end_dt'], axis=1)
+
+df5 = df4.select_dtypes(exclude='object') \
+                            .drop(['primaryid','caseid','caseversion','event_dt','mfr_dt','init_fda_dt','fda_dt','wt', \
+                                    'rept_dt','last_case_version','val_vbm','start_dt','end_dt','drug_seq','dsg_drug_seq'], axis=1)
+
+# COMMAND ----------
+
+display(df5)
+
+# COMMAND ----------
+
+# X = input
+X = df5.drop("outc_cod_DE" ,axis= 1)
+
+# y = output
+y = df5['outc_cod_DE']
+
+# COMMAND ----------
+
+from sklearn.model_selection import train_test_split
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.3, random_state = 0)
+
+# show size of each dataset (records, columns)
+print("Dataset sizes: \nX_train", X_train.shape," \nX_test", X_test.shape, " \ny_train", y_train.shape, "\ny_test", y_test.shape)
+
+data = {
+    "train":{"X": X_train, "y": y_train},        
+    "test":{"X": X_test, "y": y_test}
+}
+
+print ("Data contains", len(data['train']['X']), "training samples and",len(data['test']['X']), "test samples")
+
+# COMMAND ----------
+
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+import time
+
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler, LabelEncoder
+
+from sklearn.linear_model import LogisticRegression
+from sklearn.svm import SVC
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn import tree
+from sklearn.neural_network import MLPClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.gaussian_process.kernels import RBF
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import AdaBoostClassifier
+from sklearn.naive_bayes import GaussianNB
+from sklearn.gaussian_process import GaussianProcessClassifier
+
+#from xgboost import XGBClassifier
+
+from sklearn.metrics import precision_score, recall_score, f1_score, fbeta_score, classification_report
+
+# https://ataspinar.com/2017/05/26/classification-with-scikit-learn/
+# https://scikit-learn.org/stable/auto_examples/classification/plot_classifier_comparison.html#sphx-glr-auto-examples-classification-plot-classifier-comparison-py
+
+dict_classifiers = {
+    "Logistic Regression": LogisticRegression(),
+    "Nearest Neighbors": KNeighborsClassifier(),
+    "Linear SVM": SVC(),
+    "Gradient Boosting Classifier": GradientBoostingClassifier(n_estimators=1000),
+    "Decision Tree": tree.DecisionTreeClassifier(),
+    "Random Forest": RandomForestClassifier(n_estimators=100),
+    "Neural Net": MLPClassifier(alpha = 1),
+    "Naive Bayes": GaussianNB(),
+    "AdaBoost": AdaBoostClassifier(),
+    #"QDA": QuadraticDiscriminantAnalysis(),
+    "Gaussian Process": GaussianProcessClassifier() #http://www.ideal.ece.utexas.edu/seminar/GP-austin.pdf
+}
+
+def batch_classify(X_train, y_train, X_test, y_test, no_classifiers = 9, verbose = True):
+    """
+    This method, takes as input the X, Y matrices of the Train and Test set.
+    And fits them on all of the Classifiers specified in the dict_classifier.
+    The trained models, and accuracies are saved in a dictionary. The reason to use a dictionary
+    is because it is very easy to save the whole dictionary with the pickle module.
+    
+    Usually, the SVM, Random Forest and Gradient Boosting Classifier take quiet some time to train. 
+    So it is best to train them on a smaller dataset first and 
+    decide whether you want to comment them out or not based on the test accuracy score.
+    """
+
+# https://datascience.stackexchange.com/questions/28426/train-accuracy-vs-test-accuracy-vs-confusion-matrix
+
+    dict_models = {}
+    for classifier_name, classifier in list(dict_classifiers.items())[:no_classifiers]:
+        t_start = time.process_time()
+        classifier.fit(X_train, y_train)
+        predictions = classifier.predict(X_test)
+        t_end = time.process_time()
+        
+        t_diff = t_end - t_start
+        train_score = classifier.score(X_train, y_train) # training accuracy
+        test_score = classifier.score(X_test, y_test) # test accuracy
+        precision = precision_score(y_test, predictions) # fraction of positive predictions that were correct. TP / (TP + FP)
+        recall = recall_score(y_test, predictions) # fraction of positive predictions that were correctly identified.  TP / (TP + FN)
+        f1 = f1_score(y_test, predictions) # avg of precision + recall ratios
+        fbeta = fbeta_score(y_test, predictions, beta=0.5)
+        class_report = classification_report(y_test, predictions)
+        
+        dict_models[classifier_name] = {'model': classifier, \
+                                        'train_score': train_score, \
+                                        'test_score': test_score, \
+                                        'precision': precision_score, \
+                                        'recall': recall_score, \
+                                        'f1': f1, \
+                                        'fbeta': fbeta, \
+                                        'train_time': t_diff, 
+                                        'class_report': class_report}
+        if verbose:
+            print("trained {c} in {f:.2f} s".format(c=classifier_name, f=t_diff))
+    return dict_models
+
+
+def display_dict_models(dict_models, sort_by='test_score'):
+    cls = [key for key in dict_models.keys()]
+    test_s = [dict_models[key]['test_score'] for key in cls]
+    training_s = [dict_models[key]['train_score'] for key in cls]
+    precision_s = [dict_models[key]['precision'] for key in cls]
+    recall_s = [dict_models[key]['recall'] for key in cls]
+    f1_s = [dict_models[key]['f1'] for key in cls]
+    fbeta_s = [dict_models[key]['fbeta'] for key in cls]
+    training_t = [dict_models[key]['train_time'] for key in cls]
+    report = [dict_models[key]['class_report'] for key in cls]
+    
+    #df_ = pd.DataFrame(data=np.zeros(shape=(len(cls),9)), columns = ['classifier', 'train_score', 'test_score', 'precision', 'recall', 'f1', 'fbeta', 'train_time', 'class_report'])
+    df_ = pd.DataFrame(data=np.zeros(shape=(len(cls),7)), columns = ['classifier', 'train_score', 'test_score', 'f1', 'fbeta', 'class_report', 'train_time'])
+    for ii in range(0,len(cls)):
+        df_.loc[ii, 'classifier'] = cls[ii]
+        df_.loc[ii, 'train_score'] = training_s[ii]
+        df_.loc[ii, 'test_score'] = test_s[ii]
+        df_.loc[ii, 'precision'] = precision_s[ii]
+        df_.loc[ii, 'recall'] = recall_s[ii]
+        df_.loc[ii, 'f1'] = f1_s[ii]
+        df_.loc[ii, 'fbeta'] = fbeta_s[ii]
+        df_.loc[ii, 'class_report'] = report[ii]
+        df_.loc[ii, 'train_time'] = training_t[ii]
+    
+    display(df_.sort_values(by=sort_by, ascending=False))
+
+# COMMAND ----------
+
+dict_models = batch_classify(X_train, y_train, X_test, y_test, no_classifiers = 10)
+
+display_dict_models(dict_models)
 
 # COMMAND ----------
 

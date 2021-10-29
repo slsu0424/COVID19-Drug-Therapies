@@ -395,6 +395,10 @@ msno.matrix(df5)
 
 # COMMAND ----------
 
+# MAGIC %md ##Export for AML
+
+# COMMAND ----------
+
 df5.shape
 
 # COMMAND ----------
