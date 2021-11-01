@@ -125,7 +125,7 @@ print((df1.count(), len(df1.columns)))
 # run statistics
 
 # https://stackoverflow.com/questions/55938112/describe-a-dataframe-on-pyspark
-# https://sparkbyexamples.com/spark/spark-show-display-dataframe-contents-in-table/#:~:text=Spark%2FPySpark%20DataFrame%20show%20%28%29%20is%20used%20to%20display,the%20column%20values%20are%20truncated%20at%2020%20characters.
+# https://sparkbyexamples.com/spark/spark-show-display-dataframe-contents-in-table
 
 display(df1.summary())
 
