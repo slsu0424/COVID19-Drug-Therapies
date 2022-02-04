@@ -291,28 +291,6 @@ df2.dtypes
 
 # COMMAND ----------
 
-#2022-02-03 Modify dataset to drop columns for autoML training
-
-#df2 = df2.drop(['primaryid', 'caseid', 'caseversion','i_f_code', \
-#                'event_dt', 'mfr_dt', 'init_fda_dt', 'fda_dt', \
-#                'rep_cod', 'auth_num', 'mfr_num', 'lit_ref', \ 
-#                'age', 'age_cod', 'age_grp', 'e_sub', \
-#                'wt', 'wt_cod', 'rept_dt', 'to_mfr', \
-#                'occp_cod', 'reporter_country', 'last_case_version', 'drug_seq', \ 
-#                'role_cod', 'prod_ai', 'val_vbm', 'dose_vbm', \
-#                'cum_dose_unit', 'lot_num', 'exp_dt', 'nda_num', 'dose_unit', 'dose_start_dt', 'end_dt', 'dsg_drug_seq'], axis=1)
-
-
-
-
-# COMMAND ----------
-
-# save data to ADLS Gen2 - before NULLS
-
-df2.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess2_beforeDropNulls.csv', index=False)
-
-# COMMAND ----------
-
 # MAGIC %md ##Drop NULL columns
 
 # COMMAND ----------
@@ -354,6 +332,16 @@ msno.matrix(df3)
 df3 = df3.dropna(subset=['age_cod','dose_amt'], axis = 0)
 
 display(df3)
+
+# COMMAND ----------
+
+df3.shape
+
+# COMMAND ----------
+
+# save data to ADLS Gen2 - before Impute
+
+df3.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess2_beforeImpute.csv', index=False)
 
 # COMMAND ----------
 
