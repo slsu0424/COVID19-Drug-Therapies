@@ -335,9 +335,26 @@ df4.shape
 
 # COMMAND ----------
 
+#2022-02-03 Modify dataset to drop columns for autoML training
+
+df4 = df4.select_dtypes(exclude='object') \
+                            .drop(['primaryid','caseid','caseversion','event_dt','mfr_dt','init_fda_dt','fda_dt','wt', \
+                                    'rept_dt','last_case_version','val_vbm','start_dt','end_dt','drug_seq','dsg_drug_seq'], axis=1)
+
+# COMMAND ----------
+
+df4.dtypes
+
+# COMMAND ----------
+
 # export for Azure ML autoML
 
-df4.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess2_5589.csv', index=False)
+#df4.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess2_5589.csv', index=False)
+df4.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess2_5429.csv', index=False)
+
+# COMMAND ----------
+
+df4.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess2_5429_removedCols.csv', index=False)
 
 # COMMAND ----------
 

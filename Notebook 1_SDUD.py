@@ -27,6 +27,13 @@ display(dbutils.fs.ls("/mnt/adls"))
 
 # COMMAND ----------
 
+df_18 = spark.read.format('parquet').options(header='true', inferSchema='true').load("/mnt/adls/State_Drug_Utilization_Data_2018.parquet")
+
+display(df_18.limit(10))
+#df_18.show(5)
+
+# COMMAND ----------
+
 # read 2018 data
 df_18 = spark.read.csv("/mnt/adls/State_Drug_Utilization_Data_2018.csv", header="true", nullValue = "NA", inferSchema="true")
 
@@ -64,10 +71,6 @@ df_test = df_18.toPandas()
 # COMMAND ----------
 
 df_test.to_parquet('/dbfs/mnt/adls/FAERS_CSteroid_preprocess_2018test.parquet', index=False)
-
-# COMMAND ----------
-
-print((df_18.count(), len(df_18.columns)))
 
 # COMMAND ----------
 
