@@ -214,10 +214,10 @@ df2[df2['age_cod'] == "MON"].head(5)
 
 # recode all other age_cod types to null
 
-df2['age_cod'] = df2['age_cod'].replace('DY',np.nan)
-df2['age_cod'] = df2['age_cod'].replace('DEC',np.nan)
-df2['age_cod'] = df2['age_cod'].replace('MON',np.nan)
-df2['age_cod'] = df2['age_cod'].replace('WK',np.nan)
+#df2['age_cod'] = df2['age_cod'].replace('DY',np.nan)
+#df2['age_cod'] = df2['age_cod'].replace('DEC',np.nan)
+#df2['age_cod'] = df2['age_cod'].replace('MON',np.nan)
+#df2['age_cod'] = df2['age_cod'].replace('WK',np.nan)
 
 # COMMAND ----------
 
