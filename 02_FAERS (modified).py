@@ -1,5 +1,5 @@
 # Databricks notebook source
-# MAGIC %md #Part 2: EDA, Preprocessing, Feature Engineering
+# MAGIC %md #Part 2: EDA and Preprocessing for AutoML
 
 # COMMAND ----------
 
