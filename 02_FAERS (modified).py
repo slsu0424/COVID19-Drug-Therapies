@@ -199,92 +199,11 @@ sns.countplot(x='outc_cod_DE', data=df2) # data already looks wildly imbalanced 
 
 # COMMAND ----------
 
-# MAGIC %md ##Recode variables
+# MAGIC %md ##Drop NULL values
 
 # COMMAND ----------
 
-# age code
-
-# https://www.statology.org/pandas-drop-rows-with-value
-
-df2['age_cod'].value_counts(dropna = False)
-
-# COMMAND ----------
-
-# spot inspect
-
-df2[df2['age_cod'] == "DEC"].head(5)
-#df2[df2['occr_country'] == "JP"].head(5)
-
-# COMMAND ----------
-
-# recode all other age_cod types to null
-
-df2['age_cod'] = df2['age_cod'].replace('DY',np.nan)
-df2['age_cod'] = df2['age_cod'].replace('DEC',np.nan)
-df2['age_cod'] = df2['age_cod'].replace('MON',np.nan)
-df2['age_cod'] = df2['age_cod'].replace('WK',np.nan)
-
-# COMMAND ----------
-
-# age in years - insert new column next to 'age' column
-
-df2.insert(loc = 15, 
-  column = 'age_in_yrs', 
-  value = '0')
-
-# COMMAND ----------
-
-# convert to years
-
-for index, row in df2.iterrows():
-  if (df2['age_cod'] == "YR").any(): 
-    df2['age_in_yrs'] = df2['age']
-  else:
-    df2['age_in_yrs'] = df2['age_in_yrs']
-
-df2.head(1)
-
-# COMMAND ----------
-
-# weight code
-
-df2['wt_cod'].value_counts()
-
-# COMMAND ----------
-
-# spot inspect
-
-df2[df2['wt_cod'] == "LBS"].head(5)
-
-# COMMAND ----------
-
-# weight in lbs - insert new column next to 'wt' column
-
-df2.insert(loc = 21, 
-  column = 'wt_in_lbs', 
-  value = 0)
-
-# COMMAND ----------
-
-# convert to lbs
-
-for index, row in df2.iterrows():
-  if (df2['wt_cod'] == "KG").any(): # https://www.learndatasci.com/solutions/python-valueerror-truth-value-series-ambiguous-use-empty-bool-item-any-or-all/
-    df2['wt_in_lbs'] = df2['wt']*2.20462262
-  else:
-    df2['wt_in_lbs'] = df2['wt']
-
-df2.head(1)
-
-# COMMAND ----------
-
-# now have 55 columns
-df2.shape
-
-# COMMAND ----------
-
-# MAGIC %md ##Drop NULL columns
+# MAGIC %md ###NULL columns
 
 # COMMAND ----------
 
@@ -298,7 +217,7 @@ df2.isnull().sum()
 
 # drop columns with > 90% missing values
 
-threshold = 0.8
+threshold = 0.9
 df3 = df2[df2.columns[df2.isnull().mean() < threshold]]
 df3.columns
 
@@ -316,7 +235,7 @@ msno.matrix(df3)
 
 # COMMAND ----------
 
-# MAGIC %md ##Drop NULL rows
+# MAGIC %md ###NULL rows
 
 # COMMAND ----------
 
@@ -335,6 +254,129 @@ df3.shape
 # save data to ADLS Gen2 - before Impute
 
 df3.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess2_beforeImpute.csv', index=False)
+
+# COMMAND ----------
+
+# MAGIC %md ##Recode variables
+
+# COMMAND ----------
+
+# age code
+
+# https://www.statology.org/pandas-drop-rows-with-value
+
+df3['age_cod'].value_counts(dropna = False)
+
+# COMMAND ----------
+
+# spot inspect
+
+df3[df3['age_cod'] == "DEC"].head(5)
+#df2[df2['occr_country'] == "JP"].head(5)
+
+# COMMAND ----------
+
+# recode all other age_cod types to null
+
+df3['age_cod'] = df3['age_cod'].replace('DY',np.nan)
+df3['age_cod'] = df3['age_cod'].replace('DEC',np.nan)
+df3['age_cod'] = df3['age_cod'].replace('MON',np.nan)
+df3['age_cod'] = df3['age_cod'].replace('WK',np.nan)
+
+# COMMAND ----------
+
+# age in years - insert new column next to 'age' column
+
+df3.insert(loc = 15, 
+  column = 'age_in_yrs', 
+  value = '0')
+
+# COMMAND ----------
+
+# convert to years
+
+for index, row in df3.iterrows():
+  if (df3['age_cod'] == "YR").any(): 
+    df3['age_in_yrs'] = df3['age']
+  else:
+    df3['age_in_yrs'] = df3['age_in_yrs']
+
+df3.head(1)
+
+# COMMAND ----------
+
+# weight code
+
+df3['wt_cod'].value_counts()
+
+# COMMAND ----------
+
+# spot inspect
+
+df3[df3['wt_cod'] == "LBS"].head(5)
+
+# COMMAND ----------
+
+# weight in lbs - insert new column next to 'wt' column
+
+df3.insert(loc = 21, 
+  column = 'wt_in_lbs', 
+  value = 0)
+
+# COMMAND ----------
+
+# convert to lbs
+
+for index, row in df3.iterrows():
+  if (df3['wt_cod'] == "KG").any(): # https://www.learndatasci.com/solutions/python-valueerror-truth-value-series-ambiguous-use-empty-bool-item-any-or-all/
+    df3['wt_in_lbs'] = df3['wt']*2.20462262
+  else:
+    df3['wt_in_lbs'] = df3['wt']
+
+df3.head(1)
+
+# COMMAND ----------
+
+df3.shape
+
+# COMMAND ----------
+
+# MAGIC %md ##Export for AML
+
+# COMMAND ----------
+
+# MAGIC %md ###Drop columns for training
+
+# COMMAND ----------
+
+df3.dtypes
+
+# COMMAND ----------
+
+# 2022-02-04 Drop columns that will not be used for training and inference
+
+df4 = df3.drop(['primaryid', 'caseid', 'caseversion', 'i_f_code', \
+                'event_dt', 'mfr_dt', 'init_fda_dt', 'fda_dt', \
+                'rept_cod', 'auth_num', 'mfr_num', 'age', 'age_cod', 'age_grp','e_sub', \
+                'wt', 'wt_cod', 'rept_dt', \
+                'occp_cod', 'reporter_country', 'last_case_version', \
+                'role_cod', 'val_vbm', 'dose_vbm', 'lot_num', 'nda_num', \
+                'pt','outc_cod', 'start_dt', 'end_dt'], axis=1)
+
+
+# COMMAND ----------
+
+df4.shape
+
+# COMMAND ----------
+
+df4.dtypes
+
+# COMMAND ----------
+
+# save data to ADLS Gen2
+
+df4.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess2.csv', index=False)
 
 # COMMAND ----------
 
@@ -407,16 +449,6 @@ display(df5)
 import missingno as msno
 
 msno.matrix(df5)
-
-# COMMAND ----------
-
-# MAGIC %md ##Export for AML
-
-# COMMAND ----------
-
-# save data to ADLS Gen2
-
-df5.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess3a.csv', index=False)
 
 # COMMAND ----------
 
