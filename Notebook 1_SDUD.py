@@ -23,9 +23,11 @@ display(dbutils.fs.ls("/mnt/adls"))
 
 # COMMAND ----------
 
-# MAGIC %md ##Load dataset from DBFS into Spark dataframe
+# MAGIC %md ##Load data
 
 # COMMAND ----------
+
+#Load dataset from DBFS into Spark dataframe
 
 df_18 = spark.read.format('parquet').options(header='true', inferSchema='true').load("/mnt/adls/State_Drug_Utilization_Data_2018.parquet")
 
@@ -265,7 +267,7 @@ display(spark.sql("select Product_Name, State, sum(Number_of_Prescriptions) \
 
 # COMMAND ----------
 
-# MAGIC %md #Preprocessing & Feature Engineering
+# MAGIC %md #Preprocess Data
 
 # COMMAND ----------
 
