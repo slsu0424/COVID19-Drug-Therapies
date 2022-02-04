@@ -56,7 +56,7 @@ print((df.count(), len(df.columns)))
 
 # COMMAND ----------
 
-# MAGIC %md #Exploratory Data Analysis
+# MAGIC %md #Explore the Data
 
 # COMMAND ----------
 
