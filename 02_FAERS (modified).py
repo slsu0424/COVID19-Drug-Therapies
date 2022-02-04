@@ -88,21 +88,6 @@ df1.describe()
 
 # COMMAND ----------
 
-# detect outliers
-
-# https://www.kaggle.com/agrawaladitya/step-by-step-data-preprocessing-eda
-# https://www.machinelearningplus.com/plots/python-boxplot
-
-# select numerical variables of interest
-num_cols = ['age','wt','drug_seq','cum_dose_chr','dose_amt','dsg_drug_seq']
-
-plt.figure(figsize=(18,9))
-df1[num_cols].boxplot()
-plt.title("Numerical variables in the Corticosteroid dataset", fontsize=20)
-plt.show()
-
-# COMMAND ----------
-
 # MAGIC %md #Preprocess data
 
 # COMMAND ----------
@@ -203,7 +188,11 @@ sns.countplot(x='outc_cod_DE', data=df2) # data already looks wildly imbalanced 
 
 # COMMAND ----------
 
-# MAGIC %md ##Recode existing variables
+# MAGIC %md ##Recode variables
+
+# COMMAND ----------
+
+display(df2)
 
 # COMMAND ----------
 
@@ -217,7 +206,8 @@ df2['age_cod'].value_counts(dropna = False)
 
 # spot inspect
 
-df2[df2['age_cod'] == "DEC"].head(5)
+#df2[df2['age_cod'] == "DEC"].head(5)
+df2[df2['age_cod'] == "MON"].head(5)
 #df2[df2['occr_country'] == "JP"].head(5)
 
 # COMMAND ----------
@@ -279,7 +269,7 @@ for index, row in df2.iterrows():
   else:
     df2['wt_in_lbs'] = df2['wt']
 
-df3.head(1)
+df2.head(1)
 
 # COMMAND ----------
 
@@ -336,21 +326,38 @@ display(df4)
 
 # COMMAND ----------
 
-# run dataframe statistics
-
-df4.describe()
+df4.dtypes
 
 # COMMAND ----------
 
-num_cols = ['age','wt']
+# detect outliers
 
-df5 = df4.query("age<=150")
-df5 = df4.query("wt<=100")
+# https://www.kaggle.com/agrawaladitya/step-by-step-data-preprocessing-eda
+# https://www.machinelearningplus.com/plots/python-boxplot
 
-columns_to_remove_for_training = ["age", "wt"]
+# select numerical variables of interest
+num_cols = ['age_in_yrs','wt_in_lbs','drug_seq','dose_amt','dsg_drug_seq']
 
-for col in columns_to_remove_for_training:
-    final_df.pop(col)
+plt.figure(figsize=(18,9))
+df4[num_cols].boxplot()
+plt.title("Numerical variables in the Corticosteroid dataset", fontsize=20)
+plt.show()
+
+# COMMAND ----------
+
+import seaborn as sns
+
+sns.boxplot(x=df4['age_in_yrs'])
+
+# COMMAND ----------
+
+import seaborn as sns
+
+sns.boxplot(x=df4['wt_in_lbs'])
+
+# COMMAND ----------
+
+df5 = df4.query("wt_in_lbs <=700")
 
 # COMMAND ----------
 
@@ -360,11 +367,11 @@ for col in columns_to_remove_for_training:
 
 # 2022-02-04 Drop columns that will not be used for training and inference
 
-df4.dtypes
+df5.dtypes
 
 # COMMAND ----------
 
-df5 = df4.drop(['primaryid', 'caseid', 'caseversion', 'i_f_code', \
+df6 = df5.drop(['primaryid', 'caseid', 'caseversion', 'i_f_code', \
                 'event_dt', 'mfr_dt', 'init_fda_dt', 'fda_dt', \
                 'rept_cod', 'auth_num', 'mfr_num', 'age', 'age_cod', 'age_grp', 'e_sub', \
                 'wt', 'wt_cod', 'rept_dt', \
@@ -375,7 +382,11 @@ df5 = df4.drop(['primaryid', 'caseid', 'caseversion', 'i_f_code', \
 
 # COMMAND ----------
 
-df5.dtypes
+df6.dtypes
+
+# COMMAND ----------
+
+df6.shape
 
 # COMMAND ----------
 
@@ -385,7 +396,7 @@ df5.dtypes
 
 # save data to ADLS Gen2
 
-df4.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess2.csv', index=False)
+df6.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess2.csv', index=False)
 
 # COMMAND ----------
 
