@@ -56,7 +56,7 @@ print((df.count(), len(df.columns)))
 
 # COMMAND ----------
 
-# MAGIC %md #Explore the Data
+# MAGIC %md #Explore data
 
 # COMMAND ----------
 
@@ -65,6 +65,10 @@ print((df.count(), len(df.columns)))
 # convert to pandas
 
 df1 = df.toPandas()
+
+# COMMAND ----------
+
+
 
 # COMMAND ----------
 
@@ -90,7 +94,7 @@ df1.describe()
 # https://www.machinelearningplus.com/plots/python-boxplot
 
 # select numerical variables of interest
-num_cols = ['age','wt','drug_seq','cum_dose_chr','dose_amt','dsg_drug_seq','dur']
+num_cols = ['age','wt','drug_seq','cum_dose_chr','dose_amt','dsg_drug_seq']
 
 plt.figure(figsize=(18,9))
 df1[num_cols].boxplot()
@@ -135,7 +139,7 @@ df1['outc_cod_DE'].value_counts()
 
 # COMMAND ----------
 
-# MAGIC %md ###Remove dup caseid
+# MAGIC %md ###Merge dup caseid
 
 # COMMAND ----------
 
@@ -188,7 +192,7 @@ df2['outc_cod_DE'].value_counts()
 
 # COMMAND ----------
 
-# Is the target variables classes imbalanced?
+# Are the target classes imbalanced?
 
 # https://dataaspirant.com/handle-imbalanced-data-machine-learning/
 
@@ -196,6 +200,86 @@ df2['outc_cod_DE'].value_counts()
 # 1 is minority class
 
 sns.countplot(x='outc_cod_DE', data=df2) # data already looks wildly imbalanced but let us continue
+
+# COMMAND ----------
+
+# MAGIC %md ##Recode existing variables
+
+# COMMAND ----------
+
+# age code
+
+# https://www.statology.org/pandas-drop-rows-with-value
+
+df2['age_cod'].value_counts(dropna = False)
+
+# COMMAND ----------
+
+# spot inspect
+
+df2[df2['age_cod'] == "DEC"].head(5)
+#df2[df2['occr_country'] == "JP"].head(5)
+
+# COMMAND ----------
+
+# recode all other age_cod types to null
+
+df2['age_cod'] = df2['age_cod'].replace('DY',np.nan)
+df2['age_cod'] = df2['age_cod'].replace('DEC',np.nan)
+df2['age_cod'] = df2['age_cod'].replace('MON',np.nan)
+df2['age_cod'] = df2['age_cod'].replace('WK',np.nan)
+
+# COMMAND ----------
+
+# age in years - insert new column next to 'age' column
+
+df2.insert(loc = 15, 
+  column = 'age_in_yrs', 
+  value = '0')
+
+# COMMAND ----------
+
+# convert to years
+
+for index, row in df2.iterrows():
+  if (df2['age_cod'] == "YR").any(): 
+    df2['age_in_yrs'] = df2['age']
+  else:
+    df2['age_in_yrs'] = df2['age_in_yrs']
+
+df2.head(1)
+
+# COMMAND ----------
+
+# weight code
+
+df2['wt_cod'].value_counts()
+
+# COMMAND ----------
+
+# spot inspect
+
+df2[df2['wt_cod'] == "LBS"].head(5)
+
+# COMMAND ----------
+
+# weight in lbs - insert new column next to 'wt' column
+
+df2.insert(loc = 21, 
+  column = 'wt_in_lbs', 
+  value = 0)
+
+# COMMAND ----------
+
+# convert to lbs
+
+for index, row in df2.iterrows():
+  if (df2['wt_cod'] == "KG").any(): # https://www.learndatasci.com/solutions/python-valueerror-truth-value-series-ambiguous-use-empty-bool-item-any-or-all/
+    df2['wt_in_lbs'] = df2['wt']*2.20462262
+  else:
+    df2['wt_in_lbs'] = df2['wt']
+
+df3.head(1)
 
 # COMMAND ----------
 
@@ -219,6 +303,7 @@ df2.isnull().sum()
 
 threshold = 0.9
 df3 = df2[df2.columns[df2.isnull().mean() < threshold]]
+
 df3.columns
 
 # COMMAND ----------
@@ -239,138 +324,62 @@ msno.matrix(df3)
 
 # COMMAND ----------
 
-# drop null rows where age code, dose amount is NULL
+# drop null rows where age code is NULL
 
-df3 = df3.dropna(subset=['age_cod','dose_amt'], axis = 0)
+df4 = df3.dropna(subset=['age_cod'], axis = 0)
 
-display(df3)
-
-# COMMAND ----------
-
-df3.shape
+display(df4)
 
 # COMMAND ----------
 
-# save data to ADLS Gen2 - before Impute
-
-df3.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess2_beforeImpute.csv', index=False)
+# MAGIC %md ##Remove outliers
 
 # COMMAND ----------
 
-# MAGIC %md ##Recode variables
+# run dataframe statistics
+
+df4.describe()
 
 # COMMAND ----------
 
-# age code
+num_cols = ['age','wt']
 
-# https://www.statology.org/pandas-drop-rows-with-value
+df5 = df4.query("age<=150")
+df5 = df4.query("wt<=100")
 
-df3['age_cod'].value_counts(dropna = False)
+columns_to_remove_for_training = ["age", "wt"]
 
-# COMMAND ----------
-
-# spot inspect
-
-df3[df3['age_cod'] == "DEC"].head(5)
-#df2[df2['occr_country'] == "JP"].head(5)
+for col in columns_to_remove_for_training:
+    final_df.pop(col)
 
 # COMMAND ----------
 
-# recode all other age_cod types to null
-
-df3['age_cod'] = df3['age_cod'].replace('DY',np.nan)
-df3['age_cod'] = df3['age_cod'].replace('DEC',np.nan)
-df3['age_cod'] = df3['age_cod'].replace('MON',np.nan)
-df3['age_cod'] = df3['age_cod'].replace('WK',np.nan)
-
-# COMMAND ----------
-
-# age in years - insert new column next to 'age' column
-
-df3.insert(loc = 15, 
-  column = 'age_in_yrs', 
-  value = '0')
-
-# COMMAND ----------
-
-# convert to years
-
-for index, row in df3.iterrows():
-  if (df3['age_cod'] == "YR").any(): 
-    df3['age_in_yrs'] = df3['age']
-  else:
-    df3['age_in_yrs'] = df3['age_in_yrs']
-
-df3.head(1)
-
-# COMMAND ----------
-
-# weight code
-
-df3['wt_cod'].value_counts()
-
-# COMMAND ----------
-
-# spot inspect
-
-df3[df3['wt_cod'] == "LBS"].head(5)
-
-# COMMAND ----------
-
-# weight in lbs - insert new column next to 'wt' column
-
-df3.insert(loc = 21, 
-  column = 'wt_in_lbs', 
-  value = 0)
-
-# COMMAND ----------
-
-# convert to lbs
-
-for index, row in df3.iterrows():
-  if (df3['wt_cod'] == "KG").any(): # https://www.learndatasci.com/solutions/python-valueerror-truth-value-series-ambiguous-use-empty-bool-item-any-or-all/
-    df3['wt_in_lbs'] = df3['wt']*2.20462262
-  else:
-    df3['wt_in_lbs'] = df3['wt']
-
-df3.head(1)
-
-# COMMAND ----------
-
-df3.shape
-
-# COMMAND ----------
-
-# MAGIC %md ##Export for AML
-
-# COMMAND ----------
-
-# MAGIC %md ###Drop columns for training
-
-# COMMAND ----------
-
-df3.dtypes
+# MAGIC %md ##Drop irrelevant variables
 
 # COMMAND ----------
 
 # 2022-02-04 Drop columns that will not be used for training and inference
 
-df4 = df3.drop(['primaryid', 'caseid', 'caseversion', 'i_f_code', \
+df4.dtypes
+
+# COMMAND ----------
+
+df5 = df4.drop(['primaryid', 'caseid', 'caseversion', 'i_f_code', \
                 'event_dt', 'mfr_dt', 'init_fda_dt', 'fda_dt', \
-                'rept_cod', 'auth_num', 'mfr_num', 'age', 'age_cod', 'age_grp','e_sub', \
+                'rept_cod', 'auth_num', 'mfr_num', 'age', 'age_cod', 'age_grp', 'e_sub', \
                 'wt', 'wt_cod', 'rept_dt', \
                 'occp_cod', 'reporter_country', 'last_case_version', \
-                'role_cod', 'val_vbm', 'dose_vbm', 'lot_num', 'nda_num', \
+                'role_cod', 'prod_ai', 'val_vbm', 'dose_vbm', 'lot_num', 'nda_num', \
                 'pt','outc_cod', 'start_dt', 'end_dt'], axis=1)
 
 
 # COMMAND ----------
 
-df4.shape
+df5.dtypes
 
 # COMMAND ----------
 
-df4.dtypes
+# MAGIC %md #Export for AML
 
 # COMMAND ----------
 
@@ -899,31 +908,7 @@ df5[numerics] = standardize(df5[numerics])
 
 # COMMAND ----------
 
-# MAGIC %md ##Remove outliers
-
-# COMMAND ----------
-
 df5.display(5)
-
-# COMMAND ----------
-
-# remove outliers 
-
-df5 = df5[(np.abs(sp.stats.zscore(df5[numerics])) < 3).all(axis=1)]
-
-# COMMAND ----------
-
-import seaborn as sns
-
-sns.boxplot(x=df4['wt_in_lbs'])
-
-# COMMAND ----------
-
-# use z-score
-from scipy import stats
-import numpy as np
-z = np.abs(stats.zscore(df4))
-print(z)
 
 # COMMAND ----------
 
