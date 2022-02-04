@@ -1,5 +1,5 @@
 # Databricks notebook source
-# MAGIC %md #Part 1: Load data
+# MAGIC %md #Part 1: Load data, Query, and Join
 
 # COMMAND ----------
 
@@ -20,11 +20,13 @@
 
 # COMMAND ----------
 
-# MAGIC %md #Load datasets from DBFS into Spark dataframe
+# MAGIC %md #Load data
 
 # COMMAND ----------
 
-#display(dbutils.fs.ls("/mnt/adls/FAERS_Output/ASCII"))
+# Load datasets from DBFS into Spark dataframe
+
+# display(dbutils.fs.ls("/mnt/adls/FAERS_Output/ASCII"))
 
 display(dbutils.fs.ls("/mnt/adls/FAERS_Output_v3/ASCII"))
 
