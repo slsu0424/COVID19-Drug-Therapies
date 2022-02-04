@@ -1,5 +1,5 @@
 # Databricks notebook source
-# MAGIC %md #Part 2: Exploratory Data Analysis, Preprocessing, Feature Engineering
+# MAGIC %md #Part 2: EDA, Preprocessing, Feature Engineering
 
 # COMMAND ----------
 
@@ -59,6 +59,8 @@ print((df.count(), len(df.columns)))
 # MAGIC %md #Explore the Data
 
 # COMMAND ----------
+
+# Exploratory Data Analysis
 
 # convert to pandas
 
@@ -197,12 +199,6 @@ sns.countplot(x='outc_cod_DE', data=df2) # data already looks wildly imbalanced 
 
 # COMMAND ----------
 
-# export for Azure ML autoML
-
-df2.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess2.csv', index=False)
-
-# COMMAND ----------
-
 # MAGIC %md ##Recode variables
 
 # COMMAND ----------
@@ -283,11 +279,8 @@ df2.head(1)
 
 # COMMAND ----------
 
+# now have 55 columns
 df2.shape
-
-# COMMAND ----------
-
-df2.dtypes
 
 # COMMAND ----------
 
@@ -421,10 +414,6 @@ msno.matrix(df5)
 
 # COMMAND ----------
 
-df5.shape
-
-# COMMAND ----------
-
 # save data to ADLS Gen2
 
 df5.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess3a.csv', index=False)
@@ -439,7 +428,7 @@ df5.select_dtypes(exclude='object').dtypes
 
 # COMMAND ----------
 
-# curate feature set
+# curate feature set (numerical values only)
 
 df6 = df5.copy() 
 
@@ -610,7 +599,7 @@ display_dict_models(dict_models)
 
 # COMMAND ----------
 
-# identify columns that are categorical (no intrinsic ordering to the categories) and convert to numerical
+# identify columns that are categorical and convert to numerical
 
 # https://stats.idre.ucla.edu/other/mult-pkg/whatstat/what-is-the-difference-between-categorical-ordinal-and-numerical-variables/
 
