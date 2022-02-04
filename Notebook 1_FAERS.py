@@ -1,5 +1,5 @@
 # Databricks notebook source
-# MAGIC %md #Part 1: Load data, Query, and Join
+# MAGIC %md #Part 1: Load data, Query, and Join for Corticosteroids
 
 # COMMAND ----------
 
