@@ -207,7 +207,7 @@ df2['age_cod'].value_counts(dropna = False)
 # spot inspect
 
 #df2[df2['age_cod'] == "DEC"].head(5)
-df2[df2['age_cod'] == "MON"].head(5)
+df2[df2['age_cod'] == "DY"].head(5)
 #df2[df2['occr_country'] == "JP"].head(5)
 
 # COMMAND ----------
@@ -314,11 +314,17 @@ msno.matrix(df3)
 
 # COMMAND ----------
 
-# drop null rows where age code is NULL
+# drop rows where age code is NULL
 
-df4 = df3.dropna(subset=['age_cod'], axis = 0)
+#df4 = df3.dropna(subset=['age_cod', 'wt_in_lbs'], axis = 0)
+
+df4 = df3[(df3['age_in_yrs'] > 0 & (df3['wt_in_lbs'] > 0))]
 
 display(df4)
+
+# COMMAND ----------
+
+df4.shape
 
 # COMMAND ----------
 
@@ -373,7 +379,9 @@ df5.dtypes
 
 df6 = df5.drop(['primaryid', 'caseid', 'caseversion', 'i_f_code', \
                 'event_dt', 'mfr_dt', 'init_fda_dt', 'fda_dt', \
-                'rept_cod', 'auth_num', 'mfr_num', 'age', 'age_cod', 'age_grp', 'e_sub', \
+                'rept_cod', 'auth_num', 'mfr_num', \
+                #'age', 'age_cod', 
+                'age_grp', 'e_sub', \
                 'wt', 'wt_cod', 'rept_dt', \
                 'occp_cod', 'reporter_country', 'last_case_version', \
                 'role_cod', 'prod_ai', 'val_vbm', 'dose_vbm', 'lot_num', 'nda_num', \
@@ -387,6 +395,10 @@ df6.dtypes
 # COMMAND ----------
 
 df6.shape
+
+# COMMAND ----------
+
+display(df6)
 
 # COMMAND ----------
 
