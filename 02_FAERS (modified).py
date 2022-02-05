@@ -1,5 +1,5 @@
 # Databricks notebook source
-# MAGIC %md #Part 2: EDA and Preprocessing for AutoML
+# MAGIC %md #Part 2: EDA & Preprocessing for AutoML
 
 # COMMAND ----------
 
@@ -314,9 +314,7 @@ msno.matrix(df3)
 
 # COMMAND ----------
 
-# drop rows where age code is NULL
-
-#df4 = df3.dropna(subset=['age_cod', 'wt_in_lbs'], axis = 0)
+# drop rows where age, weight = 0
 
 df4 = df3[(df3['age_in_yrs'] > 0 & (df3['wt_in_lbs'] > 0))]
 
