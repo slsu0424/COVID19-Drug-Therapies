@@ -192,32 +192,11 @@ sns.countplot(x='outc_cod_DE', data=df2) # data already looks wildly imbalanced 
 
 # COMMAND ----------
 
-display(df2)
-
-# COMMAND ----------
-
 # age code
 
 # https://www.statology.org/pandas-drop-rows-with-value
 
 df2['age_cod'].value_counts(dropna = False)
-
-# COMMAND ----------
-
-# spot inspect
-
-#df2[df2['age_cod'] == "DEC"].head(5)
-df2[df2['age_cod'] == "DY"].head(5)
-#df2[df2['occr_country'] == "JP"].head(5)
-
-# COMMAND ----------
-
-# recode all other age_cod types to null
-
-#df2['age_cod'] = df2['age_cod'].replace('DY',np.nan)
-#df2['age_cod'] = df2['age_cod'].replace('DEC',np.nan)
-#df2['age_cod'] = df2['age_cod'].replace('MON',np.nan)
-#df2['age_cod'] = df2['age_cod'].replace('WK',np.nan)
 
 # COMMAND ----------
 
@@ -231,13 +210,30 @@ df2.insert(loc = 15,
 
 # convert to years
 
-for index, row in df2.iterrows():
-  if (df2['age_cod'] == "YR").any(): 
-    df2['age_in_yrs'] = df2['age']
-  else:
-    df2['age_in_yrs'] = df2['age_in_yrs']
+# DEC DECADE
+# YR YEAR
+# MON MONTH
+# WK WEEK
+# DY DAY
+# HR HOUR
 
-df2.head(1)
+for index, row in df2.iterrows():
+  if (row['age_cod'] == "YR"):
+    df2.loc[index, 'age_in_yrs'] = df2.loc[index, 'age']
+  elif (row['age_cod'] == "DEC"):
+     df2.loc[index, 'age_in_yrs'] = df2.loc[index, 'age'] / 10
+  elif (row['age_cod'] == "MON"):
+    df2.loc[index, 'age_in_yrs'] = df2.loc[index, 'age'] / 12
+  elif (row['age_cod'] == "WK"):
+    df2.loc[index, 'age_in_yrs'] = df2.loc[index, 'age'] / 52
+  elif (row['age_cod'] == "DY"):
+    df2.loc[index, 'age_in_yrs']  = df2.loc[index, 'age'] / 365
+  else:
+    df2.loc[index, 'age_in_yrs'] = 0
+
+# COMMAND ----------
+
+df2[df2['age_cod'] == "DY"].head(5)
 
 # COMMAND ----------
 
