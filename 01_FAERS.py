@@ -3,7 +3,7 @@
 
 # COMMAND ----------
 
-# MAGIC %md ##Set Spark Configuration
+# MAGIC %md #Set Spark Configuration
 
 # COMMAND ----------
 
