@@ -1,5 +1,5 @@
 # Databricks notebook source
-# MAGIC %md #Part 3: Model Training and Tracking
+# MAGIC %md #Part 4: Model Training and Tracking
 
 # COMMAND ----------
 
@@ -36,9 +36,11 @@ pd.set_option('display.max_colwidth', None)
 
 # COMMAND ----------
 
-#df = spark.read.csv("/mnt/adls/FAERS_CSteroid_preprocess3.csv", header="true", nullValue = "NA", inferSchema="true")
-#df = spark.read.csv("/mnt/adls/FAERS_CSteroid_preprocess3_5589.csv", header="true", nullValue = "NA", inferSchema="true")
-df = spark.read.csv("/mnt/adls/FAERS_CSteroid_preprocess3_5429.csv", header="true", nullValue = "NA", inferSchema="true")
+# df = spark.read.csv("/mnt/adls/FAERS_CSteroid_preprocess3.csv", header="true", nullValue = "NA", inferSchema="true")
+# df = spark.read.csv("/mnt/adls/FAERS_CSteroid_preprocess3_5589.csv", header="true", nullValue = "NA", inferSchema="true")
+# df = spark.read.csv("/mnt/adls/FAERS_CSteroid_preprocess3_5429.csv", header="true", nullValue = "NA", inferSchema="true")
+df = spark.read.csv("/mnt/adls/FAERS_CSteroid_preprocess2.csv", header="true", nullValue = "NA", inferSchema="true")
+
 
 display(df)
 
