@@ -194,9 +194,14 @@ sns.countplot(x='outc_cod_DE', data=df2) # data already looks wildly imbalanced 
 
 # age code
 
-# https://www.statology.org/pandas-drop-rows-with-value
+# DEC DECADE
+# YR YEAR
+# MON MONTH
+# WK WEEK
+# DY DAY
+# HR HOUR
 
-df2['age_cod'].value_counts(dropna = False)
+df2['age_cod'].value_counts(dropna = False) # https://www.statology.org/pandas-drop-rows-with-value
 
 # COMMAND ----------
 
@@ -209,13 +214,6 @@ df2.insert(loc = 15,
 # COMMAND ----------
 
 # convert to years
-
-# DEC DECADE
-# YR YEAR
-# MON MONTH
-# WK WEEK
-# DY DAY
-# HR HOUR
 
 for index, row in df2.iterrows():
   if (row['age_cod'] == "YR"):
@@ -230,9 +228,8 @@ for index, row in df2.iterrows():
     df2.loc[index, 'age_in_yrs']  = df2.loc[index, 'age'] / 365
   else:
     df2.loc[index, 'age_in_yrs'] = 0
-
-# COMMAND ----------
-
+    
+# Test
 df2[df2['age_cod'] == "DY"].head(5)
 
 # COMMAND ----------
@@ -260,10 +257,10 @@ df2.insert(loc = 21,
 # convert to lbs
 
 for index, row in df2.iterrows():
-  if (df2['wt_cod'] == "KG").any(): # https://www.learndatasci.com/solutions/python-valueerror-truth-value-series-ambiguous-use-empty-bool-item-any-or-all/
-    df2['wt_in_lbs'] = df2['wt']*2.20462262
+  if (row['wt_cod'] == "KG"): # https://www.learndatasci.com/solutions/python-valueerror-truth-value-series-ambiguous-use-empty-bool-item-any-or-all/
+    df2.loc[index, 'wt_in_lbs'] = df2.loc[index, 'wt'] * 2.20462262
   else:
-    df2['wt_in_lbs'] = df2['wt']
+    df2.loc[index, 'wt_in_lbs'] = df2.loc[index, 'wt']
 
 df2.head(1)
 
@@ -357,6 +354,8 @@ sns.boxplot(x=df4['wt_in_lbs'])
 
 # COMMAND ----------
 
+# https://www.cdc.gov/obesity/adult/defining.html
+
 df5 = df4.query("wt_in_lbs <=700")
 
 # COMMAND ----------
@@ -393,6 +392,14 @@ df6.shape
 # COMMAND ----------
 
 display(df6)
+
+# COMMAND ----------
+
+df6 = df6.drop(['age', 'age_cod'], axis=1)
+
+# COMMAND ----------
+
+df6.shape
 
 # COMMAND ----------
 
