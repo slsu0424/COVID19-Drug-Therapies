@@ -307,9 +307,15 @@ msno.matrix(df3)
 
 # COMMAND ----------
 
-# drop rows where age, weight = 0
+# count number of 0 values per numeric column
 
-df4 = df3[(df3['age_in_yrs'] > 0 & (df3['wt_in_lbs'] > 0))]
+df3.select_dtypes(exclude='object')[df3 == 0].count(axis=0)
+
+# COMMAND ----------
+
+# drop rows where age, weight, dose = 0
+
+df4 = df3[(df3['age_in_yrs'] > 0 & (df3['wt_in_lbs'] > 0) & (df3['dose_amt'] > 0))]
 
 display(df4)
 
