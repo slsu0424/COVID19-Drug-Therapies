@@ -307,9 +307,17 @@ msno.matrix(df3)
 
 # COMMAND ----------
 
-# count number of 0 values per numeric column
+# count number of 0 values per column
+#df3.isnull().sum()
+#df3.isin(0).count(axis=1)
 
-df3.select_dtypes(exclude='object')[df3 == 0].count(axis=0)
+#df3[df3.isin([0]).sum() | df3.isnull().sum()]
+#df3[(df3.isin([0]).isnull().sum())]
+#df3[df3 == 0].count(axis=0)
+
+df3[df3.isin([0]).sum() | df3.isnull().sum()]
+
+
 
 # COMMAND ----------
 
@@ -429,4 +437,4 @@ df6.select_dtypes(exclude='object').isnull().sum()
 # save data to ADLS Gen2
 
 #df6.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess2.csv', index=False)
-df6.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess8740.csv', index=False)
+df6.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess2_8740.csv', index=False)
