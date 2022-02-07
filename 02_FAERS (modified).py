@@ -309,15 +309,17 @@ msno.matrix(df3)
 
 # count number of 0 values per column
 #df3.isnull().sum()
-#df3.isin(0).count(axis=1)
+df3.isin([0]).sum()
 
 #df3[df3.isin([0]).sum() | df3.isnull().sum()]
 #df3[(df3.isin([0]).isnull().sum())]
 #df3[df3 == 0].count(axis=0)
 
-df3[df3.isin([0]).sum() | df3.isnull().sum()]
+#options = [0,'null']
 
+#df3[df3.isin([options]).sum()]
 
+#df3[df3.isin([0]).sum() | df3.isnull().sum()]
 
 # COMMAND ----------
 
