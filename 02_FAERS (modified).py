@@ -363,7 +363,11 @@ sns.boxplot(x=df4['wt_in_lbs'])
 
 # https://www.cdc.gov/obesity/adult/defining.html
 
-df5 = df4.query("wt_in_lbs <=700")
+df5 = df4[df4.wt_in_lbs <= 600]
+
+# COMMAND ----------
+
+df5.shape
 
 # COMMAND ----------
 
@@ -379,6 +383,7 @@ df5.dtypes
 
 df6 = df5.drop(['primaryid', 'caseid', 'caseversion', 'i_f_code', \
 #df6 = df5.drop(['event_dt', 'mfr_dt', 'init_fda_dt', 'fda_dt', \
+                'event_dt', 'mfr_dt', 'init_fda_dt', 'fda_dt', \
                 'rept_cod', 'auth_num', 'mfr_num', \
                 #'age', 'age_cod', 
                 'age_grp', 'e_sub', \
@@ -411,6 +416,12 @@ df6.shape
 
 # COMMAND ----------
 
+#identify remaining null values in numeric columns only
+
+df6.select_dtypes(exclude='object').isnull().sum()
+
+# COMMAND ----------
+
 # MAGIC %md #Export for AML
 
 # COMMAND ----------
@@ -418,3 +429,4 @@ df6.shape
 # save data to ADLS Gen2
 
 #df6.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess2.csv', index=False)
+df6.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess8740.csv', index=False)
