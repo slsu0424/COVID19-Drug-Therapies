@@ -315,7 +315,8 @@ df3.select_dtypes(exclude='object')[df3 == 0].count(axis=0)
 
 # drop rows where age, weight, dose = 0
 
-df4 = df3[(df3['age_in_yrs'] > 0 & (df3['wt_in_lbs'] > 0) & (df3['dose_amt'] > 0))]
+# https://datagy.io/pandas-drop-columns-rows
+df4 = df3.drop(df3[(df3['age_in_yrs'] < 1) | (df3['wt_in_lbs'] < 1) | (df3['dose_amt'] < 1)].index)
 
 display(df4)
 
@@ -377,13 +378,14 @@ df5.dtypes
 # COMMAND ----------
 
 df6 = df5.drop(['primaryid', 'caseid', 'caseversion', 'i_f_code', \
-                'event_dt', 'mfr_dt', 'init_fda_dt', 'fda_dt', \
+#df6 = df5.drop(['event_dt', 'mfr_dt', 'init_fda_dt', 'fda_dt', \
                 'rept_cod', 'auth_num', 'mfr_num', \
                 #'age', 'age_cod', 
                 'age_grp', 'e_sub', \
                 'wt', 'wt_cod', 'rept_dt', \
                 'occp_cod', 'reporter_country', 'last_case_version', \
                 'role_cod', 'prod_ai', 'val_vbm', 'dose_vbm', 'lot_num', 'nda_num', \
+                'drug_seq', 'dsg_drug_seq', \
                 'pt','outc_cod', 'start_dt', 'end_dt'], axis=1)
 
 
@@ -415,4 +417,4 @@ df6.shape
 
 # save data to ADLS Gen2
 
-df6.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess2.csv', index=False)
+#df6.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess2.csv', index=False)
