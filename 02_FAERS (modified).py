@@ -308,31 +308,25 @@ msno.matrix(df3)
 # COMMAND ----------
 
 # count number of 0 values per column
-#df3.isnull().sum()
+
 df3.isin([0]).sum()
-
-#df3[df3.isin([0]).sum() | df3.isnull().sum()]
-#df3[(df3.isin([0]).isnull().sum())]
-#df3[df3 == 0].count(axis=0)
-
-#options = [0,'null']
-
-#df3[df3.isin([options]).sum()]
-
-#df3[df3.isin([0]).sum() | df3.isnull().sum()]
 
 # COMMAND ----------
 
-# drop rows where age, weight, dose = 0
+# drop rows where age_in_yrs, wt_in_lbs, dose_amt = 0
 
 # https://datagy.io/pandas-drop-columns-rows
 df4 = df3.drop(df3[(df3['age_in_yrs'] < 1) | (df3['wt_in_lbs'] < 1) | (df3['dose_amt'] < 1)].index)
 
-display(df4)
+# COMMAND ----------
+
+df4.isnull().sum()
 
 # COMMAND ----------
 
 df4.shape
+
+display(df4)
 
 # COMMAND ----------
 
@@ -373,7 +367,8 @@ sns.boxplot(x=df4['wt_in_lbs'])
 
 # https://www.cdc.gov/obesity/adult/defining.html
 
-df5 = df4[df4.wt_in_lbs <= 600]
+# also drops all weight values that are NULL
+df5 = df4[df4['wt_in_lbs'] <= 600]
 
 # COMMAND ----------
 
