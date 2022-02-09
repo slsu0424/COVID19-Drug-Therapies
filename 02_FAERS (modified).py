@@ -108,7 +108,7 @@ df1.insert(loc = 52,
           column = 'outc_cod_DE', 
           value = 0)
 
-display(df1)
+# display(df1)
 
 # COMMAND ----------
 
@@ -167,7 +167,7 @@ print(df2.nunique())
 
 # COMMAND ----------
 
-# value counts now
+# new value counts
 
 df2['outc_cod_DE'].value_counts()
 
@@ -315,8 +315,7 @@ df3.isin([0]).sum()
 
 # drop rows where age_in_yrs, wt_in_lbs, dose_amt = 0
 
-# https://datagy.io/pandas-drop-columns-rows
-df4 = df3.drop(df3[(df3['age_in_yrs'] < 1) | (df3['wt_in_lbs'] < 1) | (df3['dose_amt'] < 1)].index)
+df4 = df3.drop(df3[(df3['age_in_yrs'] < 1) | (df3['wt_in_lbs'] < 1) | (df3['dose_amt'] < 1)].index) # https://datagy.io/pandas-drop-columns-rows
 
 # COMMAND ----------
 
@@ -367,12 +366,15 @@ sns.boxplot(x=df4['wt_in_lbs'])
 
 # https://www.cdc.gov/obesity/adult/defining.html
 
-# also drops all weight values that are NULL
+# also drops all weights that are NULL
+
 df5 = df4[df4['wt_in_lbs'] <= 600]
 
 # COMMAND ----------
 
 df5.shape
+
+display(df5)
 
 # COMMAND ----------
 
@@ -395,11 +397,14 @@ df6 = df5.drop(['primaryid', 'caseid', 'caseversion', 'i_f_code', \
                 'wt', 'wt_cod', 'rept_dt', \
                 'occp_cod', 'reporter_country', 'last_case_version', \
                 'role_cod', 'prod_ai', 'val_vbm', 'dose_vbm', 'lot_num', 'nda_num', \
+                'dose_unit','dose_form', 'dose_freq', \
                 'drug_seq', 'dsg_drug_seq', \
                 'pt','outc_cod', 'start_dt', 'end_dt'], axis=1)
 
 
 # COMMAND ----------
+
+# columns that will be used for training
 
 df6.dtypes
 
@@ -433,5 +438,6 @@ df6.select_dtypes(exclude='object').isnull().sum()
 
 # save data to ADLS Gen2
 
-#df6.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess2.csv', index=False)
-df6.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess2_8740.csv', index=False)
+# df6.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess2.csv', index=False)
+# df6.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess2_8740.csv', index=False)
+df6.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess2_8740with11Cols.csv', index=False)
