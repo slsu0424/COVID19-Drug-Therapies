@@ -1,4 +1,4 @@
-# COVID-19-Drug-Therapies
+# COVID-19-Drug-Therapy Risk Prediction
 
 ![](Resource_Deployment/img/banner.png)
 
