@@ -3,7 +3,7 @@
 ![](Resource_Deployment/img/banner.png)
 
 # About this repository 
-The COVID-19 Drug Therapy Risk Prediction Solution Accelerator is an end-to-end (E2E) healthcare app that estimates the risk of an adverse event after receiving a specific drug therapy.  The solution incorporates real-world data from the State Drug Utilization Database (SDUD) and FDA Adverse Events Database (FAERS).  The solution  (FAERS)leverages ML prediction models (e.g., Diabetes Mellitus (DM) patient 30-day re-admission, breast cancer risk, etc.) to demonstrate how these models can provide key insights for both physicians and patients.  Patients can easily access their appointment and care history with infused cognitive services through a conversational interface.  
+The COVID-19 Drug Therapy Risk Prediction Solution Accelerator is an end-to-end (E2E) healthcare app that predicts the likelihood of a patient to experience an adverse event after receiving drug therapy for COVID-19.  The solution incorporates real-world data from the State Drug Utilization Database (SDUD) and FDA Adverse Events Database (FAERS).  The solution The solution leverages ML prediction models (e.g., Diabetes Mellitus (DM) patient 30-day re-admission, breast cancer risk, etc.) to demonstrate how these models can provide key insights for both physicians and patients.  Patients can easily access their appointment and care history with infused cognitive services through a conversational interface.  
   
 In addition to providing new insights for both doctors and patients, the app also provides the Data Scientist/IT Specialist with one-click experiences for registering and deploying a new or existing model to Azure Kubernetes Clusters, and best practices for maintaining these models through Azure MLOps.
 
@@ -25,11 +25,9 @@ The architecture diagram below details what you will be building for this Soluti
 The directions provided for this repository assume fundemental working knowledge of Azure, Azure Synapse Analytics, Azure Machine Learning and Azure Cognitive Services
 1. [Azure Machine Learning](https://azure.microsoft.com/en-us/services/machine-learning/)
 2. [Azure Synapse Analytics](https://azure.microsoft.com/en-us/services/synapse-analytics/)
-3. [Azure Cognitive Service](https://azure.microsoft.com/en-us/services/cognitive-services/)
 4. [Azure Kubernetes Service](https://azure.microsoft.com/en-us/services/kubernetes-service/)
 5. [Azure Cosmos DB](https://azure.microsoft.com/en-us/services/cosmos-db)
 6. [Power Apps](https://docs.microsoft.com/en-us/powerapps/)
-7. [Power Virtual Agent](https://powervirtualagents.microsoft.com/)
 
 
 ## Getting Started
