@@ -43,6 +43,9 @@ Start by deploying the [resources](./Resource_Deployment/ResourceDeployment.md) 
 3. Go to [Deployment Guide](./Resource_Deployment/README.md) under [./Resource_Deployment](./Resource_Deployment) for the steps you need to take to deploy this solution
 
 ## Folders
+## [Presentations](./Presentations)
+This folder contains PowerPoint presentations that provide an Executive Overview and Technical Design for the solution.
+
 ## [Resource Deployment](./Resource_Deployment/README.md)
 The resources in this folder can be used to deploy the required resources into your Azure Subscription. You can do this in the Azure Portal
 
