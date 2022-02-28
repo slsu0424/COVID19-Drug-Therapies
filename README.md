@@ -9,9 +9,6 @@ The solution uses the SDUD data to build a retrospective analysis to identify dr
 
 The user experience of the solution covers multiple personas.  A Data Engineer is provided with a low-code, no-code experience to ingest SDUD and FAERS data.  A Data Architect and Business Analyst is provided with an analytics and visualization platform to represent the data in a relational data format.  Professional Data Scientists and Citizen Data Scientists have the ability to build machine learning models using traditional and/or automated ML methods, register and deploy the model for real-time inferencing.  Finally, a physician can input patient characteristics in a web-based risk model to assess whether or not to prescribe a patient a specific drug therapy. 
 
-  
-In addition to providing new insights for both doctors and patients, the app also provides the Data Scientist/IT Specialist with one-click experiences for registering and deploying a new or existing model to Azure Kubernetes Clusters, and best practices for maintaining these models through Azure MLOps.
-
 ## Prerequisites
 In order to successfully complete this solution accelerator, you will need to have access to and/or provisioned the following resources:
 
