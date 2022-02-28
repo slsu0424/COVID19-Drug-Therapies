@@ -23,11 +23,6 @@ In order to successfully complete this solution accelerator, you will need to ha
 4. [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
 5. [Docker Desktop](https://hub.docker.com/editions/community/docker-ce-desktop-windows) - Required for Debugging in local or containerizing codes in the Deployment process
 
-## Architecture Overview 
-The architecture diagram below details what you will be building for this Solution Accelerator.
-
-![Architecture Diagram](./Resource_Deployment/img/ReferenceArchitecture.png)
-
 ## Azure Infrastructure & Data Services
 The directions provided for this repository assume fundemental working knowledge of Azure, Azure Synapse Analytics, Azure Machine Learning and Azure Cognitive Services
 1. [Azure Machine Learning](https://azure.microsoft.com/en-us/services/machine-learning/)
