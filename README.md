@@ -23,7 +23,7 @@ The architecture diagram below details what you will be building for this Soluti
 
 ![Architecture Diagram](./Resource_Deployment/img/ReferenceArchitecture.png)
 
-## Azure Data Services
+## Azure Infrastructure & Data Services
 The directions provided for this repository assume fundemental working knowledge of Azure, Azure Synapse Analytics, Azure Machine Learning and Azure Cognitive Services
 1. [Azure Machine Learning](https://azure.microsoft.com/en-us/services/machine-learning/)
 2. [Azure Synapse Analytics](https://azure.microsoft.com/en-us/services/synapse-analytics/)
