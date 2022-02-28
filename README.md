@@ -7,7 +7,7 @@ The US COVID-19 Drug Therapy Risk Prediction Solution Accelerator is an end-to-e
 
 The solution uses the SDUD data to build a retrospective analysis to identify drug prescription trends between the years 2018-2021, particularly during the onset of COVID-19 in 2019.  A prospective analysis is built upon the drug trends to identify FDA adverse events associated with these drugs between 2019-2021.  A machine learning (ML) model is built to predict the likelihood of an adverse event, and identify the patient characteristics associated with this outcome.    
 
-The user experience of the solution covers multiple personas.  A Data Engineer is provided with a low-code, no-code experience to ingest SDUD and FAERS data.  A Data Architect and Business Analyst is provided with an analytics and visualization platform to represent the data in a relational data format.  Professional Data Scientists and Citizen Data Scientists have the ability to build machine learning models using traditional and/or automated ML methods, register and deploy the model for real-time inferencing.  Finally, a physician can input patient characteristics in a web-based risk model to assess whether or not to prescribe a specific drug therapy. 
+The user experience of the solution covers multiple personas.  A Data Engineer is provided with a low-code, no-code experience to ingest SDUD and FAERS data.  A Data Architect and Business Analyst is provided with an analytics and visualization platform to represent the data in a relational data format.  Professional Data Scientists and Citizen Data Scientists have the ability to build machine learning models using traditional and/or automated ML methods, register and deploy the model for real-time inferencing.  Finally, a physician can input patient characteristics in a risk prediction website to assess whether or not to prescribe a specific drug therapy. 
 
 ## Prerequisites
 In order to successfully complete this solution accelerator, you will need to have access to and/or provisioned the following resources:
@@ -44,7 +44,7 @@ Start by deploying the [resources](./Resource_Deployment/ResourceDeployment.md) 
 
 ## Folders
 ## [Presentations](./Presentations)
-This folder contains PowerPoint presentations that provide an Executive Overview and Technical Design for the solution.
+This folder contains Powerpoint decks that provide an Executive Overview and Technical Design for the solution.
 
 ## [Resource Deployment](./Resource_Deployment/README.md)
 The resources in this folder can be used to deploy the required resources into your Azure Subscription. You can do this in the Azure Portal
