@@ -64,6 +64,12 @@ This folder contains the Notebooks needed to complete this solution accelerator.
 This folder contains Dialog based Patient User Interface Applications(Power Virtual Agent) and related services.
 
 
+## Future Developments
+These are some ideas to expand this solution to include the following capabilities:
+- 
+
+
+
 ## License
 Copyright (c) Microsoft Corporation
 
