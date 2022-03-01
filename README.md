@@ -16,7 +16,7 @@ The architecture diagram below details what you will be building for this Soluti
 
 
 ## Video Overview 
-The video provides a walkthrough of the deployed solution.  
+The video provides a detailed walkthrough of the use case and its implementation using Azure services.  
 
 ![Architecture Diagram](./Resource_Deployment/img/ReferenceArchitecture.png)
 
