@@ -51,11 +51,11 @@ Start by deploying the [resources](./Resource_Deployment/ResourceDeployment.md) 
 ## [01-Presentations](./Presentations)
 This folder contains Powerpoint decks that provide an Executive Overview and Technical Design for the solution.
 
-## [02-Resource Deployment](./Resource_Deployment/README.md)
-The resources in this folder can be used to deploy the required resources into your Azure Subscription. You can do this using the Azure Portal.
+## [02-Deployment](./Resource_Deployment/README.md)
+This folder contains the required resources to be deployed into the Azure Subscription. This can be done using the Azure Portal.
 
 ## [03-Data Engineering](./Analytics_Deployment) 
-This folder contains the code needed to complete this solution accelerator. Once you have deployed all the required resources from [Resource Deployment](./Resource_Deployment/README.md), run through the Notebooks following the instructions in Resource Deployment.
+This folder contains the code needed to complete the data engineering tasks for the solution. Once you have deployed all the required resources from [Resource Deployment](./Resource_Deployment/README.md), run through the Notebooks following the instructions in Resource Deployment.
 
 ## [04-Analytics](./Analytics_Deployment) 
 This folder contains the Notebooks needed to complete this solution accelerator. Once you have deployed all the required resources from [Resource Deployment](./Resource_Deployment/README.md), run through the Notebooks following the instructions in Resource Deployment.
