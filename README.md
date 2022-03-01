@@ -3,7 +3,7 @@
 ![](Resource_Deployment/img/banner.png)
 
 # About this repository 
-The US COVID-19 Drug Therapy Risk Prediction Solution Accelerator is an end-to-end analytics solution that predicts the likelihood of a patient to experience an adverse event (Death) after receiving drug therapy for COVID-19.  The solution incorporates real-world data from the State Drug Utilization Database (SDUD) and FDA Adverse Events Database (FAERS).  
+The US COVID-19 Drug Therapy Risk Prediction Solution Accelerator is an end-to-end analytics solution that predicts the likelihood of a patient to experience an adverse event (Death) after receiving drug therapy for COVID-19.  The solution incorporates real-world data from the State Drug Utilization Database [(SDUD)] (https://www.medicaid.gov/medicaid/prescription-drugs/state-drug-utilization-data/index.html) and the FDA Adverse Events Database (FAERS).  
 
 The solution uses the SDUD data to build a retrospective analysis to identify drug prescription trends between the years 2018-2021, particularly during the onset of COVID-19 in 2019.  A prospective analysis is built upon the drug trends to identify FDA adverse events associated with these drugs between 2019-2021.  A machine learning (ML) model is built to predict the likelihood of an adverse event, and identify the patient characteristics associated with this outcome.    
 
