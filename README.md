@@ -67,7 +67,6 @@ This folder contains Dialog based Patient User Interface Applications(Power Virt
 This folder contains a backlog of ideas to extend the capabilites for this solution. Contributor ideas are welcome!
 
 
-
 ## License
 Copyright (c) Microsoft Corporation
 
