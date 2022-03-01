@@ -52,16 +52,15 @@ Start by deploying the [resources](./Resource_Deployment/ResourceDeployment.md) 
 This folder contains Powerpoint decks that provide an Executive Overview and Technical Design for the solution.
 
 ## [02-Resource Deployment](./Resource_Deployment/README.md)
-The resources in this folder can be used to deploy the required resources into your Azure Subscription. You can do this in the Azure Portal
+The resources in this folder can be used to deploy the required resources into your Azure Subscription. You can do this using the Azure Portal.
 
-## [03-Data Engineering Deployment](./Analytics_Deployment) 
+## [03-Data Engineering](./Analytics_Deployment) 
+This folder contains the code needed to complete this solution accelerator. Once you have deployed all the required resources from [Resource Deployment](./Resource_Deployment/README.md), run through the Notebooks following the instructions in Resource Deployment.
+
+## [04-Analytics & Reporting](./Analytics_Deployment) 
 This folder contains the Notebooks needed to complete this solution accelerator. Once you have deployed all the required resources from [Resource Deployment](./Resource_Deployment/README.md), run through the Notebooks following the instructions in Resource Deployment.
 
-## [04-Analytics Deployment](./Analytics_Deployment) 
-This folder contains the Notebooks needed to complete this solution accelerator. Once you have deployed all the required resources from [Resource Deployment](./Resource_Deployment/README.md), run through the Notebooks following the instructions in Resource Deployment.
-
-
-## [05-Frontend Deployment](./Frontend_Deployment) 
+## [05-Frontend](./Frontend_Deployment) 
 This folder contains Dialog based Patient User Interface Applications(Power Virtual Agent) and related services.
 
 
