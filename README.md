@@ -7,7 +7,7 @@ The US COVID-19 Drug Therapy Risk Prediction Solution Accelerator is an end-to-e
 
 The solution uses the SDUD data to first build a retrospective analysis to identify drug prescription trends between the years 2018-2021, particularly during the onset of COVID-19 in 2019.  Next, a prospective analysis is built to identify FDA adverse events associated with these drugs between 2019-2021.  A machine learning (ML) model is built to predict the likelihood of an adverse event, and identify the patient characteristics associated with this outcome.    
 
-The user experience of the solution covers multiple personas, ranging from backend engineers to frontend clinical users.  A Data Engineer is provided with a low-code, no-code experience to ingest SDUD and FAERS data.  A Data Architect and Data Analyst is provided with an analytics and visualization platform to represent the data in a relational data format.  Professional Data Scientists and Citizen Data Scientists have the ability to build machine learning models using traditional and/or automated ML methods, and register and deploy the model for real-time inferencing.  Finally, a physician can input patient characteristics in a web-based interface to assess the risk associated with a specific drug therapy. 
+The user experience of the solution covers multiple personas, ranging from backend engineers to frontend clinical users.  A Data Engineer is provided with a low-code, no-code experience to ingest SDUD and FAERS data.  A Data Architect and Data Analyst is provided with an analytics and visualization platform to represent the data in a relational data format.  Professional Data Scientists and Citizen Data Scientists have the ability to build machine learning models using traditional and/or automated ML methods, and register and deploy the model for real-time inferencing.  Finally, a clinician can input patient characteristics in a web-based interface to assess the risk associated with a specific drug therapy. 
 
 ## Architecture Overview 
 The architecture diagram below details of what you will be building with this Solution Accelerator.
@@ -61,10 +61,10 @@ This folder contains the code needed to complete this solution accelerator. Once
 This folder contains the Notebooks needed to complete this solution accelerator. Once you have deployed all the required resources from [Resource Deployment](./Resource_Deployment/README.md), run through the Notebooks following the instructions in Resource Deployment.
 
 ## [05-Frontend](./Frontend_Deployment) 
-This folder contains Dialog based Patient User Interface Applications(Power Virtual Agent) and related services.
+This folder contains the Web-based User Interface to be used by a clinician.
 
-## [06-Future Developments](./Future Developments) 
-This folder contains a backlog of ideas to extend the capabilites for this solution. Contributor ideas are welcome!
+## [06-Future_Developments](./Future_Developments) 
+This folder contains a backlog of ideas to extend the capabilites for this solution. 
 
 
 ## License
