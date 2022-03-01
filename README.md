@@ -55,9 +55,6 @@ This folder contains the Notebooks needed to complete this solution accelerator.
 ## [04-Analytics Deployment](./Analytics_Deployment) 
 This folder contains the Notebooks needed to complete this solution accelerator. Once you have deployed all the required resources from [Resource Deployment](./Resource_Deployment/README.md), run through the Notebooks following the instructions in Resource Deployment.
 
-## [Backend Deployment](./Backend_Deployment) 
-This folder contains all API services consumed via Power Automate.  
-As Architecture diagram shows all of services will be compiled and deployed in Azure Kuebernetes service with [deployment script](./Backend_Deployment/deployapplications.ps1)
 
 ## [05-Frontend Deployment](./Frontend_Deployment) 
 This folder contains Dialog based Patient User Interface Applications(Power Virtual Agent) and related services.
