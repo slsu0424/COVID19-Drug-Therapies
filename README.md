@@ -14,6 +14,12 @@ The architecture diagram below details what you will be building for this Soluti
 
 ![Architecture Diagram](./Resource_Deployment/img/ReferenceArchitecture.png)
 
+
+## Video Overview 
+The video provides a walkthrough of the deployed solution.  
+
+![Architecture Diagram](./Resource_Deployment/img/ReferenceArchitecture.png)
+
 ## Prerequisites
 In order to successfully complete this solution accelerator, you will need to have access to and/or provisioned the following resources:
 
