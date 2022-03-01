@@ -43,20 +43,23 @@ Start by deploying the [resources](./Resource_Deployment/ResourceDeployment.md) 
 3. Go to [Deployment Guide](./Resource_Deployment/README.md) under [./Resource_Deployment](./Resource_Deployment) for the steps you need to take to deploy this solution
 
 ## Folders
-## [Presentations](./Presentations)
+## [01-Presentations](./Presentations)
 This folder contains Powerpoint decks that provide an Executive Overview and Technical Design for the solution.
 
-## [Resource Deployment](./Resource_Deployment/README.md)
+## [02-Resource Deployment](./Resource_Deployment/README.md)
 The resources in this folder can be used to deploy the required resources into your Azure Subscription. You can do this in the Azure Portal
 
-## [Analytics Deployment](./Analytics_Deployment) 
+## [03-Data Engineering Deployment](./Analytics_Deployment) 
+This folder contains the Notebooks needed to complete this solution accelerator. Once you have deployed all the required resources from [Resource Deployment](./Resource_Deployment/README.md), run through the Notebooks following the instructions in Resource Deployment.
+
+## [04-Analytics Deployment](./Analytics_Deployment) 
 This folder contains the Notebooks needed to complete this solution accelerator. Once you have deployed all the required resources from [Resource Deployment](./Resource_Deployment/README.md), run through the Notebooks following the instructions in Resource Deployment.
 
 ## [Backend Deployment](./Backend_Deployment) 
 This folder contains all API services consumed via Power Automate.  
 As Architecture diagram shows all of services will be compiled and deployed in Azure Kuebernetes service with [deployment script](./Backend_Deployment/deployapplications.ps1)
 
-## [Frontend Deployment](./Frontend_Deployment) 
+## [05-Frontend Deployment](./Frontend_Deployment) 
 This folder contains Dialog based Patient User Interface Applications(Power Virtual Agent) and related services.
 
 ## DISCLAIMER
