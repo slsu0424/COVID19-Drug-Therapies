@@ -27,14 +27,11 @@ To use this solution accelerator, you will need to have access to and/or provisi
 2. [Power Apps](http://www.powerapps.com) License (or free trial)
 3. [PowerShell 7.1](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-7.1)
 4. [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
-5. [Docker Desktop](https://hub.docker.com/editions/community/docker-ce-desktop-windows) - Required for Debugging in local or containerizing codes in the Deployment process
 
-Azure Infrastructure & Data Services
-The directions provided for this repository assume fundemental working knowledge of Azure, Azure Synapse Analytics, Azure Machine Learning and Azure Cognitive Services
+While not required, a fundamental working knowledge of Azure, Azure Databricks, Azure Synapse Analytics, Azure Machine Learning, and PowerBI will be helpful.  To learn more, please see:
 1. [Azure Machine Learning](https://azure.microsoft.com/en-us/services/machine-learning/)
 2. [Azure Synapse Analytics](https://azure.microsoft.com/en-us/services/synapse-analytics/)
 4. [Azure Kubernetes Service](https://azure.microsoft.com/en-us/services/kubernetes-service/)
-6. [Power Apps](https://docs.microsoft.com/en-us/powerapps/)
 
 
 ## Getting Started
