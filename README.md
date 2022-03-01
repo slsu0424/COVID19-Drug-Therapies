@@ -2,20 +2,20 @@
 
 ![](Resource_Deployment/img/banner.png)
 
-# About this repository 
+# About this repository
 The US COVID-19 Drug Therapy Risk Prediction Solution Accelerator is an end-to-end analytics platform that predicts the likelihood of a patient to experience an adverse event (Death) after receiving drug therapy for COVID-19.  The solution incorporates real-world data from the State Drug Utilization Database [(SDUD)](https://www.medicaid.gov/medicaid/prescription-drugs/state-drug-utilization-data) and the FDA Adverse Events Database [(FAERS)](https://www.fda.gov/drugs/drug-approvals-and-databases/fda-adverse-event-reporting-system-faers).   
 
-The solution uses the SDUD data to first build a retrospective analysis to identify drug prescription trends between the years 2018-2021, particularly during the onset of COVID-19 in 2019.  Next, a prospective analysis is built to identify FDA adverse events associated with these drugs between 2019-2021.  A machine learning (ML) model is built to predict the likelihood of an adverse event, and identify the patient characteristics associated with this outcome. 
+The solution uses the SDUD data to first build a retrospective analysis to identify drug prescription trends between the years 2018-2021, particularly during the onset of COVID-19 in 2019.  Next, a prospective analysis is built to identify FDA adverse events associated with these drugs between 2019-2021.  A machine learning (ML) model is built to predict the likelihood of an adverse event, and identify the patient characteristics associated with this outcome.    
 
-The user experience of the solution covers multiple personas, ranging from backend engineers to frontend clinical users.  A Data Engineer is provided with a low-code, no-code experience to ingest SDUD and FAERS data.  A Data Architect and Data Analyst is provided with an analytics and visualization platform to represent the data in a relational data format.  Professional Data Scientists and Citizen Data Scientists have the ability to build machine learning models using traditional and/or automated ML methods, and register and deploy the model for real-time inferencing.  Finally, a clinician can input patient characteristics in a web-based interface to assess the risk associated with a specific drug therapy. 
+The user experience of the solution covers multiple personas, ranging from backend engineers to frontend clinical users.  A Data Engineer is provided with a low-code, no-code experience to ingest SDUD and FAERS data.  A Data Architect is provided with an analytics platform to protect sensitive patient information for operational reporting.  The Data Analyst uses a visualization platform to plot trends observed in the data.  Professional Data Scientists and Citizen Data Scientists have the ability to build and train machine learning models using traditional and/or automated ML methods, and register and deploy the model for real-time inferencing.  Finally, a clinician can input patient characteristics in a web-based interface to assess the risk associated with a specific drug therapy. 
 
-## Architecture Overview 
+## Architecture Overview
 The architecture diagram below details of what you will be building with this Solution Accelerator.
 
 ![Architecture Diagram](./02-Deployment/img/Slide1.PNG)
 
 
-## Video Overview 
+## Video Overview
 The video provides a detailed walkthrough of the Solution Accelerator.  
 
 ![Architecture Diagram](./Resource_Deployment/img/ReferenceArchitecture.png)
@@ -51,20 +51,20 @@ Start by deploying the [resources](./Resource_Deployment/ResourceDeployment.md) 
 ## [01-Presentations](./Presentations)
 This folder contains Powerpoint decks that provide an Executive Overview and Technical Design for the solution.
 
-## [02-Deployment](./Resource_Deployment/README.md)
-This folder contains the required resources to be deployed into the Azure Subscription. This can be done using the Azure Portal.
+## [02-Resource Deployment](./Resource_Deployment/README.md)
+The resources in this folder can be used to deploy the required resources into your Azure Subscription. You can do this using the Azure Portal.
 
-## [03-Data Engineering](./Analytics_Deployment) 
-This folder contains the code needed to complete the data engineering tasks for the solution. Once you have deployed all the required resources from [Resource Deployment](./Resource_Deployment/README.md), run through the Notebooks following the instructions in Resource Deployment.
+## [03-Data Engineering](./Analytics_Deployment)
+This folder contains the code needed to complete this solution accelerator. Once you have deployed all the required resources from [Resource Deployment](./Resource_Deployment/README.md), run through the Notebooks following the instructions in Resource Deployment.
 
-## [04-Analytics](./Analytics_Deployment) 
+## [04-Analytics](./Analytics_Deployment)
 This folder contains the Notebooks needed to complete this solution accelerator. Once you have deployed all the required resources from [Resource Deployment](./Resource_Deployment/README.md), run through the Notebooks following the instructions in Resource Deployment.
 
-## [05-Frontend](./Frontend_Deployment) 
+## [05-Frontend](./Frontend_Deployment)
 This folder contains the Web-based User Interface to be used by a clinician.
 
-## [06-Future Development](./Future_Developments) 
-This folder contains a backlog of ideas to extend the capabilites for this solution. 
+## [06-Future Development](./Future_Developments)
+This folder contains a backlog of ideas to extend the capabilites for this solution.
 
 
 ## License
@@ -96,8 +96,8 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 
 ## Trademarks
 
-This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft 
-trademarks or logos is subject to and must follow 
+This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft
+trademarks or logos is subject to and must follow
 [Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).
 Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship.
 Any use of third-party trademarks or logos are subject to those third-party's policies.
