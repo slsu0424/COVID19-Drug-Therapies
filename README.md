@@ -21,7 +21,7 @@ The video provides a walkthrough of the deployed solution.
 ![Architecture Diagram](./Resource_Deployment/img/ReferenceArchitecture.png)
 
 ## Prerequisites
-In order to successfully complete this solution accelerator, you will need to have access to and/or provisioned the following resources:
+To use this solution accelerator, you will need to have access to and/or provision the following resources:
 
 1. Access to an [Azure Subscription ](http://portal.azure.com)
 2. [Power Apps](http://www.powerapps.com) License (or free trial)
@@ -29,12 +29,11 @@ In order to successfully complete this solution accelerator, you will need to ha
 4. [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
 5. [Docker Desktop](https://hub.docker.com/editions/community/docker-ce-desktop-windows) - Required for Debugging in local or containerizing codes in the Deployment process
 
-## Azure Infrastructure & Data Services
+Azure Infrastructure & Data Services
 The directions provided for this repository assume fundemental working knowledge of Azure, Azure Synapse Analytics, Azure Machine Learning and Azure Cognitive Services
 1. [Azure Machine Learning](https://azure.microsoft.com/en-us/services/machine-learning/)
 2. [Azure Synapse Analytics](https://azure.microsoft.com/en-us/services/synapse-analytics/)
 4. [Azure Kubernetes Service](https://azure.microsoft.com/en-us/services/kubernetes-service/)
-5. [Azure Cosmos DB](https://azure.microsoft.com/en-us/services/cosmos-db)
 6. [Power Apps](https://docs.microsoft.com/en-us/powerapps/)
 
 
