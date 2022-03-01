@@ -12,7 +12,7 @@ The user experience of the solution covers multiple personas, ranging from backe
 ## Architecture Overview 
 The architecture diagram below details of what you will be building with this Solution Accelerator.
 
-![Architecture Diagram](./02-Resource_Deployment/Slide1.PNG)
+![Architecture Diagram](./02-Resource_Deployment/Slide1.png)
 
 
 ## Video Overview 
