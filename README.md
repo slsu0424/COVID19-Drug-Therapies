@@ -21,14 +21,14 @@ The video provides a detailed walkthrough of the Solution Accelerator.
 ![Architecture Diagram](./Resource_Deployment/img/ReferenceArchitecture.png)
 
 ## Prerequisites
-To use this solution accelerator, you will need to have access to and/or provision the following resources:
+To use this solution accelerator, you will need to have access to and/or provision the following applications:
 
 1. Access to an [Azure Subscription ](http://portal.azure.com)
 2. [Power Apps](http://www.powerapps.com) License (or free trial)
 3. [PowerShell 7.1](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-7.1)
 4. [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
 
-While not required, a fundamental working knowledge of Azure, Azure Databricks, Azure Synapse Analytics, Azure Machine Learning, and PowerBI will be helpful.  To learn more, please see:
+While not required, a working knowledge of Azure, Azure Databricks, Azure Synapse Analytics, Azure Machine Learning, and PowerBI will also be helpful.  To learn more about these services, please see:
 1. [Azure Machine Learning](https://azure.microsoft.com/en-us/services/machine-learning/)
 2. [Azure Synapse Analytics](https://azure.microsoft.com/en-us/services/synapse-analytics/)
 4. [Azure Kubernetes Service](https://azure.microsoft.com/en-us/services/kubernetes-service/)
