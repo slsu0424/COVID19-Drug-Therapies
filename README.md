@@ -63,7 +63,7 @@ This folder contains the Notebooks needed to complete this solution accelerator.
 ## [05-Frontend](./Frontend_Deployment) 
 This folder contains the Web-based User Interface to be used by a clinician.
 
-## [06-Future_Developments](./Future_Developments) 
+## [06-Future Development](./Future_Developments) 
 This folder contains a backlog of ideas to extend the capabilites for this solution. 
 
 
