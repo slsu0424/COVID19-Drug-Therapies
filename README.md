@@ -63,10 +63,8 @@ This folder contains the Notebooks needed to complete this solution accelerator.
 ## [05-Frontend](./Frontend_Deployment) 
 This folder contains Dialog based Patient User Interface Applications(Power Virtual Agent) and related services.
 
-
-## Future Developments
-These are some ideas to expand this solution to include the following capabilities:
-- 
+## [06-Future Developments](./Future Developments) 
+This folder contains a backlog of ideas to extend the capabilites for this solution. Contributor ideas are welcome!
 
 
 
