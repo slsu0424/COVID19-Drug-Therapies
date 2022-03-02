@@ -29,11 +29,11 @@ To use this solution accelerator, you will need to have access to and/or provisi
 4. [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
 
 While not required, a working knowledge of Azure, Azure Data Factory, Azure Databricks, Azure Synapse Analytics, Azure Machine Learning, Azure Container Services, and PowerBI will be helpful.  To learn more about these services, please visit:
-1. [Azure Data Factory](https://azure.microsoft.com/en-us/services/machine-learning/)
-2. [Azure Databricks](https://azure.microsoft.com/en-us/services/machine-learning/)
+1. [Azure Data Factory](https://azure.microsoft.com/en-us/services/data-factory/)
+2. [Azure Databricks](https://azure.microsoft.com/en-us/services/databricks/)
 3. [Azure Synapse Analytics](https://azure.microsoft.com/en-us/services/synapse-analytics/)
 4. [Azure Machine Learning](https://azure.microsoft.com/en-us/services/machine-learning/)
-5. [Azure Container Service](https://azure.microsoft.com/en-us/services/kubernetes-service/)
+5. [Azure Container Service](https://azure.microsoft.com/en-us/services/container-instances/)
 5. [PowerBI](https://azure.microsoft.com/en-us/services/kubernetes-service/)
 
 
