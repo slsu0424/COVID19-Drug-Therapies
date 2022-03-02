@@ -51,7 +51,7 @@ Start by deploying the [resources](./Resource_Deployment/ResourceDeployment.md) 
 ## [01-Presentations](./Presentations)
 This folder contains Powerpoint decks that provide an Executive Overview and Technical Design for the solution.
 
-## [02-Resource Deployment](./Resource_Deployment/README.md)
+## [02-Deployment](./Deployment/README.md)
 The resources in this folder can be used to deploy the required resources into your Azure Subscription. You can do this using the Azure Portal.
 
 ## [03-Data Engineering](./Analytics_Deployment)
