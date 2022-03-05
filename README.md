@@ -57,7 +57,7 @@ While not required, a working knowledge of Azure, Azure Data Factory, Azure Data
 
     Option 2: Navigate towards the top right side of this screen, and expand the **Code** button menu:
 
-    ![GitHub_Button](./images/githubdownloadzip.png)
+    ![GitHub_Button](./images/githubdownload.png)
 
   
 3. Go to the [Deployment Guide](./02-Deployment/Deployment.md) under [./02-Deployment](./02-Deployment) for a step-by-step tutorial to complete the solution setup.
