@@ -3,14 +3,14 @@
 ![](Resource_Deployment/img/banner.png)
 
 # About this repository
-The US COVID-19 Drug Therapy Risk Prediction Solution Accelerator is an end-to-end analytics platform that predicts the likelihood of a patient to experience an adverse event (Death) after receiving drug therapy for COVID-19.  The solution incorporates real-world data from the State Drug Utilization Database [(SDUD)](https://www.medicaid.gov/medicaid/prescription-drugs/state-drug-utilization-data) and the FDA Adverse Events Database [(FAERS)](https://www.fda.gov/drugs/drug-approvals-and-databases/fda-adverse-event-reporting-system-faers).   
+The US COVID-19 Drug Therapy Risk Prediction Solution Accelerator is an end-to-end analytics platform that predicts the likelihood of a patient to experience a fatal adverse event (Death) after receiving drug therapy for COVID-19.  The solution incorporates real-world data from the State Drug Utilization Database [(SDUD)](https://www.medicaid.gov/medicaid/prescription-drugs/state-drug-utilization-data) and the FDA Adverse Events Database [(FAERS)](https://www.fda.gov/drugs/drug-approvals-and-databases/fda-adverse-event-reporting-system-faers).   
 
-The solution uses the SDUD data to first build a retrospective analysis to identify drug prescription trends between the years 2018-2021, particularly during the onset of COVID-19 in 2019.  Next, a prospective analysis is built to identify FDA adverse events associated with these drugs between 2019-2021.  A machine learning (ML) model is built to predict the likelihood of an adverse event, and identify the patient characteristics associated with this outcome.    
+The solution uses the SDUD data to first build a retrospective analysis to identify drug prescription trends between the years 2018-2021, particularly during the onset of COVID-19 in 2019.  Next, a prospective analysis looks at FDA adverse events associated with these drugs between 2019-2021.  A machine learning (ML) model is built to predict the likelihood of a fatal adverse event, and identify the patient characteristics associated with this outcome.    
 
 The user experience of the solution covers multiple personas, ranging from backend engineers to frontend clinical users.  A Data Engineer is provided with a low-code, no-code experience to ingest SDUD and FAERS data.  A Data Architect is provided with an analytics platform to protect sensitive patient information for operational reporting.  The Data Analyst uses a visualization platform to plot trends observed in the data.  Professional Data Scientists and Citizen Data Scientists have the ability to build and train machine learning models using traditional and/or automated ML methods, and register and deploy the model for real-time inferencing.  Finally, a clinician can input patient characteristics in a web-based interface to assess the risk associated with a specific drug therapy. 
 
 ## Architecture Overview
-The architecture diagram below details of what you will be building with this Solution Accelerator.
+The architecture diagram below details of what will be built with this Solution Accelerator.
 
 ![Architecture Diagram](./02-Deployment/img/Slide1.PNG)
 
@@ -29,30 +29,30 @@ To use this solution accelerator, you will need to have access to and/or provisi
 4. [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
 
 While not required, a working knowledge of Azure, Azure Data Factory, Azure Databricks, Azure Synapse Analytics, Azure Machine Learning, Azure Container Services, and PowerBI will be helpful.  To learn more about these services, please visit:
-1. [Azure Data Factory](https://azure.microsoft.com/en-us/services/machine-learning/)
-2. [Azure Databricks](https://azure.microsoft.com/en-us/services/machine-learning/)
+1. [Azure Data Factory](https://azure.microsoft.com/en-us/services/data-factory/)
+2. [Azure Databricks](https://azure.microsoft.com/en-us/services/databricks/)
 3. [Azure Synapse Analytics](https://azure.microsoft.com/en-us/services/synapse-analytics/)
 4. [Azure Machine Learning](https://azure.microsoft.com/en-us/services/machine-learning/)
-5. [Azure Container Service](https://azure.microsoft.com/en-us/services/kubernetes-service/)
+5. [Azure Container Instances](https://azure.microsoft.com/en-us/services/container-instances/)
 5. [PowerBI](https://azure.microsoft.com/en-us/services/kubernetes-service/)
 
 
 ## Getting Started
 Start by deploying the [resources](./Resource_Deployment/ResourceDeployment.md) needed for this solution,
 
-1. Press Deploy Azure :  
+1. Press Deploy to Azure :  
 
     [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2FMachine-Learning-Patient-Risk-Analyzer-SA%2Fmain%2FResource_Deployment%2Fazuredeploy.json)
 
-2. Clone repository and navigate to the root of the directory
-3. Go to [Deployment Guide](./Resource_Deployment/README.md) under [./Resource_Deployment](./Resource_Deployment) for the steps you need to take to deploy this solution
+2. Clone the repository and navigate to the root of the directory
+3. Go to the [Deployment Guide](./Resource_Deployment/README.md) under [./02-Deployment](./02-Deployment) for the steps needed to deploy this solution
 
 ## Folders
 ## [01-Presentations](./Presentations)
 This folder contains Powerpoint decks that provide an Executive Overview and Technical Design for the solution.
 
-## [02-Resource Deployment](./Resource_Deployment/README.md)
-The resources in this folder can be used to deploy the required resources into your Azure Subscription. You can do this using the Azure Portal.
+## [02-Deployment](./Deployment/README.md)
+The resources in this folder is used to deploy the required resources into your Azure Subscription. You can do this using the Azure Portal.
 
 ## [03-Data Engineering](./Analytics_Deployment)
 This folder contains the code needed to complete this solution accelerator. Once you have deployed all the required resources from [Resource Deployment](./Resource_Deployment/README.md), run through the Notebooks following the instructions in Resource Deployment.
