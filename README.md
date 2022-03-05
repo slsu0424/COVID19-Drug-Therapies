@@ -55,7 +55,7 @@ While not required, a working knowledge of Azure, Azure Data Factory, Azure Data
     git clone https://github.com/slsu0424/COVID19-Drug-Therapies.git
     ```
 
-    Option 2: Navigate towards the top right side of this screen, and expand the **Code** button menu.
+    Option 2: Navigate towards the top right side of this screen, and expand the **Code** button menu:
 
     ![GitHub_Button](./02-Deployment/img/githubdownloadzip.png)
 
