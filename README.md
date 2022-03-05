@@ -46,8 +46,8 @@ Start by deploying the resources needed for this solution.
 
 The only 2 required parameters during the set-up are:
 
-Admin Password for the the Dedicated SQL Pool being deployed.
-Principal ID this is to set the storage permissions for the feast registry store. You can find the value for this by opening Cloud Shell and run the following command:
+- **Admin Password** for the Synapse Dedicated SQL Pool being deployed.
+- **Prefix ID** to preface the resources with a name you can later search for.
 
 > **NOTE**: Be sure to manually pause the SQL pool when you are not using it from the Synapse Workspace to reduce cost. Follow the steps below to pause the SQL pool:  
 > * Navigate to the Synapse workspace
