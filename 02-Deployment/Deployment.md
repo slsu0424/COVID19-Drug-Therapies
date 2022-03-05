@@ -3,7 +3,7 @@ Please follow the steps below to set up the Azure environment.
 
 ## Step 1: Get the Required Datasets
 There are 2 data sources that are used in this solution:  
-  1. [State Drug Utilization Database](https://www.medicaid.gov/medicaid/prescription-drugs/state-drug-utilization-data/index.html) (SDUD)
+  1. [State Drug Utilization Database](https://www.medicaid.gov/medicaid/prescription-drugs/state-drug-utilization-data/index.html)(SDUD)
 
     Navigate to the year of interest (i.e., 2018) and download the data.
 
