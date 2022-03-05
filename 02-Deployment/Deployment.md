@@ -1,5 +1,5 @@
 # Deployment Guide
-Start by deploying the required resources to Azure. The button below will deploy Azure Synapse Analytics, Azure Machine Learning and its related resources, Azure Cosmos DB, Function App, Logic App, Speech Service, Translator and Azure Kubernetes Service.
+Please follow the steps below to set up the Azure environment
   
 ## Step 1. Download Files
 Clone or download this repository and navigate to the project's root directory.
