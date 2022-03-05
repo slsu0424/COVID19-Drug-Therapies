@@ -38,14 +38,14 @@ While not required, a working knowledge of Azure, Azure Data Factory, Azure Data
 
 
 ## Getting Started
-1. Start by deploying the resources needed for this solution:
-
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2FMachine-Learning-Patient-Risk-Analyzer-SA%2Fmain%2FResource_Deployment%2Fazuredeploy.json)
+1. An ARM template deploys and configures all the resources required to run the solution in Azure.  Click the Deploy to Azure button below:
 
 The only 2 required parameters during the set-up are:
 
 - **Admin Password** for the Synapse Dedicated SQL Pool being deployed.
 - **Prefix ID** to preface the resources with a unique name you can later reference.
+
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2FMachine-Learning-Patient-Risk-Analyzer-SA%2Fmain%2FResource_Deployment%2Fazuredeploy.json)
 
 > **NOTE**: Be sure to manually pause the SQL pool when you are not using it from the Synapse Workspace to reduce cost. Follow the steps below to pause the SQL pool:  
 > * Navigate to the Synapse workspace
