@@ -60,7 +60,7 @@ While not required, a working knowledge of Azure, Azure Data Factory, Azure Data
     ![GitHub_Button](./images/githubdownloadzip.png)
 
   
-3. Go to the [Deployment Guide](./Deployment/Deployment.md) under [./02-Deployment](./02-Deployment) for a step-by-step tutorial to complete the solution setup.
+3. Go to the [Deployment Guide](./02-Deployment/Deployment.md) under [./02-Deployment](./02-Deployment) for a step-by-step tutorial to complete the solution setup.
 
   > **NOTE**: Be sure to manually pause the SQL pool when you are not using it from the Synapse Workspace to reduce cost. Follow the steps below to pause the SQL pool:  
   > * Navigate to the Synapse workspace

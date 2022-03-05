@@ -1,16 +1,19 @@
 # Deployment Guide
 Please follow the steps below to set up the Azure environment.
   
-## Step 1. Download Files
-Clone or download this repository and navigate to the project's root directory.
-
-More information on [Cloning a repository](https://github.com/microsoft/Machine-Learning-Patient-Risk-Analyzer-SA)
-
-## Step 2: Get the Required Datasets
-1. There are 2 datasets that will be used.  We are using the data provided by [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/Diabetes+130-US+hospitals+for+years+1999-2008#). You will need the following datasets (download them):
+## Step 1: Get the Required Datasets
+There are 2 data sources used in this solution.  
+  1. State Drug Utilization Database [(SDUD)](https://www.medicaid.gov/medicaid/prescription-drugs/state-drug-utilization-data)
+     
+     Download the following datasets:
     * diabetic_data.csv
 
-## Step 3. Upload Sample Dataset
+  2. FDA Adverse Events Database [(FAERS)](https://www.fda.gov/drugs/drug-approvals-and-databases/fda-adverse-event-reporting-system-faers).   
+
+     Download the following datasets:
+    * diabetic_data.csv
+
+## Step 2. Upload Sample Dataset
 ### Step 3.1 Upload Sample Dataset to Azure Data Lake Storage
 Upload the following files from the `/Analytics_Deployment/Data` folder into the ADLS storage account.
 Create under the container `raw` a new folder `DatasetDiabetes`
