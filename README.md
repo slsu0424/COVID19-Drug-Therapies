@@ -49,7 +49,13 @@ While not required, a working knowledge of Azure, Azure Data Factory, Azure Data
 
 2. Clone or download this repository and navigate to the project's root directory.
 
-    Navigate towards the top right side of this screen, and expand the **Code** button menu.
+    Option 1: In the terminal clone this GitHub repo:
+
+    ```bash
+    git clone https://github.com/Azure/feast-azure
+    ```
+
+    Option 2: Navigate towards the top right side of this screen, and expand the **Code** button menu.
 
     ![On the GitHub repository page the Code button is highlighted.](./02-Deployment/img/githubcodebutton.png "GitHub repository Code button")
 
@@ -75,9 +81,6 @@ This folder contains the Notebooks needed to complete this solution accelerator.
 
 ## [05-Frontend](./Frontend_Deployment)
 This folder contains the Web-based User Interface to be used by a clinician.
-
-## [06-Future Development](./Future_Developments)
-This folder contains a backlog of ideas to extend the capabilites for this solution.
 
 ## Contributing
 
