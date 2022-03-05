@@ -44,15 +44,15 @@ Start by deploying the [resources](./Resource_Deployment/ResourceDeployment.md) 
 
     [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2FMachine-Learning-Patient-Risk-Analyzer-SA%2Fmain%2FResource_Deployment%2Fazuredeploy.json)
 
-2. Clone repository and navigate to the root of the directory
-3. Go to [Deployment Guide](./Resource_Deployment/README.md) under [./Resource_Deployment](./Resource_Deployment) for the steps you need to take to deploy this solution
+2. Clone the repository and navigate to the root of the directory
+3. Go to the [Deployment Guide](./Resource_Deployment/README.md) under [./Deployment](./Deployment) for the steps needed to deploy this solution
 
 ## Folders
 ## [01-Presentations](./Presentations)
 This folder contains Powerpoint decks that provide an Executive Overview and Technical Design for the solution.
 
 ## [02-Deployment](./Deployment/README.md)
-The resources in this folder can be used to deploy the required resources into your Azure Subscription. You can do this using the Azure Portal.
+The resources in this folder is used to deploy the required resources into your Azure Subscription. You can do this using the Azure Portal.
 
 ## [03-Data Engineering](./Analytics_Deployment)
 This folder contains the code needed to complete this solution accelerator. Once you have deployed all the required resources from [Resource Deployment](./Resource_Deployment/README.md), run through the Notebooks following the instructions in Resource Deployment.
