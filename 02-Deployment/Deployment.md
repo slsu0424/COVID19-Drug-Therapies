@@ -3,7 +3,7 @@ Please follow the steps below to set up the Azure environment.
 
 ## Step 1: Get the Required Datasets
 There are 2 data sources that are used in this solution:  
-  1. [State Drug Utilization Database](https://www.medicaid.gov/medicaid/prescription-drugs/state-drug-utilization-data/index.html) (SDUD)
+1. [State Drug Utilization Database](https://www.medicaid.gov/medicaid/prescription-drugs/state-drug-utilization-data/index.html) (SDUD)
 
       Navigate to the year of interest (i.e., 2018) and download the data.
 
@@ -14,7 +14,7 @@ There are 2 data sources that are used in this solution:
       - State Drug Utilization Data 2019
       - State Drug Utilization Data 2020
 
-  2. FDA Adverse Events Database [(FAERS)](https://www.fda.gov/drugs/drug-approvals-and-databases/fda-adverse-event-reporting-system-faers).   
+2. FDA Adverse Events Database [(FAERS)](https://www.fda.gov/drugs/drug-approvals-and-databases/fda-adverse-event-reporting-system-faers).   
 
      Download the following datasets:
     - diabetic_data.csv
