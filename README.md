@@ -38,18 +38,22 @@ While not required, a working knowledge of Azure, Azure Data Factory, Azure Data
 
 
 ## Getting Started
-Start by deploying the [resources](./Resource_Deployment/ResourceDeployment.md) needed for this solution,
+Start by deploying the resources needed for this solution.
 
-1. Press Deploy to Azure :  
+1. Press Deploy to Azure:  
 
     [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2FMachine-Learning-Patient-Risk-Analyzer-SA%2Fmain%2FResource_Deployment%2Fazuredeploy.json)
+
+The only 2 required parameters during the set-up are:
+
+Admin Password for the the Dedicated SQL Pool being deployed.
+Principal ID this is to set the storage permissions for the feast registry store. You can find the value for this by opening Cloud Shell and run the following command:
 
 > **NOTE**: Be sure to manually pause the SQL pool when you are not using it from the Synapse Workspace to reduce cost. Follow the steps below to pause the SQL pool:  
 > * Navigate to the Synapse workspace
 > *  Go to `Manage` > `SQL pools` > Pause the SQL pool 
 
-2. Clone the repository and navigate to the root of the directory
-3. Go to the [Deployment Guide](./Resource_Deployment/README.md) under [./02-Deployment](./02-Deployment) for the steps needed to deploy this solution
+2. Go to the [Deployment Guide](./Resource_Deployment/README.md) under [./02-Deployment](./02-Deployment) for a step-by-step tutorial to complete the solution setup.
 
 ## Folders
 ## [01-Presentations](./Presentations)
