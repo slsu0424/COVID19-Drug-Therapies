@@ -3,7 +3,7 @@
 ![](Resource_Deployment/img/banner.png)
 
 # About this repository
-The US COVID-19 Drug Therapy Risk Prediction Solution Accelerator is an end-to-end analytics platform that predicts the likelihood of a patient to experience a fatal adverse event (death) after receiving drug therapy for COVID-19.  The solution incorporates real-world data from the State Drug Utilization Database [(SDUD)](https://www.medicaid.gov/medicaid/prescription-drugs/state-drug-utilization-data) and the FDA Adverse Events Database [(FAERS)](https://www.fda.gov/drugs/drug-approvals-and-databases/fda-adverse-event-reporting-system-faers).   
+The US COVID-19 Drug Therapy Risk Prediction Solution Accelerator is an end-to-end analytics platform that predicts the likelihood of a patient to experience a fatal adverse event (death) after receiving drug therapy for COVID-19.  The solution incorporates real-world data from the [State Drug Utilization Database](https://www.medicaid.gov/medicaid/prescription-drugs/state-drug-utilization-data/index.html) (SDUD) and the [FDA Adverse Events Database](https://www.fda.gov/drugs/drug-approvals-and-databases/fda-adverse-event-reporting-system-faers) (FAERS).   
 
 The solution uses the SDUD data to first build a retrospective analysis to identify drug prescription trends between the years 2018-2021, particularly during the onset of COVID-19 in 2019.  Next, a prospective analysis looks at FDA adverse events associated with these drugs between 2019-2021.  A machine learning (ML) model is built to predict the likelihood of a fatal adverse event, and identify the patient characteristics associated with this outcome.    
 
@@ -70,13 +70,8 @@ While not required, a working knowledge of Azure, Azure Data Factory, Azure Data
 ## [01-Presentations](./Presentations)
 This folder contains Powerpoint decks that provide an Executive Overview and Technical Design for the solution.
 
-<<<<<<< HEAD
 ## [02-Deployment](./Deployment/Deployment.md)
 The resources in this folder is used to deploy the required resources and data into your Azure Subscription. This can be done using the Azure Portal.
-=======
-## [02-Deployment](./Deployment/README.md)
-The resources in this folder is used to deploy the required resources into your Azure Subscription. You can do this using the Azure Portal.
->>>>>>> parent of 4983e1c (test)
 
 ## [03-Data Engineering](./Analytics_Deployment)
 This folder contains the code needed to complete this solution accelerator. Once you have deployed all the required resources from [Resource Deployment](./Resource_Deployment/README.md), run through the Notebooks following the instructions in Resource Deployment.
