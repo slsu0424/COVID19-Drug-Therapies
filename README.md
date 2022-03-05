@@ -12,7 +12,7 @@ The user experience of the solution covers multiple personas, ranging from backe
 ## Architecture Overview
 The architecture diagram below details what will be built with this Solution Accelerator.
 
-![Architecture Diagram](./02-Deployment/img/Slide1.PNG)
+![Architecture Diagram](./images/Slide1.PNG)
 
 
 ## Video Overview
@@ -57,7 +57,7 @@ While not required, a working knowledge of Azure, Azure Data Factory, Azure Data
 
     Option 2: Navigate towards the top right side of this screen, and expand the **Code** button menu:
 
-    ![GitHub_Button](./02-Deployment/img/githubdownloadzip.png)
+    ![GitHub_Button](./images/githubdownloadzip.png)
 
   
 3. Go to the [Deployment Guide](./Deployment/Deployment.md) under [./02-Deployment](./02-Deployment) for a step-by-step tutorial to complete the solution setup.
