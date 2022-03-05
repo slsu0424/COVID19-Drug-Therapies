@@ -47,12 +47,11 @@ The only 2 required parameters during the set-up are:
 - **Admin Password** for the Synapse Dedicated SQL Pool being deployed.
 - **Prefix ID** to preface the resources with a unique name you can later reference.
 
+2. Go to the [Deployment Guide](./Resource_Deployment/README.md) under [./02-Deployment](./02-Deployment) for a step-by-step tutorial to complete the solution setup.
+
 > **NOTE**: Be sure to manually pause the SQL pool when you are not using it from the Synapse Workspace to reduce cost. Follow the steps below to pause the SQL pool:  
 > * Navigate to the Synapse workspace
 > *  Go to `Manage` > `SQL pools` > Pause the SQL pool 
-
-
-2. Go to the [Deployment Guide](./Resource_Deployment/README.md) under [./02-Deployment](./02-Deployment) for a step-by-step tutorial to complete the solution setup.
 
 ## Folders
 ## [01-Presentations](./Presentations)
