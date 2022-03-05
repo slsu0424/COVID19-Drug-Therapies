@@ -40,7 +40,7 @@ While not required, a working knowledge of Azure, Azure Data Factory, Azure Data
 ## Getting Started
 Start by deploying the [resources](./Resource_Deployment/ResourceDeployment.md) needed for this solution,
 
-1. Press Deploy Azure :  
+1. Press Deploy to Azure :  
 
     [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2FMachine-Learning-Patient-Risk-Analyzer-SA%2Fmain%2FResource_Deployment%2Fazuredeploy.json)
 
