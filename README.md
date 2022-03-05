@@ -47,7 +47,14 @@ While not required, a working knowledge of Azure, Azure Data Factory, Azure Data
     - **Admin Password** for the Synapse Dedicated SQL Pool being deployed.
     - **Prefix ID** to preface the resources with a unique name you can later reference.
 
-2. Go to the [Deployment Guide](./Deployment/Deployment.md) under [./02-Deployment](./02-Deployment) for a step-by-step tutorial to complete the solution setup.
+2. Clone or download this repository and navigate to the project's root directory.
+
+    Navigate towards the top right side of this screen, and expand the **Code** button menu.
+
+    ![On the GitHub repository page the Code button is highlighted.](./02-Deployment/img/githubcodebutton.png "GitHub repository Code button")
+
+  
+3. Go to the [Deployment Guide](./Deployment/Deployment.md) under [./02-Deployment](./02-Deployment) for a step-by-step tutorial to complete the solution setup.
 
   > **NOTE**: Be sure to manually pause the SQL pool when you are not using it from the Synapse Workspace to reduce cost. Follow the steps below to pause the SQL pool:  
   > * Navigate to the Synapse workspace
@@ -71,20 +78,6 @@ This folder contains the Web-based User Interface to be used by a clinician.
 
 ## [06-Future Development](./Future_Developments)
 This folder contains a backlog of ideas to extend the capabilites for this solution.
-
-
-## License
-Copyright (c) Microsoft Corporation
-
-All rights reserved.
-
-MIT License
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the ""Software""), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED AS IS, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE
 
 ## Contributing
 
