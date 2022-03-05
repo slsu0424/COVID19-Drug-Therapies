@@ -10,7 +10,7 @@ The solution uses the SDUD data to first build a retrospective analysis to ident
 The user experience of the solution covers multiple personas, ranging from backend engineers to frontend clinical users.  A Data Engineer is provided with a low-code, no-code experience to ingest SDUD and FAERS data.  A Data Architect is provided with an analytics platform to protect sensitive patient information for operational reporting.  The Data Analyst uses a visualization platform to plot trends observed in the data.  Professional Data Scientists and Citizen Data Scientists have the ability to build and train machine learning models using traditional and/or automated ML methods, and register and deploy the model for real-time inferencing.  Finally, a clinician can input patient characteristics in a web-based interface to assess the risk associated with a specific drug therapy. 
 
 ## Architecture Overview
-The architecture diagram below details of what you will be building with this Solution Accelerator.
+The architecture diagram below details of what will be built with this Solution Accelerator.
 
 ![Architecture Diagram](./02-Deployment/img/Slide1.PNG)
 
