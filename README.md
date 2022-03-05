@@ -71,7 +71,7 @@ While not required, a working knowledge of Azure, Azure Data Factory, Azure Data
 This folder contains Powerpoint decks that provide an Executive Overview and Technical Design for the solution.
 
 ## [02-Deployment](./Deployment/Deployment.md)
-The resources in this folder is used to deploy the required resources and data into your Azure Subscription. This can be done using the Azure Portal.
+The resources in this folder is used to deploy the required resources into your Azure Subscription. This can be done using the Azure Portal.
 
 ## [03-Data Engineering](./Analytics_Deployment)
 This folder contains the code needed to complete this solution accelerator. Once you have deployed all the required resources from [Resource Deployment](./Resource_Deployment/README.md), run through the Notebooks following the instructions in Resource Deployment.
