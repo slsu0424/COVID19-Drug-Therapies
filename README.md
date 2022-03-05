@@ -49,7 +49,7 @@ While not required, a working knowledge of Azure, Azure Data Factory, Azure Data
 
 2. Clone or download this repository and navigate to the project's root directory.
 
-    Option 1: Use Terminal clone this GitHub repo:
+    Option 1: In Windows Terminal, clone this GitHub repo:
 
     ```bash
     git clone https://github.com/slsu0424/COVID19-Drug-Therapies.git
@@ -57,7 +57,7 @@ While not required, a working knowledge of Azure, Azure Data Factory, Azure Data
 
     Option 2: Navigate towards the top right side of this screen, and expand the **Code** button menu.
 
-    ![On the GitHub repository page the Code button is highlighted.](./02-Deployment/img/githubcodebutton.png)
+    ![GitHub_Button](./02-Deployment/img/githubcodebutton.png)
 
   
 3. Go to the [Deployment Guide](./Deployment/Deployment.md) under [./02-Deployment](./02-Deployment) for a step-by-step tutorial to complete the solution setup.
