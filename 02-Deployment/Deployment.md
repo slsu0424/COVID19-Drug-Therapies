@@ -6,12 +6,12 @@ There are 2 data sources used in this solution.
   1. State Drug Utilization Database [(SDUD)](https://www.medicaid.gov/medicaid/prescription-drugs/state-drug-utilization-data)
      
      Download the following datasets:
-    * diabetic_data.csv
+    - * diabetic_data.csv
 
   2. FDA Adverse Events Database [(FAERS)](https://www.fda.gov/drugs/drug-approvals-and-databases/fda-adverse-event-reporting-system-faers).   
 
      Download the following datasets:
-    * diabetic_data.csv
+    - * diabetic_data.csv
 
 ## Step 2. Upload Sample Dataset
 ### Step 3.1 Upload Sample Dataset to Azure Data Lake Storage
