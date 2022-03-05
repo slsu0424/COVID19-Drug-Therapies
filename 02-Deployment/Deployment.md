@@ -7,7 +7,7 @@ Clone or download this repository and navigate to the project's root directory.
 More information on [Cloning a repository](https://github.com/microsoft/Machine-Learning-Patient-Risk-Analyzer-SA)
 
 ## Step 2: Get the Required Datasets
-1. We are using the data provided by [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/Diabetes+130-US+hospitals+for+years+1999-2008#). You will need the following datasets (download them):
+1. There are 2 datasets that will be used.  We are using the data provided by [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/Diabetes+130-US+hospitals+for+years+1999-2008#). You will need the following datasets (download them):
     * diabetic_data.csv
 
 ## Step 3. Upload Sample Dataset
