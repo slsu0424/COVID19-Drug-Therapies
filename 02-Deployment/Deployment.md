@@ -1,6 +1,6 @@
 # Deployment Guide
 Please follow the steps below to set up the Azure environment.
-  
+
 ## Step 1: Get the Required Datasets
 There are 2 data sources that are used in this solution:  
   1. State Drug Utilization Database [(SDUD)](https://www.medicaid.gov/medicaid/prescription-drugs/state-drug-utilization-data/index.html)
@@ -49,13 +49,13 @@ In order to perform the necessary actions in Synapse workspace, you will need to
     - Search for your username and add
 4. Click `Save` at the bottom
 
-## OPTIONAL - Step 4.1: Add IP Adress to the Synapse Workspace 
+## OPTIONAL - Step 4.1: Add IP Adress to the Synapse Workspace
 * **NOTE**: If you did not allow all connections during deployment of your resources, follow the steps below
 
 Before you can upload any assets to the Synapse Workspace you will first need to add your IP address to the Synapse Workspace.
-Before you can upload any assets to the Synapse Workspace you will first need to add your IP address to the Synapse Workspace. 
+Before you can upload any assets to the Synapse Workspace you will first need to add your IP address to the Synapse Workspace.
 1. Go to the Azure Synaspe resource you created in Step 1.
-2. Navigate to `Firewalls` under `Security` on the left hand side of the page. 
+2. Navigate to `Firewalls` under `Security` on the left hand side of the page.
 3. At the top click `+ Add client IP`
 ![client IP](./img/firewall.png)
 4. Your IP address should now be visable in the IP list.
@@ -69,14 +69,14 @@ Before you can upload any assets to the Synapse Workspace you will first need to
 
 ## Step 6. Add the Cosmos DB as linked service
 In this step you're going to add the Cosmos DB as a linked service in the Synapse Workspace.
-1. Launch the Synapse workspace (via Azure portal > Synapse workspace > Workspace web URL) 
+1. Launch the Synapse workspace (via Azure portal > Synapse workspace > Workspace web URL)
 2. Click on `Manage - Linked Services - New`
 3. Type in the search box "Cosmos" and select the service "Azure Cosmos DB (SQL API)"
 4. Click `Continue`
 5. Fill in the following data for the linked service
 
   | Field | Value |
-  | ------------- | ------------- | 
+  | ------------- | ------------- |
   | Name | "patientHubDB" |
   | Connect via integration runtime | AutoResolveIntegrationRuntime |
   | Authentication method | Connection String |
@@ -88,7 +88,7 @@ In this step you're going to add the Cosmos DB as a linked service in the Synaps
 ![Cosmos DB Linked Service Configuration](./img/CosmosDBLinkedServiceConfiguration.jpg "Cosmos DB Linked Service Configuration")
 
 ## Step 7. Upload and run Notebooks
-1. Launch the Synapse workspace (via Azure portal > Synapse workspace > Workspace web URL) 
+1. Launch the Synapse workspace (via Azure portal > Synapse workspace > Workspace web URL)
 2. Go to `Develop`, click the `+`, and click `Import` to select all Spark notebooks from the repository's `/Analytics_Deployment/Synapse-Workspace/Notebooks` folder
 3. For each of the notebooks, select `Attach to > spark1` in the top dropdown
 ### 00_preparedata
@@ -129,7 +129,7 @@ Before you can confiure the service endpoint, there are some Prerequisites that 
 Open the [deployapplications.ps1](.\Backend_deployment\deployapplications.ps1) file and update the necesary variables.
 
 | Field | Value |
-  | ------------- | ------------- | 
+  | ------------- | ------------- |
   | $subscriptionId | SubscriptionID where Azure resources will be deployed |
   | $resourcegroupName | Resourcegroup Name where Azure resources will be deployed |
   | $containerRegistryName | Container Registry Name already deployed in previous deployment by Azure ML |
@@ -170,7 +170,7 @@ When all the variables are modified, publish your the notebook so it is saved in
 
 6. Under the `Review Package Content`, click on the little wrench next to the Application Name `Provider Portal`, to change the name of the Application. Make sure the name is unique for the environemnt.
 7. Click Import and wait until you see the message `All package resources were successfully imported.`
-8. Click on `Flows`. You will notice that all the flows are disabled. 
+8. Click on `Flows`. You will notice that all the flows are disabled.
 
 ![Cloud Flows disabled](../Frontend_Deployment/img/CloudFlows.jpg "CloudFlows")
 
@@ -184,10 +184,10 @@ Your URI should look similar like the screenshot below.
 ![HTTP](../Frontend_Deployment/img/HTTP.jpg "HTTP")
 
 | API Service | Flow |
-  | ------------- | :------------- | 
+  | ------------- | :------------- |
   | appointment | PatientHub-GetNextAppointments |
   | batchinference | PatientHub-InferenceExplanation |
-  | patient | PatientHub-GetAllPatients | 
+  | patient | PatientHub-GetAllPatients |
   | realtimeinference | PatientHub-RealtimeInference |
   | tts | PatientHub-GetSpeechFile |  
 
