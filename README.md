@@ -49,8 +49,6 @@ While not required, a working knowledge of Azure, Azure Data Factory, Azure Data
 
 2. Clone or download this repository and navigate to the project's root directory.
 
-       More information on [Cloning a repository](https://github.com/microsoft/Machine-Learning-Patient-Risk-Analyzer-SA)
-
 3. Go to the [Deployment Guide](./Deployment/Deployment.md) under [./02-Deployment](./02-Deployment) for a step-by-step tutorial to complete the solution setup.
 
   > **NOTE**: Be sure to manually pause the SQL pool when you are not using it from the Synapse Workspace to reduce cost. Follow the steps below to pause the SQL pool:  
