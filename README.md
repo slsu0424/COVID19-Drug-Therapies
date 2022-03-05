@@ -12,7 +12,7 @@ The user experience of the solution covers multiple personas, ranging from backe
 ## Architecture Overview
 The architecture diagram below details what will be built with this Solution Accelerator.
 
-![Architecture Diagram](./02-Deployment/img/Slide1.PNG)
+![Architecture Diagram](./images/Slide1.PNG)
 
 
 ## Video Overview
@@ -49,9 +49,15 @@ While not required, a working knowledge of Azure, Azure Data Factory, Azure Data
 
 2. Clone or download this repository and navigate to the project's root directory.
 
-    Navigate towards the top right side of this screen, and expand the **Code** button menu.
+    Option 1: In Windows Terminal, clone this GitHub repo:
 
-    ![On the GitHub repository page the Code button is highlighted.](./02-Deployment/img/githubcodebutton.png "GitHub repository Code button")
+    ```bash
+    git clone https://github.com/slsu0424/COVID19-Drug-Therapies.git
+    ```
+
+    Option 2: Navigate towards the top right side of this screen, and expand the **Code** button menu:
+
+    ![GitHub_Button](./images/githubdownloadzip.png)
 
   
 3. Go to the [Deployment Guide](./Deployment/Deployment.md) under [./02-Deployment](./02-Deployment) for a step-by-step tutorial to complete the solution setup.
@@ -75,9 +81,6 @@ This folder contains the Notebooks needed to complete this solution accelerator.
 
 ## [05-Frontend](./Frontend_Deployment)
 This folder contains the Web-based User Interface to be used by a clinician.
-
-## [06-Future Development](./Future_Developments)
-This folder contains a backlog of ideas to extend the capabilites for this solution.
 
 ## Contributing
 
