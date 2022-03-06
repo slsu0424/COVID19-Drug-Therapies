@@ -2,9 +2,9 @@
 Please follow the steps below to set up the Azure environment.
 
 ## Step 1: Get the Required Datasets
-There are 2 data sources that are used in this solution.  You will download the data directly from their website.
+There are 2 data sources that are used in this solution.  Due to the size of the data, you will download the data directly from their website.
 
-1. [State Drug Utilization Database](https://www.medicaid.gov/medicaid/prescription-drugs/state-drug-utilization-data/index.html) (SDUD) - This data represents covered outpatient drugs paid for by state Medicaid agencies.  They have been reported by states since the start of the Medicaid Drug Rebate Program.  We will be using this data to analyze drug prescription rends between the years 2018-2020.
+1. [State Drug Utilization Database](https://www.medicaid.gov/medicaid/prescription-drugs/state-drug-utilization-data/index.html) (SDUD) - This data represents covered outpatient drugs paid for by state Medicaid agencies.  We will be using this data to analyze drug prescription rends between the years 2018-2020.
 
       Navigate to the year of interest (i.e., 2018) and download the data.
 
@@ -33,15 +33,15 @@ There are 2 data sources that are used in this solution.  You will download the 
       - faers_ascii_2021Q1.zip
       - faers_ascii_2021Q2.zip
 
-## Step 2. Upload Sample Dataset
-### Step 3.1 Upload Sample Dataset to Azure Data Lake Storage
+## Step 2. Upload Datasets
+### Step 2.1 Upload SDUD data to Azure Data Lake Storage
 Upload the following files from the `/Analytics_Deployment/Data` folder into the ADLS storage account.
 Create under the container `raw` a new folder `DatasetDiabetes`
 
 - diabetic_data.csv
 - Names.csv
 
-### Step 3.2 Upload Sample Dataset to Azure Cosmos DB
+### Step 2.2 Upload Sample Dataset to Azure Cosmos DB
 Upload the following files from the `/Analytics_Deployment/Data` folder into the Cosmos DB.
 Each file matches the name of the container.
 
