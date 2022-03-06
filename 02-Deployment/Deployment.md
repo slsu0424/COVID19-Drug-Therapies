@@ -8,23 +8,30 @@ There are 2 data sources that are used in this solution.  You will download the 
 
       Navigate to the year of interest (i.e., 2018) and download the data.
 
-      ![SDUD](./media/SDUD1.png)
+      ![SDUD](./media/SDUD.png)
 
-      Repeat this for years 2019 and 2020.  Make sure you have downloaded the following datasets:
+      Repeat this for years 2019 and 2020.  Make sure you have downloaded the following datasets (.csv):
       - State Drug Utilization Data 2018
       - State Drug Utilization Data 2019
       - State Drug Utilization Data 2020
 
 2. [FDA Adverse Events Database](https://www.fda.gov/drugs/drug-approvals-and-databases/fda-adverse-event-reporting-system-faers) (FAERS) - This data contains adverse event reports, medication error reports, and product quality complaints resulting in adverse events submitted to the FDA.  We will use this data to build a machine learning model to characterize at-risk patients for fatal adverse events between the years 2019-2021.
 
-Navigate to the year of interest (i.e., 2019) and download the data. 
+      As the data is reported on a quarterly basis for each year, navigate to the [Quarterly Data Files](https://www.fda.gov/drugs/questions-and-answers-fdas-adverse-event-reporting-system-faers/fda-adverse-event-reporting-system-faers-latest-quarterly-data-files) and download the data in the ASCII format.
 
+      ![FAERS](./media/FAERS.png)
 
-
-    Repeat this for years 2019 and 2020.  Make sure you have downloaded the following datasets:
-      - State Drug Utilization Data 2018
-      - State Drug Utilization Data 2019
-      - State Drug Utilization Data 2020
+      Repeat this for years 2020 and 2021.  Make sure you have downloaded the following datasets (.zip):
+      - faers_ascii_2019Q1.zip
+      - faers_ascii_2019Q2.zip
+      - faers_ascii_2019Q3.zip
+      - faers_ascii_2019Q4.zip
+      - faers_ascii_2020Q1.zip
+      - faers_ascii_2020Q2.zip
+      - faers_ascii_2020Q3.zip
+      - faers_ascii_2020Q4.zip
+      - faers_ascii_2021Q1.zip
+      - faers_ascii_2021Q2.zip
 
 ## Step 2. Upload Sample Dataset
 ### Step 3.1 Upload Sample Dataset to Azure Data Lake Storage
