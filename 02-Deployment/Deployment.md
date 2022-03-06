@@ -6,7 +6,7 @@ There are 2 data sources that are used in this solution.  Due to the size of the
 
 1. [State Drug Utilization Database](https://www.medicaid.gov/medicaid/prescription-drugs/state-drug-utilization-data/index.html) (SDUD) - This data represents covered outpatient drugs paid for by state Medicaid agencies.  We will be using this data to analyze drug prescription rends between the years 2018-2020.
 
-      Navigate to the year of interest (i.e., 2018) and download the data.
+      Navigate to the year of interest (i.e., 2018) and download the data to your local machine.
 
       ![SDUD](./media/SDUD.png)
 
@@ -17,7 +17,7 @@ There are 2 data sources that are used in this solution.  Due to the size of the
 
 2. [FDA Adverse Events Database](https://www.fda.gov/drugs/drug-approvals-and-databases/fda-adverse-event-reporting-system-faers) (FAERS) - This data contains adverse event reports, medication error reports, and product quality complaints resulting in adverse events submitted to the FDA.  We will use this data to build a machine learning model to characterize at-risk patients for fatal adverse events between the years 2019-2021.
 
-      As the data is reported on a quarterly basis for each year, navigate to the [Quarterly Data Files](https://www.fda.gov/drugs/questions-and-answers-fdas-adverse-event-reporting-system-faers/fda-adverse-event-reporting-system-faers-latest-quarterly-data-files) and download the data in the ASCII format.
+      As the data is reported on a quarterly basis for each year, navigate to the [Quarterly Data Files](https://www.fda.gov/drugs/questions-and-answers-fdas-adverse-event-reporting-system-faers/fda-adverse-event-reporting-system-faers-latest-quarterly-data-files).  Download the data to your local machine in the ASCII format.
 
       ![FAERS](./media/FAERS.png)
 
@@ -32,29 +32,20 @@ There are 2 data sources that are used in this solution.  Due to the size of the
       - faers_ascii_2020Q4.zip
       - faers_ascii_2021Q1.zip
       - faers_ascii_2021Q2.zip
+      
 
 ## Step 2. Upload Datasets
+
 ### Step 2.1 Upload SDUD data to Azure Data Lake Storage
-Upload the following files from the `/Analytics_Deployment/Data` folder into the ADLS storage account.
-Create under the container `raw` a new folder `DatasetDiabetes`
+Navigate to the Azure Data Lake Storage resource.  Under the container `raw`, create a new folder `SDUD`
+Upload the SDUD files from your local machine into the ADLS storage account.
 
-- diabetic_data.csv
-- Names.csv
+### Step 2.2 Upload FAERS data to Azure Data Lake Storage
+Navigate to the Azure Data Lake Storage resource.  Under the container `raw`, create a new folder `FAERS`
+Upload the FAERS files from your local machine into the ADLS storage account.
 
-### Step 2.2 Upload Sample Dataset to Azure Cosmos DB
-Upload the following files from the `/Analytics_Deployment/Data` folder into the Cosmos DB.
-Each file matches the name of the container.
 
-- AdmissionSource.json
-- Appointments.json
-- ColumnLookupValues.json
-- ColumnNameMap.json
-- DischargeDisposition.json
-- ICD9Code.json
-
-You can use the [Data migration tool](https://docs.microsoft.com/en-us/azure/cosmos-db/import-data) or go to the Data Explorer of your Cosmos DB, select the container and click `Upload Item`
-
-## Step 4. Update storage account permisions
+## Step 3. Update storage account permisions
 In order to perform the necessary actions in Synapse workspace, you will need to grant more access.
 
 1. Go to the Azure Data Lake Storage Account created above
@@ -63,7 +54,7 @@ In order to perform the necessary actions in Synapse workspace, you will need to
     - Search for your username and add
 4. Click `Save` at the bottom
 
-## OPTIONAL - Step 4.1: Add IP Adress to the Synapse Workspace
+## OPTIONAL - Step 3.1: Add IP Adress to the Synapse Workspace
 * **NOTE**: If you did not allow all connections during deployment of your resources, follow the steps below
 
 Before you can upload any assets to the Synapse Workspace you will first need to add your IP address to the Synapse Workspace.
