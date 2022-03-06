@@ -56,7 +56,7 @@ In order to perform the necessary actions in the Synapse workspace, you will nee
 
 ## Step 3. Data Engineering
 
-## Unpack FAERS Zip files using Synapse Pipelines (Persona: Data Engineer)
+## 3.1: Unpack FAERS Zip files using Synapse Pipelines (Persona: Data Engineer)
 As mentioned in Step 1, the FAERS data is embedded as separate files within each quarterly .zip file.  The objective is to consolidate all those files for each quarter for each year into a single location.  To make this task easier, you will use Synapse pipelines to create a pipeline through a low-code experience.  
 
 1. Launch the Synapse workspace (via Azure portal > Synapse workspace > Workspace web URL)
@@ -65,8 +65,7 @@ As mentioned in Step 1, the FAERS data is embedded as separate files within each
 4. View the extracted files in ADLS
 
 ## Step 4. Analytics & Visualization
-
-## Step 4.1: Process and analyze SDUD data (Persona: Pro Data Scientist, Data Architect)
+## 4.1: Process and analyze SDUD data (Persona: Pro Data Scientist, Data Architect)
 First, you will build the retrospective analysis. The objective is to process and analyze the SDUD data to identify any drug prescription trends.  Azure Databricks will be used first to handle these large datasets with the latest Spark capabilities. 
 
 1. Launch the Databricks workspace (via Azure portal > Databricks > Launch workspace > Workspace web URL)
@@ -79,7 +78,7 @@ First, you will build the retrospective analysis. The objective is to process an
 2. Update `file_system_name` variable to your container in the [00_preparedata.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/00_preparedata.ipynb) notebook
 3. Run the notebook
 
-## Step 4.2: Prepare SDUD data for operational reporting (Persona: Data Architect)
+## 4.2: Prepare SDUD data for operational reporting (Persona: Data Architect)
 The merged SDUD data is now saved in ADLS.  The data will be accessed from the data lake and transformed into a data warehouse object for querying, reporting, and visualization.  This will also include masking personal health information (PHI/PII) that can only be seen by specific users or groups.
 
 1. Launch the Synapse workspace (via Azure portal > Synapse workspace > Workspace web URL)
@@ -88,7 +87,7 @@ The merged SDUD data is now saved in ADLS.  The data will be accessed from the d
     - TBD
     - TBD
 
-## Step 4.3 Visualize SDUD data trends (Persona: Data Analyst)
+## 4.3 Visualize SDUD data trends (Persona: Data Analyst)
 Now that the data is in a relational format, you will generate reports and visualizations.
 
 1. Launch the PowerBI embedded workspace (via Azure portal > PowerBI workspace > Workspace web URL)
@@ -99,7 +98,7 @@ Now that the data is in a relational format, you will generate reports and visua
 ## Step 5. Data Science & Machine Learning
 Next, you will build a prospective analysis.  Based on the drug trends identified from the SDUD data, the objective is to build a machine learning model based on the FAERS data associated with those drugs.  Azure Databricks will be first used to handle these large datasets, pre-process the data, and perform feature engineering.  You will also use Azure Machine Learning to benchmark code-first models against autoML, and deploy the best model for real-time inferencing.
 
-## Step 5.1: Process FAERS data (Persona: Pro Data Scientist)
+## 5.1: Process FAERS data (Persona: Pro Data Scientist)
 1. Launch the Databricks workspace (via Azure portal > Databricks > Launch workspace > Workspace web URL)
 2. Go to `Clusters`.  Create a cluster with the following variables: (TBD)
 3. Go to `Workspace` > `Users` > your username > `Import`
@@ -116,10 +115,10 @@ Next, you will build a prospective analysis.  Based on the drug trends identifie
 3. Run the notebook
 
 
-## Step 5.2: Process FAERS Data in Azure Machine Learning (Persona: Citizen Data Scientist)
+## 5.2: Process FAERS Data in Azure Machine Learning (Persona: Citizen Data Scientist)
 1. Run automatedML
 
-## Step 5.3: Process FAERS Data in Azure Machine Learning (Persona: Pro Data Scientist)
+## 5.3: Process FAERS Data in Azure Machine Learning (Persona: Pro Data Scientist)
 1. See if can improve model, code-first back in DB
 
 ### 03_FAERS
@@ -127,7 +126,7 @@ Next, you will build a prospective analysis.  Based on the drug trends identifie
 2. Update `file_system_name` variable to your container in the [00_preparedata.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/00_preparedata.ipynb) notebook
 3. Run the notebook
 
-## Step 5.4: Deploy the Best Model (Persona: Pro Data Scientist, Citizen Data Scientist)
+## 5.4: Deploy the Best Model (Persona: Pro Data Scientist, Citizen Data Scientist)
 1. Deploy model in using AML 
 2. TBD
 
