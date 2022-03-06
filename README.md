@@ -38,7 +38,7 @@ While not required, a working knowledge of Azure, Azure Data Factory, Azure Data
 
 
 ## Getting Started
-1. An ARM template deploys and configures all the resources required to run the solution in Azure.  Click the Deploy to Azure button below:
+1. An ARM template deploys and configures all the resources required to run the solution.  Click the Deploy to Azure button below:
 
     [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fslsu0424%2FCOVID19-Drug-Therapies%2Fmain%2F02-Deployment%2Fcovid_azuredeploy.json)
 
@@ -47,15 +47,15 @@ While not required, a working knowledge of Azure, Azure Data Factory, Azure Data
     - **Admin Password** for the Synapse Dedicated SQL Pool being deployed.
     - **Prefix ID** to preface the resources with a unique name you can later reference.
 
-2. Clone or download this repository and navigate to the project's root directory.
+2. Clone or download the repository and navigate to the project's root directory.
 
-    Option 1: In Windows Terminal, clone this GitHub repo:
+    Option 1: In Windows Terminal, clone the GitHub repo:
 
       ```bash
       git clone https://github.com/slsu0424/COVID19-Drug-Therapies.git
       ```
 
-    Option 2: Navigate towards the top right side of this screen, and expand the **Code** button menu:
+    Option 2: Navigate towards the top right of this screen, and expand the **Code** button menu:
 
       ![GitHub_Button](./images/githubdownload.png)
 
