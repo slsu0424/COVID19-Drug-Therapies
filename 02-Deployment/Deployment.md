@@ -1,7 +1,7 @@
 # Deployment Guide
 Please follow the steps below to set up the Azure environment.
 
-## Step 1. Download the Required Datasets
+## Step 1. Download Required Datasets
 There are 2 data sources that are used in this solution.  Due to the size of the data, you will download the data directly from their website.
 
 1. [State Drug Utilization Database](https://www.medicaid.gov/medicaid/prescription-drugs/state-drug-utilization-data/index.html) (SDUD) - This data represents covered outpatient drugs paid for by state Medicaid agencies.  We will be using this data to analyze drug prescription rends between the years 2018-2020.
@@ -38,9 +38,13 @@ There are 2 data sources that are used in this solution.  Due to the size of the
 
 Navigate to the Azure Data Lake Storage Account.  Under the container `raw`, create two new folders `SDUD` and `FAERS`.
 
-Upload the SDUD files to the `SDUD` folder.  Upload the FAERS files to the `FAERS` folder.
+Upload the SDUD files to the `SDUD` folder, and the FAERS files to the `FAERS` folder.
+
+![ADLS](./media/SDUD.png)
 
 ## Step 3. Data Engineering - Process SDUD Data in Azure Databricks
+1. Launch the Databricks workspace (via Azure portal > Synapse workspace > Workspace web URL)
+2. Go to `Develop`, click the `+`, and click `Import` to select all Spark notebooks from the repository's `/Analytics_Deployment/Synapse-Workspace/Notebooks` folder
 
 ## Step 4. Operational Analytics - Prepare SDUD data for operational reporting
 
