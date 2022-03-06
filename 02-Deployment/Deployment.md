@@ -37,10 +37,8 @@ There are 2 data sources that are used in this solution.  Due to the size of the
 ## Step 2. Upload Datasets to Azure Data Lake Storage
 
 Navigate to the Azure Data Lake Storage Account.  Under the container `raw`, create two new folders `SDUD` and `FAERS`.
-Upload the SDUD files to the `SDUD` folder.  
-Upload the FAERS files to the `FAERS` folder.
 
-We will work with the SDUD data in the next step.
+Upload the SDUD files to the `SDUD` folder.  Upload the FAERS files to the `FAERS` folder.
 
 ## Step 3. Data Engineering - Process SDUD Data in Azure Databricks
 
@@ -52,8 +50,9 @@ We will work with the SDUD data in the next step.
 ## Step 4. Data Science & Machine Learning - Process FAERS Data in Azure Databricks & Azure Synapse
 1. Unpack FAERS zip files using synapse pipelines
 2. Process FAERS data in Databricks
-4. Build initial model in DB
-5. See if AML autoML will provide a better model  
+3. Run AML autoML
+5. See if can improve model code-first back in DB
+6. Deploy model in using AML 
 
 
 
