@@ -66,7 +66,7 @@ As mentioned in Step 1, the FAERS data is embedded as separate files within each
 
 ## Step 4. Analytics & Visualization
 ## 4.1: Process and analyze SDUD data (Persona: Pro Data Scientist, Data Architect)
-First, you will build the retrospective analysis. The objective is to process and analyze the SDUD data to identify any drug prescription trends.  Azure Databricks will be used first to handle these large datasets with the latest Spark capabilities. 
+First, you will build the retrospective analysis. The objective is to process and analyze the SDUD data to identify any drug prescription trends.  Due to the large size of these datasets, Azure Databricks will be used for this task.
 
 1. Launch the Databricks workspace (via Azure portal > Databricks > Launch workspace > Workspace web URL)
 2. Go to `Clusters`.  Create a cluster with the following variables: (TBD)
