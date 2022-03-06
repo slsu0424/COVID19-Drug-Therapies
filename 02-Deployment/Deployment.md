@@ -7,7 +7,7 @@ There are 2 data sources that are used in this solution:
 
       Navigate to the year of interest (i.e., 2018) and download the data.
 
-      ![SDUD1](./images/SDUD1.PNG)
+      ![SDUD1](/images/SDUD1.PNG)
 
       Repeat this for years 2019 and 2020.  Make sure you have download the following datasets:
       - State Drug Utilization Data 2018
