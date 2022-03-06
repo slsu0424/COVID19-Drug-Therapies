@@ -8,7 +8,7 @@ There are 2 data sources that are used in this solution.  Due to the size of the
 
       Navigate to the year of interest (i.e., 2018) and download the data to your local machine.
 
-      ![SDUD](./media/SDUD.png)
+      ![SDUD](./images/SDUD.png)
 
       Repeat this for years 2019 and 2020.  Make sure you have downloaded the following datasets (.csv):
       - State Drug Utilization Data 2018
@@ -21,7 +21,7 @@ There are 2 data sources that are used in this solution.  Due to the size of the
 
       Note that each quarterly .zip file contains 7 different files that will need to be consolidated later.
 
-      ![FAERS](./media/FAERS.png)
+      ![FAERS](./images/FAERS.png)
 
       Repeat this for years 2020 and 2021.  Make sure you have downloaded the following datasets (.zip):
       - faers_ascii_2019Q1.zip
