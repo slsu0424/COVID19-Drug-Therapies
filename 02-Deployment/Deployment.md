@@ -41,57 +41,6 @@ Upload the SDUD files to the `SDUD` folder, and the FAERS files to the `FAERS` f
 
 ![ADLS](./media/SDUD.png)
 
-## Step 3. Data Engineering - Process SDUD Data in Azure Databricks (Persona: Data Engineer)
-First, you will build the retrospective analysis. The objective is to process and analyze the SDUD data to identify any drug prescription trends.  Due to the large size of the datasets, Azure Databricks will be used to handle this big data engineering task.
-
-1. Launch the Databricks workspace (via Azure portal > Databricks > Launch workspace > Workspace web URL)
-2. Go to `Clusters`.  Create a cluster with the following variables: (TBD)
-3. Go to `Workspace` > `Users` > your username > `Import`
-4. Select `Import from file` and select the notebook (.py) from the repository's `/02-DataEngineering/Notebooks` folder
-
-### 01_SDUD
-1. Update `data_lake_account_name` variable to your ADLS in the [00_preparedata.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/00_preparedata.ipynb) notebook
-2. Update `file_system_name` variable to your container in the [00_preparedata.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/00_preparedata.ipynb) notebook
-3. Run the notebook
-
-## Step 4. Analytics & Visualization 
-## Step 4.1: Analytics - Prepare SDUD data for operational reporting (Persona: Data Architect)
-The SDUD data is now saved in ADLS.  The data will be retrieved from the data lake and transformed into a data warehouse object for querying, reporting, and visualization.  This will also include masking personal health information (PHI/PII) that can only be seen by specific users or groups.
-
-1. Launch the Synapse workspace (via Azure portal > Synapse workspace > Workspace web URL)
-2. Go to `Develop`, click `+`, and click `Import` to select all SQL scripts from the repository's `/04-Analytics&Reporting/` folder
-3. Run each of the scripts in the following order:
-    - TBD
-    - TBD
-
-## Step 4.2 Visualization - Plot SDUD data trends (Persona: Data Analyst)
-1. Launch the PowerBI embedded workspace (via Azure portal > PowerBI workspace > Workspace web URL)
-
-
-## Step 5. Data Science & Machine Learning
-Next, you will build a prospective analysis.  Based on the drug trends identified from the SDUD data, the objective is to build a machine learning model based on the FAERS data associated with those drugs.  Again due to the dataset sizes, Azure Databricks will be used to handle this big data engineering task.
-
-## Step 5.1: Unpack FAERS zip files using Synapse Pipelines (Persona: Data Engineer)
-2. Process FAERS data in Databricks
-
-## Step 5.2: Process FAERS Data in Azure Databrick (Persona: Pro Data Scientist)
-1. Launch the Databricks workspace (via Azure portal > Databricks > Launch workspace > Workspace web URL)
-2. Go to `Clusters`.  Create a cluster with the following variables: (TBD)
-3. Go to `Workspace` > `Users` > your username > `Import`
-4. Select `Import from file` and select the notebook (.py) from the repository's `/02-DataEngineering/Notebooks` folder
-
-### 01_SDUD
-1. Update `data_lake_account_name` variable to your ADLS in the [00_preparedata.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/00_preparedata.ipynb) notebook
-2. Update `file_system_name` variable to your container in the [00_preparedata.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/00_preparedata.ipynb) notebook
-3. Run the notebook
-
-3. Run AML autoML
-5. See if can improve model code-first back in DB
-6. Deploy model in using AML 
-
-
-
-
 
 ## Step 3. Update storage account permisions
 In order to perform the necessary actions in Synapse workspace, you will need to grant more access.
@@ -113,104 +62,68 @@ Before you can upload any assets to the Synapse Workspace you will first need to
 ![client IP](./img/firewall.png)
 4. Your IP address should now be visable in the IP list.
 
-## Step 5. Add Compute to Azure Machine Learning
-1. Go to the Machine Learning Service and click the button `Launch Studio`
-2. Click on `Compute` - select `Inference Clusters` and click `New`
-3. Use an Existing Azure kubernetes cluster and select the kubernetes cluster that was created during the deploymnet of the resources
-4. Click `Next`
-5. Specify a Compute Name and click `Create`
+## Step 3. Data Engineering - Process SDUD Data in Azure Databricks (Persona: Data Engineer)
+First, you will build the retrospective analysis. The objective is to process and analyze the SDUD data to identify any drug prescription trends.  Due to the large size of the datasets, Azure Databricks will be used to handle this big data engineering task.
 
-## Step 6. Add the Cosmos DB as linked service
-In this step you're going to add the Cosmos DB as a linked service in the Synapse Workspace.
-1. Launch the Synapse workspace (via Azure portal > Synapse workspace > Workspace web URL)
-2. Click on `Manage - Linked Services - New`
-3. Type in the search box "Cosmos" and select the service "Azure Cosmos DB (SQL API)"
-4. Click `Continue`
-5. Fill in the following data for the linked service
+1. Launch the Databricks workspace (via Azure portal > Databricks > Launch workspace > Workspace web URL)
+2. Go to `Clusters`.  Create a cluster with the following variables: (TBD)
+3. Go to `Workspace` > `Users` > your username > `Import`
+4. Select `Import from file` and select the notebook (.py) from the repository's `/02-DataEngineering/Notebooks` folder
 
-  | Field | Value |
-  | ------------- | ------------- |
-  | Name | "patientHubDB" |
-  | Connect via integration runtime | AutoResolveIntegrationRuntime |
-  | Authentication method | Connection String |
-  | Account selection method | Enter Manually |
-  | Azure Cosmos DB account URI |Copy the Cosmos DB URI from the Cosmos DB you have created  |
-  | Azure Cosmos DB access key | Copy the Cosmos DB Primary Key from the Cosmos DB you have created  |
-  | Database name | "patienthubdb" |
-
-![Cosmos DB Linked Service Configuration](./img/CosmosDBLinkedServiceConfiguration.jpg "Cosmos DB Linked Service Configuration")
-
-## Step 7. Upload and run Notebooks
-1. Launch the Synapse workspace (via Azure portal > Synapse workspace > Workspace web URL)
-2. Go to `Develop`, click the `+`, and click `Import` to select all Spark notebooks from the repository's `/Analytics_Deployment/Synapse-Workspace/Notebooks` folder
-3. For each of the notebooks, select `Attach to > spark1` in the top dropdown
-### 00_preparedata
+### 01_SDUD
 1. Update `data_lake_account_name` variable to your ADLS in the [00_preparedata.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/00_preparedata.ipynb) notebook
 2. Update `file_system_name` variable to your container in the [00_preparedata.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/00_preparedata.ipynb) notebook
+3. Run the notebook
 
-### 01_train_diabetes_readmission_automl
-1. Update `data_lake_account_name` variable to your ADLS in the [01_train_diabetes_readmission_automl.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/01_train_diabetes_readmission_automl.ipynb) notebook
-2. Update `file_system_name` variable to your container in the [01_train_diabetes_readmission_automl.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/01_train_diabetes_readmission_automl.ipynb) notebook
-3. Update `subscription_id` variable to your Azure SubscriptionID in the [01_train_diabetes_readmission_automl.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/01_train_diabetes_readmission_automl.ipynb) notebook
-4. Update `resource_group` variable to your ResourceGroup in the [01_train_diabetes_readmission_automl.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/01_train_diabetes_readmission_automl.ipynb) notebook
-5. Update `workspace_name` variable to your Azure Machine Learning Workspace in the [01_train_diabetes_readmission_automl.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/01_train_diabetes_readmission_automl.ipynb) notebook
-6. Update `workspace_region` variable to your Azure Machine Learning Workspace Region in the [01_train_diabetes_readmission_automl.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/01_train_diabetes_readmission_automl.ipynb) notebook
+## Step 4. Analytics & Visualization 
+## Step 4.1: Analytics - Prepare SDUD data for operational reporting (Persona: Data Architect)
+The SDUD data is now saved in ADLS.  The data will be retrieved from the data lake and transformed into a data warehouse object for querying, reporting, and visualization.  This will also include masking personal health information (PHI/PII) that can only be seen by specific users or groups.
 
-### 02_deploy_AKS_diabetes_readmission_model
-1. Update `data_lake_account_name` variable to your ADLS in the [02_deploy_AKS_diabetes_readmission_model.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/02_deploy_AKS_diabetes_readmission_model.ipynb) notebook
-2. Update `file_system_name` variable to your container in the [02_deploy_AKS_diabetes_readmission_model.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/02_deploy_AKS_diabetes_readmission_model.ipynb) notebook
-3. Update `subscription_id` variable to your Azure SubscriptionID in the [02_deploy_AKS_diabetes_readmission_model.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/02_deploy_AKS_diabetes_readmission_model.ipynb) notebook
-4. Update `resource_group` variable to your ResourceGroup in the [02_deploy_AKS_diabetes_readmission_model.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/02_deploy_AKS_diabetes_readmission_model.ipynb) notebook
-5. Update `workspace_name` variable to your Azure Machine Learning Workspace in the [02_deploy_AKS_diabetes_readmission_model.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/02_deploy_AKS_diabetes_readmission_model.ipynb) notebook
-6. Update `workspace_region` variable to your Azure Machine Learning Workspace Region in the [02_deploy_AKS_diabetes_readmission_model.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/02_deploy_AKS_diabetes_readmission_model.ipynb) notebook
-6. Update `autoMLRunId` variable to the Run ID that was returned in the 01_train_diabetes_readmission_automl notebook in the [02_deploy_AKS_diabetes_readmission_model.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/02_deploy_AKS_diabetes_readmission_model.ipynb) notebook
-7. Update `aks_target_name` variable to the Compute you have created in step 5 in the [02_deploy_AKS_diabetes_readmission_model.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/02_deploy_AKS_diabetes_readmission_model.ipynb) notebook
+1. Launch the Synapse workspace (via Azure portal > Synapse workspace > Workspace web URL)
+2. Go to `Develop`, click `+`, and click `Import` to select all the SQL scripts from the repository's `/04-Analytics&Reporting/` folder
+3. Run each of the scripts in the following order:
+    - TBD
+    - TBD
 
-When all the variables are modified, publish your all imported notebooks so they are saved in your workspace.
-Run the following notebooks in order:
-  - [00_preparedata](./Analytics_Deployment/Synapse-Workspace/Notebooks/00_preparedata.ipynb)
-  - [01_train_diabetes_readmission_automl.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/01_train_diabetes_readmission_automl.ipynb)
-  - [02_deploy_AKS_diabetes_readmission_model.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/02_deploy_AKS_diabetes_readmission_model.ipynb)
+## Step 4.2 Visualization - Plot SDUD data trends (Persona: Data Analyst)
+1. Launch the PowerBI embedded workspace (via Azure portal > PowerBI workspace > Workspace web URL)
 
-## Step 8. Deploy API service endpoints on the Azure Kubernetes Service
-Before you can confiure the service endpoint, there are some Prerequisites that need to be installed on your device.
 
-1.	[Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)  - Required for the deployment and configuration of the Azure Resources and Source code
-2.	[Docker Desktop](https://www.docker.com/get-started)  - Required for Debugging in local or containerizing codes in the Deployment process
-3.	[PowerShell 7.x](https://github.com/PowerShell/PowerShell#get-powershell)  - Required to execute the Deployment Script
+## Step 5. Data Science & Machine Learning
+Next, you will build a prospective analysis.  Based on the drug trends identified from the SDUD data, the objective is to build a machine learning model based on the FAERS data associated with those drugs.  Again due to the dataset sizes, Azure Databricks will be used to handle this big data engineering task.
 
-Open the [deployapplications.ps1](.\Backend_deployment\deployapplications.ps1) file and update the necesary variables.
+## Step 5.1: Unpack FAERS Zip files using Synapse Pipelines (Persona: Data Engineer)
+1. Go back to the Synapse workspace and go to 
+2. Go to `Integrate`, click `+`, and click `Import` to select the JSON template from the repository's `/02-DataEngineering/` folder
+3. Run the pipeline
 
-| Field | Value |
-  | ------------- | ------------- |
-  | $subscriptionId | SubscriptionID where Azure resources will be deployed |
-  | $resourcegroupName | Resourcegroup Name where Azure resources will be deployed |
-  | $containerRegistryName | Container Registry Name already deployed in previous deployment by Azure ML |
-  | $kubernetesName | AKS Name already deployed in previous deployment by Azure ML |
-  | $azurecosmosaccountName | Azure Cosmos DB Name already deployed in previous deployment |
-  | $azurecosmosdbDataBaseName | "patientHubDB" |
-  | $ttsSubscriptionKey | Azure Speech Service Subscription key in previous deployment |
-  | $ttsServiceRegion | Azure Speech Service Service Region in previous deployment |
-  | $mlServiceURL | Deployed Realtime inference service URL in Azure ML Studio in previous step |
-  | $mlServiceBearerToken | Deployed Realtime infrence service BearerToken in Azure ML Studio in previous step |
+## Step 5.2: Process FAERS Data in Azure Databricks (Persona: Pro Data Scientist)
+1. Launch the Databricks workspace (via Azure portal > Databricks > Launch workspace > Workspace web URL)
+2. Go to `Clusters`.  Create a cluster with the following variables: (TBD)
+3. Go to `Workspace` > `Users` > your username > `Import`
+4. Select `Import from file` and select the notebooks (.py) from the repository's `/04-DataScience&MachineLearning/Notebooks` folder
 
-Then run PowerShell `as Administrator` and launch the script [deployapplications.ps1](./Backend_Deployment/deployapplications.ps1)  
+### 01_FAERS
+1. Update `data_lake_account_name` variable to your ADLS in the [00_preparedata.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/00_preparedata.ipynb) notebook
+2. Update `file_system_name` variable to your container in the [00_preparedata.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/00_preparedata.ipynb) notebook
+3. Run the notebook
 
-Once the script is finished, note down the public IP addresses for each services.  
-You need them in the next step.
+### 02_FAERS
+1. Update `data_lake_account_name` variable to your ADLS in the [00_preparedata.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/00_preparedata.ipynb) notebook
+2. Update `file_system_name` variable to your container in the [00_preparedata.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/00_preparedata.ipynb) notebook
+3. Run the notebook
 
-## Step 9. Run notebook 03_load_predictions
-Go back to your Synapse workspace and open the notebook `03_load_predictions`
-Fill in the variables:
+### 03_FAERS
+1. Update `data_lake_account_name` variable to your ADLS in the [00_preparedata.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/00_preparedata.ipynb) notebook
+2. Update `file_system_name` variable to your container in the [00_preparedata.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/00_preparedata.ipynb) notebook
+3. Run the notebook
 
-1. Update `data_lake_account_name` variable to your ADLS in the [03_load_predictions.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/03_load_predictions.ipynb) notebook
-2. Update `file_system_name` variable to your container in the [03_load_predictions.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/03_load_predictions.ipynb) notebook
-3. Update `subscription_id` variable to your Azure SubscriptionID in the [03_load_predictions.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/03_load_predictions.ipynb) notebook
-4. Update `resource_group` variable to your ResourceGroup in the [03_load_predictions.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/03_load_predictions.ipynb) notebook
-5. Update `workspace_name` variable to your Azure Machine Learning Workspace in the [03_load_predictions.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/03_load_predictions.ipynb) notebook
-6. Update `workspace_region` variable to your Azure Machine Learning Workspace Region in the [03_load_predictions.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/03_load_predictions.ipynb) notebook
+## Step 5.3: Process FAERS Data in Azure Machine Learning & Deploy Best Model (Persona: Pro Data Scientist, Citizen Data Scientist)
+3. Run AML autoML
+5. See if can improve model, code-first back in DB
+6. Deploy model in using AML 
 
-When all the variables are modified, publish your the notebook so it is saved in your workspace, and run it.
+
 
 ## Step 10. Deploy and configure the Provider Portal App
 1. Go to https://make.preview.powerapps.com/
