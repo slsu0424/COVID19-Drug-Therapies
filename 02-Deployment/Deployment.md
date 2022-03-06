@@ -1,7 +1,7 @@
 # Deployment Guide
 Please follow the steps below to set up the Azure environment.
 
-## Step 1: Download the Required Datasets
+## Step 1. Download the Required Datasets
 There are 2 data sources that are used in this solution.  Due to the size of the data, you will download the data directly from their website.
 
 1. [State Drug Utilization Database](https://www.medicaid.gov/medicaid/prescription-drugs/state-drug-utilization-data/index.html) (SDUD) - This data represents covered outpatient drugs paid for by state Medicaid agencies.  We will be using this data to analyze drug prescription rends between the years 2018-2020.
@@ -34,15 +34,29 @@ There are 2 data sources that are used in this solution.  Due to the size of the
       - faers_ascii_2021Q2.zip
 
 
-## Step 2: Upload Datasets
+## Step 2. Upload Datasets to Azure Data Lake Storage
 
-### Step 2.1 Upload SDUD data to Azure Data Lake Storage
-Navigate to the Azure Data Lake Storage Account.  Under the container `raw`, create a new folder `SDUD`.
-Upload the SDUD files from your local machine into the ADLS storage account.
+Navigate to the Azure Data Lake Storage Account.  Under the container `raw`, create two new folders `SDUD` and `FAERS`.
+Upload the SDUD files to the `SDUD` folder.  
+Upload the FAERS files to the `FAERS` folder.
 
-### Step 2.2 Upload FAERS data to Azure Data Lake Storage
-Navigate to the Azure Data Lake Storage Account.  Under the container `raw`, create a new folder `FAERS`.
-Upload the FAERS files from your local machine into the ADLS storage account.
+We will work with the SDUD data in the next step.
+
+## Step 3. Data Engineering - Process SDUD Data in Azure Databricks
+
+## Step 4. Operational Analytics - Prepare SDUD data for operational reporting
+
+## Step 4. Visualization - SDUD data trends
+
+
+## Step 4. Data Science & Machine Learning - Process FAERS Data in Azure Databricks & Azure Synapse
+1. Unpack FAERS zip files using synapse pipelines
+2. Process FAERS data in Databricks
+4. Build initial model in DB
+5. See if AML autoML will provide a better model  
+
+
+
 
 
 ## Step 3. Update storage account permisions

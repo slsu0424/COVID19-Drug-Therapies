@@ -76,7 +76,7 @@ The resources in this folder is used to deploy the required resources into your 
 ## [03-Data Engineering](./DataEngineering)
 This folder contains the code needed to complete this solution accelerator. Once you have deployed all the required resources from [Resource Deployment](./Resource_Deployment/README.md), run through the Notebooks following the instructions in Resource Deployment.
 
-## [04-Analytics](./Analytics_Deployment)
+## [04-Operational Analytics](./Analytics_Deployment)
 This folder contains the Notebooks needed to complete this solution accelerator. Once you have deployed all the required resources from [Resource Deployment](./Resource_Deployment/README.md), run through the Notebooks following the instructions in Resource Deployment.
 
 ## [05-Frontend](./Frontend_Deployment)
