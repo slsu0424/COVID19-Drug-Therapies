@@ -19,6 +19,8 @@ There are 2 data sources that are used in this solution.  Due to the size of the
 
       As the data is reported on a quarterly basis for each year, navigate to the [Quarterly Data Files](https://www.fda.gov/drugs/questions-and-answers-fdas-adverse-event-reporting-system-faers/fda-adverse-event-reporting-system-faers-latest-quarterly-data-files).  Download the data to your local machine in the ASCII format.
 
+      Note that each quarterly .zip file contains 7 different files that will need to be consolidated later.
+
       ![FAERS](./media/FAERS.png)
 
       Repeat this for years 2020 and 2021.  Make sure you have downloaded the following datasets (.zip):
@@ -42,62 +44,61 @@ Upload the SDUD files to the `SDUD` folder, and the FAERS files to the `FAERS` f
 ![ADLS](./media/SDUD.png)
 
 
-## Step 3. Update storage account permisions
-In order to perform the necessary actions in Synapse workspace, you will need to grant more access.
+## Step 3. Update Synapse storage account permisions
+In order to perform the necessary actions in the Synapse workspace, you will need to grant specific access.
 
 1. Go to the Azure Data Lake Storage Account created above
 2. Go to the `Access Control (IAM) > + Add > Add role assignment`
 3. Now click the Role dropdown and select `Storage Blob Data Contributor`
     - Search for your username and add
 4. Click `Save` at the bottom
+.
 
-## OPTIONAL - Step 3.1: Add IP Adress to the Synapse Workspace
-* **NOTE**: If you did not allow all connections during deployment of your resources, follow the steps below
+## Step 3. Data Engineering
 
-Before you can upload any assets to the Synapse Workspace you will first need to add your IP address to the Synapse Workspace.
-Before you can upload any assets to the Synapse Workspace you will first need to add your IP address to the Synapse Workspace.
-1. Go to the Azure Synaspe resource you created in Step 1.
-2. Navigate to `Firewalls` under `Security` on the left hand side of the page.
-3. At the top click `+ Add client IP`
-![client IP](./img/firewall.png)
-4. Your IP address should now be visable in the IP list.
+## Unpack FAERS Zip files using Synapse Pipelines (Persona: Data Engineer)
+As mentioned in Step 1, the FAERS data is embedded as separate files within each quarterly .zip file.  The objective is to move all those files for each quarter for each year into a single folder for predictive modeling.  To make this task easier, you will use Synapse pipelines to create a pipeline through a low-code experience.  
 
-## Step 3. Data Engineering - Process SDUD Data in Azure Databricks (Persona: Data Engineer)
-First, you will build the retrospective analysis. The objective is to process and analyze the SDUD data to identify any drug prescription trends.  Due to the large size of the datasets, Azure Databricks will be used to handle this big data engineering task.
+1. Launch the Synapse workspace (via Azure portal > Synapse workspace > Workspace web URL)
+2. Go to `Integrate`, click `+`, and click `Import` to select the JSON template from the repository's `/02-DataEngineering/` folder
+3. Run the pipeline
+
+## Step 4. Analytics & Visualization
+
+## Step 4.1: Process and analyze SDUD data (Persona: Pro Data Scientist, Data Architect)
+First, you will build the retrospective analysis using the SDUD data. The objective is to process and analyze the SDUD data to identify any drug prescription trends.  Due to the large size of the datasets, Azure Databricks will be used to handle this big data engineering task.
 
 1. Launch the Databricks workspace (via Azure portal > Databricks > Launch workspace > Workspace web URL)
 2. Go to `Clusters`.  Create a cluster with the following variables: (TBD)
 3. Go to `Workspace` > `Users` > your username > `Import`
-4. Select `Import from file` and select the notebook (.py) from the repository's `/02-DataEngineering/Notebooks` folder
+4. Select `Import from file` and select the notebook (.py) from the repository's `/04-Analytics&Reporting/Notebooks` folder
 
 ### 01_SDUD
 1. Update `data_lake_account_name` variable to your ADLS in the [00_preparedata.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/00_preparedata.ipynb) notebook
 2. Update `file_system_name` variable to your container in the [00_preparedata.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/00_preparedata.ipynb) notebook
 3. Run the notebook
 
-## Step 4. Analytics & Visualization 
-## Step 4.1: Analytics - Prepare SDUD data for operational reporting (Persona: Data Architect)
-The SDUD data is now saved in ADLS.  The data will be retrieved from the data lake and transformed into a data warehouse object for querying, reporting, and visualization.  This will also include masking personal health information (PHI/PII) that can only be seen by specific users or groups.
+## Step 4.2: Prepare SDUD data for operational reporting (Persona: Data Architect)
+The SDUD data is now saved in ADLS.  The data will be accessed from the data lake and transformed into a data warehouse object for querying, reporting, and visualization.  This will also include masking personal health information (PHI/PII) that can only be seen by specific users or groups.
 
 1. Launch the Synapse workspace (via Azure portal > Synapse workspace > Workspace web URL)
-2. Go to `Develop`, click `+`, and click `Import` to select all the SQL scripts from the repository's `/04-Analytics&Reporting/` folder
+2. Go to `Develop`, click `+`, and click `Import` to select all the SQL scripts from the repository's `/04-Analytics&Reporting/SQL` folder
 3. Run each of the scripts in the following order:
     - TBD
     - TBD
 
-## Step 4.2 Visualization - Plot SDUD data trends (Persona: Data Analyst)
+## Step 4.3 Visualize SDUD data trends (Persona: Data Analyst)
+Now that the data is in a relational format, you will generate reports and visualizations.
+
 1. Launch the PowerBI embedded workspace (via Azure portal > PowerBI workspace > Workspace web URL)
+2. TBD
+3. TBD
 
 
 ## Step 5. Data Science & Machine Learning
-Next, you will build a prospective analysis.  Based on the drug trends identified from the SDUD data, the objective is to build a machine learning model based on the FAERS data associated with those drugs.  Again due to the dataset sizes, Azure Databricks will be used to handle this big data engineering task.
+Next, you will build a prospective analysis.  Based on the drug trends identified from the SDUD data, the objective is to build a machine learning model based on the FAERS data associated with those drugs.  Azure Databricks will be first used to handle these large dataset with the latest Spark capabilities.  
 
-## Step 5.1: Unpack FAERS Zip files using Synapse Pipelines (Persona: Data Engineer)
-1. Go back to the Synapse workspace and go to 
-2. Go to `Integrate`, click `+`, and click `Import` to select the JSON template from the repository's `/02-DataEngineering/` folder
-3. Run the pipeline
-
-## Step 5.2: Process FAERS Data in Azure Databricks (Persona: Pro Data Scientist)
+## Step 5.1: Process FAERS Data in Azure Databricks (Persona: Pro Data Scientist)
 1. Launch the Databricks workspace (via Azure portal > Databricks > Launch workspace > Workspace web URL)
 2. Go to `Clusters`.  Create a cluster with the following variables: (TBD)
 3. Go to `Workspace` > `Users` > your username > `Import`
@@ -118,14 +119,15 @@ Next, you will build a prospective analysis.  Based on the drug trends identifie
 2. Update `file_system_name` variable to your container in the [00_preparedata.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/00_preparedata.ipynb) notebook
 3. Run the notebook
 
-## Step 5.3: Process FAERS Data in Azure Machine Learning & Deploy Best Model (Persona: Pro Data Scientist, Citizen Data Scientist)
+## Step 5.2: Process FAERS Data in Azure Machine Learning & Deploy Best Model (Persona: Pro Data Scientist, Citizen Data Scientist)
 3. Run AML autoML
 5. See if can improve model, code-first back in DB
 6. Deploy model in using AML 
 
 
+## Step 6. Front-End
 
-## Step 10. Deploy and configure the Provider Portal App
+## Deploy and configure the Provider Portal App
 1. Go to https://make.preview.powerapps.com/
 2. In the right upper corner, make sure you select the correct environment where you want to deploy the Power App.
 3. Click on `Apps - Import Canvas App`
