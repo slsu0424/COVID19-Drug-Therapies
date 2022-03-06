@@ -96,7 +96,7 @@ Now that the data is in a relational format, you will generate reports and visua
 
 
 ## Step 5. Data Science & Machine Learning
-Next, you will build a prospective analysis.  Based on the drug trends identified from the SDUD data, the objective is to build a machine learning model based on the FAERS data associated with those drugs.  Azure Databricks will be first used to handle these large datasets, pre-process the data, and perform feature engineering.  You will also use Azure Machine Learning to benchmark code-first models against autoML, and deploy the best model for real-time inferencing.
+Next, you will build a prospective analysis.  Based on the drug trends identified from the SDUD data, the objective is to build a machine learning model based on the FAERS data associated with those drugs.  Azure Databricks will be used to handle these large datasets, pre-process the data, and perform feature engineering.  You will also use Azure Machine Learning to benchmark code-first models against autoML, and deploy the best model for real-time inferencing.
 
 ## 5.1: Process FAERS data (Persona: Pro Data Scientist)
 1. Launch the Databricks workspace (via Azure portal > Databricks > Launch workspace > Workspace web URL)
