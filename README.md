@@ -71,15 +71,18 @@ While not required, a working knowledge of Azure, Azure Data Factory, Azure Data
 This folder contains Powerpoint decks that provide an Executive Overview and Technical Design for the solution.
 
 ## [02-Deployment](./Deployment/Deployment)
-The resources in this folder is used to deploy the required resources into your Azure Subscription. This can be done using the Azure Portal.
+This folder contains the scripts used to deploy the required resources into your Azure Subscription. This can be done using the Azure Portal.  The [Deployment Guide](./02-Deployment/Deployment.md) is provided to help you complete the solution setup in Azure.
 
 ## [03-Data Engineering](./DataEngineering)
-This folder contains the code needed to complete this solution accelerator. Once you have deployed all the required resources from [Resource Deployment](./Resource_Deployment/README.md), run through the Notebooks following the instructions in Resource Deployment.
+This folder contains the notebooks and JSON templates needed to complete the data engineering tasks. You will use the content in this folder following the instructions in the Deployment Guide.
 
-## [04-Operational Analytics](./Analytics_Deployment)
-This folder contains the Notebooks needed to complete this solution accelerator. Once you have deployed all the required resources from [Resource Deployment](./Resource_Deployment/README.md), run through the Notebooks following the instructions in Resource Deployment.
+## [04-Analytics & Visualization](./Analytics)
+This folder contains the SQL Scripts needed to complete the tasks to transform the data for operational reporting and generate reports.  You will use the content in this folder following the instructions in the Deployment Guide.
 
-## [05-Frontend](./Frontend_Deployment)
+## [05-Data Science & Machine Learning](./Analytics)
+This folder contains the SQL Scripts needed to complete the tasks to transform the data for operational reporting.  You will use the content in this folder following the instructions in the Deployment Guide.
+
+## [06-Frontend](./Frontend_Deployment)
 This folder contains the Web-based User Interface to be used by a clinician.
 
 ## Contributing

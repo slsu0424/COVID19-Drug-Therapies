@@ -1,7 +1,7 @@
 # Deployment Guide
 Please follow the steps below to set up the Azure environment.
 
-## Step 1. Download Required Datasets
+## Step 1. Download Datasets
 There are 2 data sources that are used in this solution.  Due to the size of the data, you will download the data directly from their website.
 
 1. [State Drug Utilization Database](https://www.medicaid.gov/medicaid/prescription-drugs/state-drug-utilization-data/index.html) (SDUD) - This data represents covered outpatient drugs paid for by state Medicaid agencies.  We will be using this data to analyze drug prescription rends between the years 2018-2020.
@@ -35,25 +35,56 @@ There are 2 data sources that are used in this solution.  Due to the size of the
 
 
 ## Step 2. Upload Datasets to Azure Data Lake Storage
-
-Navigate to the Azure Data Lake Storage Account.  Under the container `raw`, create two new folders `SDUD` and `FAERS`.
+Navigate to the Azure Data Lake Storage Account (ADLS).  Under the container `raw`, create two new folders `SDUD` and `FAERS`.
 
 Upload the SDUD files to the `SDUD` folder, and the FAERS files to the `FAERS` folder.
 
 ![ADLS](./media/SDUD.png)
 
-## Step 3. Data Engineering - Process SDUD Data in Azure Databricks
-1. Launch the Databricks workspace (via Azure portal > Synapse workspace > Workspace web URL)
-2. Go to `Develop`, click the `+`, and click `Import` to select all Spark notebooks from the repository's `/Analytics_Deployment/Synapse-Workspace/Notebooks` folder
+## Step 3. Data Engineering - Process SDUD Data in Azure Databricks (Persona: Data Engineer)
+First, you will build the retrospective analysis. The objective is to process and analyze the SDUD data to identify any drug prescription trends.  Due to the large size of the datasets, Azure Databricks will be used to handle this big data engineering task.
 
-## Step 4. Operational Analytics - Prepare SDUD data for operational reporting
+1. Launch the Databricks workspace (via Azure portal > Databricks > Launch workspace > Workspace web URL)
+2. Go to `Clusters`.  Create a cluster with the following variables: (TBD)
+3. Go to `Workspace` > `Users` > your username > `Import`
+4. Select `Import from file` and select the notebook (.py) from the repository's `/02-DataEngineering/Notebooks` folder
 
-## Step 4. Visualization - SDUD data trends
+### 01_SDUD
+1. Update `data_lake_account_name` variable to your ADLS in the [00_preparedata.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/00_preparedata.ipynb) notebook
+2. Update `file_system_name` variable to your container in the [00_preparedata.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/00_preparedata.ipynb) notebook
+3. Run the notebook
+
+## Step 4. Analytics & Visualization 
+## Step 4.1: Analytics - Prepare SDUD data for operational reporting (Persona: Data Architect)
+The SDUD data is now saved in ADLS.  The data will be retrieved from the data lake and transformed into a data warehouse object for querying, reporting, and visualization.  This will also include masking personal health information (PHI/PII) that can only be seen by specific users or groups.
+
+1. Launch the Synapse workspace (via Azure portal > Synapse workspace > Workspace web URL)
+2. Go to `Develop`, click `+`, and click `Import` to select all SQL scripts from the repository's `/04-Analytics&Reporting/` folder
+3. Run each of the scripts in the following order:
+    - TBD
+    - TBD
+
+## Step 4.2 Visualization - Plot SDUD data trends (Persona: Data Analyst)
+1. Launch the PowerBI embedded workspace (via Azure portal > PowerBI workspace > Workspace web URL)
 
 
-## Step 4. Data Science & Machine Learning - Process FAERS Data in Azure Databricks & Azure Synapse
-1. Unpack FAERS zip files using synapse pipelines
+## Step 5. Data Science & Machine Learning
+Next, you will build a prospective analysis.  Based on the drug trends identified from the SDUD data, the objective is to build a machine learning model based on the FAERS data associated with those drugs.  Again due to the dataset sizes, Azure Databricks will be used to handle this big data engineering task.
+
+## Step 5.1: Unpack FAERS zip files using Synapse Pipelines (Persona: Data Engineer)
 2. Process FAERS data in Databricks
+
+## Step 5.2: Process FAERS Data in Azure Databrick (Persona: Pro Data Scientist)
+1. Launch the Databricks workspace (via Azure portal > Databricks > Launch workspace > Workspace web URL)
+2. Go to `Clusters`.  Create a cluster with the following variables: (TBD)
+3. Go to `Workspace` > `Users` > your username > `Import`
+4. Select `Import from file` and select the notebook (.py) from the repository's `/02-DataEngineering/Notebooks` folder
+
+### 01_SDUD
+1. Update `data_lake_account_name` variable to your ADLS in the [00_preparedata.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/00_preparedata.ipynb) notebook
+2. Update `file_system_name` variable to your container in the [00_preparedata.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/00_preparedata.ipynb) notebook
+3. Run the notebook
+
 3. Run AML autoML
 5. See if can improve model code-first back in DB
 6. Deploy model in using AML 
