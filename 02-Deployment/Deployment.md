@@ -9,7 +9,7 @@ There are 2 data sources that are used in this solution:
 
       ![SDUD1](./images/SDUD1.PNG)
 
-      Repeat this for years 2019 and 2020.  Make sure you have download the following datasets:
+      Repeat this for years 2019 and 2020.  Make sure you have downloaded the following datasets:
       - State Drug Utilization Data 2018
       - State Drug Utilization Data 2019
       - State Drug Utilization Data 2020
