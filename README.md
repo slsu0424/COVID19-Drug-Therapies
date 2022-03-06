@@ -74,7 +74,7 @@ This folder contains the Powerpoint decks that provide an Executive Overview and
 This folder contains the scripts used to deploy the required resources into your Azure Subscription. This can be done using the Azure Portal.  The [Deployment Guide](./02-Deployment/Deployment.md) is provided to help complete the rest of the solution setup.
 
 ## [03-Data Engineering](./DataEngineering)
-This folder contains the JSON templates needed to complete the data engineering tasks. You will use the content in this folder following the instructions in the Deployment Guide.
+This folder contains the JSON templates needed to complete the data engineering tasks outlined in the Deployment Guide. You will use the content in this folder following the instructions in the Deployment Guide.
 
 ## [04-Analytics & Reporting](./Analytics&Reporting)
 This folder contains the Notebooks and SQL Scripts needed to complete the tasks to prepare the data for operational reporting and generate reports.  You will use the content in this folder following the instructions in the Deployment Guide.

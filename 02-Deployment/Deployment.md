@@ -2,7 +2,7 @@
 Please follow the steps below to set up the Azure environment.
 
 ## Step 1. Download Datasets
-There are 2 data sources that are used in this solution.  Due to the size of the data, you will download the data directly from their website.
+There are 2 data sources that will be used to build the solution.  Due to the size of the data, you will download the data directly from their website.
 
 1. [State Drug Utilization Database](https://www.medicaid.gov/medicaid/prescription-drugs/state-drug-utilization-data/index.html) (SDUD) - This data represents covered outpatient drugs paid for by state Medicaid agencies.  We will be using this data to analyze drug prescription rends between the years 2018-2020.
 
@@ -57,16 +57,17 @@ In order to perform the necessary actions in the Synapse workspace, you will nee
 ## Step 3. Data Engineering
 
 ## Unpack FAERS Zip files using Synapse Pipelines (Persona: Data Engineer)
-As mentioned in Step 1, the FAERS data is embedded as separate files within each quarterly .zip file.  The objective is to move all those files for each quarter for each year into a single folder.  To make this task easier, you will use Synapse pipelines to create a pipeline through a low-code experience.  
+As mentioned in Step 1, the FAERS data is embedded as separate files within each quarterly .zip file.  The objective is to consolidate all those files for each quarter for each year into a single location.  To make this task easier, you will use Synapse pipelines to create a pipeline through a low-code experience.  
 
 1. Launch the Synapse workspace (via Azure portal > Synapse workspace > Workspace web URL)
 2. Go to `Integrate`, click `+`, and click `Import` to select the JSON template from the repository's `/02-DataEngineering/` folder
 3. Run the pipeline
+4. View the extracted files in ADLS
 
 ## Step 4. Analytics & Visualization
 
 ## Step 4.1: Process and analyze SDUD data (Persona: Pro Data Scientist, Data Architect)
-First, you will build the retrospective analysis using the SDUD data. The objective is to process and analyze the SDUD data to identify any drug prescription trends.  Due to the large size of the datasets, Azure Databricks will be first used to handle these large datasets with the latest Spark capabilities. 
+First, you will build the retrospective analysis using the SDUD data. The objective is to process and analyze the SDUD data to identify any drug prescription trends.  Azure Databricks will be first used to handle these large datasets with the latest Spark capabilities. 
 
 1. Launch the Databricks workspace (via Azure portal > Databricks > Launch workspace > Workspace web URL)
 2. Go to `Clusters`.  Create a cluster with the following variables: (TBD)
@@ -79,7 +80,7 @@ First, you will build the retrospective analysis using the SDUD data. The object
 3. Run the notebook
 
 ## Step 4.2: Prepare SDUD data for operational reporting (Persona: Data Architect)
-The SDUD data is now saved in ADLS.  The data will be accessed from the data lake and transformed into a data warehouse object for querying, reporting, and visualization.  This will also include masking personal health information (PHI/PII) that can only be seen by specific users or groups.
+The merged SDUD data is now saved in ADLS.  The data will be accessed from the data lake and transformed into a data warehouse object for querying, reporting, and visualization.  This will also include masking personal health information (PHI/PII) that can only be seen by specific users or groups.
 
 1. Launch the Synapse workspace (via Azure portal > Synapse workspace > Workspace web URL)
 2. Go to `Develop`, click `+`, and click `Import` to select all the SQL scripts from the repository's `/04-Analytics&Reporting/SQL` folder
