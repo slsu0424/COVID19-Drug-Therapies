@@ -68,22 +68,22 @@ While not required, a working knowledge of Azure, Azure Data Factory, Azure Data
 
 ## Folders
 ## [01-Presentations](./Presentations)
-This folder contains Powerpoint decks that provide an Executive Overview and Technical Design for the solution.
+This folder contains the Powerpoint decks that provide an Executive Overview and Technical Design for the solution.
 
-## [02-Deployment](./Deployment/Deployment)
-This folder contains the scripts used to deploy the required resources into your Azure Subscription. This can be done using the Azure Portal.  The [Deployment Guide](./02-Deployment/Deployment.md) is provided to help you complete the solution setup in Azure.
+## [02-Deployment](./Deployment)
+This folder contains the scripts used to deploy the required resources into your Azure Subscription. This can be done using the Azure Portal.  The [Deployment Guide](./02-Deployment/Deployment.md) is provided to help complete the rest of the solution setup.
 
 ## [03-Data Engineering](./DataEngineering)
-This folder contains the notebooks and JSON templates needed to complete the data engineering tasks. You will use the content in this folder following the instructions in the Deployment Guide.
+This folder contains the JSON templates needed to complete the data engineering tasks. You will use the content in this folder following the instructions in the Deployment Guide.
 
-## [04-Analytics & Visualization](./Analytics)
-This folder contains the SQL Scripts needed to complete the tasks to transform the data for operational reporting and generate reports.  You will use the content in this folder following the instructions in the Deployment Guide.
+## [04-Analytics & Reporting](./Analytics&Reporting)
+This folder contains the Notebooks and SQL Scripts needed to complete the tasks to prepare the data for operational reporting and generate reports.  You will use the content in this folder following the instructions in the Deployment Guide.
 
-## [05-Data Science & Machine Learning](./Analytics)
-This folder contains the SQL Scripts needed to complete the tasks to transform the data for operational reporting.  You will use the content in this folder following the instructions in the Deployment Guide.
+## [05-Data Science & Machine Learning](./DataScience&MachineLearning)
+This folder contains the Notebooks needed to complete the tasks for building a machine learning model.  You will use the content in this folder following the instructions in the Deployment Guide.
 
-## [06-Frontend](./Frontend_Deployment)
-This folder contains the Web-based User Interface to be used by a clinician.
+## [06-Frontend](./FrontEnd)
+This folder contains the Web-based User Interface to be used by a end user.
 
 ## Contributing
 
