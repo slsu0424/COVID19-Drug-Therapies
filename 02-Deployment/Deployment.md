@@ -57,7 +57,7 @@ In order to perform the necessary actions in the Synapse workspace, you will nee
 ## Step 3. Data Engineering
 
 ## Unpack FAERS Zip files using Synapse Pipelines (Persona: Data Engineer)
-As mentioned in Step 1, the FAERS data is embedded as separate files within each quarterly .zip file.  The objective is to move all those files for each quarter for each year into a single folder for predictive modeling.  To make this task easier, you will use Synapse pipelines to create a pipeline through a low-code experience.  
+As mentioned in Step 1, the FAERS data is embedded as separate files within each quarterly .zip file.  The objective is to move all those files for each quarter for each year into a single folder.  To make this task easier, you will use Synapse pipelines to create a pipeline through a low-code experience.  
 
 1. Launch the Synapse workspace (via Azure portal > Synapse workspace > Workspace web URL)
 2. Go to `Integrate`, click `+`, and click `Import` to select the JSON template from the repository's `/02-DataEngineering/` folder
@@ -66,7 +66,7 @@ As mentioned in Step 1, the FAERS data is embedded as separate files within each
 ## Step 4. Analytics & Visualization
 
 ## Step 4.1: Process and analyze SDUD data (Persona: Pro Data Scientist, Data Architect)
-First, you will build the retrospective analysis using the SDUD data. The objective is to process and analyze the SDUD data to identify any drug prescription trends.  Due to the large size of the datasets, Azure Databricks will be used to handle this big data engineering task.
+First, you will build the retrospective analysis using the SDUD data. The objective is to process and analyze the SDUD data to identify any drug prescription trends.  Due to the large size of the datasets, Azure Databricks will be first used to handle these large datasets with the latest Spark capabilities. 
 
 1. Launch the Databricks workspace (via Azure portal > Databricks > Launch workspace > Workspace web URL)
 2. Go to `Clusters`.  Create a cluster with the following variables: (TBD)
@@ -96,7 +96,7 @@ Now that the data is in a relational format, you will generate reports and visua
 
 
 ## Step 5. Data Science & Machine Learning
-Next, you will build a prospective analysis.  Based on the drug trends identified from the SDUD data, the objective is to build a machine learning model based on the FAERS data associated with those drugs.  Azure Databricks will be first used to handle these large dataset with the latest Spark capabilities.  
+Next, you will build a prospective analysis.  Based on the drug trends identified from the SDUD data, the objective is to build a machine learning model based on the FAERS data associated with those drugs.  Azure Databricks will be first used to handle these large datasets, pre-process the data, and perform feature engineering.  You will also use Azure Machine Learning to benchmark code-first models against autoML, and deploy the best model for real-time inferencing.
 
 ## Step 5.1: Process FAERS Data in Azure Databricks (Persona: Pro Data Scientist)
 1. Launch the Databricks workspace (via Azure portal > Databricks > Launch workspace > Workspace web URL)
@@ -114,16 +114,23 @@ Next, you will build a prospective analysis.  Based on the drug trends identifie
 2. Update `file_system_name` variable to your container in the [00_preparedata.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/00_preparedata.ipynb) notebook
 3. Run the notebook
 
+
+## Step 5.2: Process FAERS Data in Azure Machine Learning (Persona: Citizen Data Scientist)
+3. See if can improve model, code-first back in DB
+6. Deploy model in using AML 
+
+## Step 5.3: Process FAERS Data in Azure Machine Learning (Persona: Pro Data Scientist)
+3. See if can improve model, code-first back in DB
+6. Deploy model in using AML 
+
 ### 03_FAERS
 1. Update `data_lake_account_name` variable to your ADLS in the [00_preparedata.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/00_preparedata.ipynb) notebook
 2. Update `file_system_name` variable to your container in the [00_preparedata.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/00_preparedata.ipynb) notebook
 3. Run the notebook
 
-## Step 5.2: Process FAERS Data in Azure Machine Learning & Deploy Best Model (Persona: Pro Data Scientist, Citizen Data Scientist)
-3. Run AML autoML
-5. See if can improve model, code-first back in DB
-6. Deploy model in using AML 
-
+## Step 5.4: Deploy the Best Model (Persona: Pro Data Scientist, Citizen Data Scientist)
+1. Deploy model in using AML 
+2. TBD
 
 ## Step 6. Front-End
 
