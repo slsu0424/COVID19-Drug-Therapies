@@ -21,7 +21,7 @@ The video provides a detailed walkthrough of the Solution Accelerator.
 ![Architecture Diagram](./Resource_Deployment/img/ReferenceArchitecture.png)
 
 ## Prerequisites
-To use the solution accelerator, you will need to have access to and/or provision the following applications:
+To use this solution accelerator, you will need to have access to and/or provision the following applications:
 
 1. Access to an [Azure Subscription ](http://portal.azure.com)
 2. [Power Apps](http://www.powerapps.com) License (or free trial)
@@ -47,7 +47,7 @@ While not required, a working knowledge of Azure, Azure Data Factory, Azure Data
     - **Admin Password** for the Synapse Dedicated SQL Pool being deployed.
     - **Prefix ID** to preface the resources with a unique name you can later reference.
 
-2. Clone or download the repository and navigate to the project's root directory.
+2. Clone or download this repository and navigate to the project's root directory.
 
     Option 1: In Windows Terminal, clone the GitHub repo:
 
