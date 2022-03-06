@@ -2,7 +2,8 @@
 Please follow the steps below to set up the Azure environment.
 
 ## Step 1: Get the Required Datasets
-There are 2 data sources that are used in this solution:  
+There are 2 data sources that are used in this solution.  Please click on each data source to access the data.
+
 1. [State Drug Utilization Database](https://www.medicaid.gov/medicaid/prescription-drugs/state-drug-utilization-data/index.html) (SDUD) - This data represents covered outpatient drugs paid for by state Medicaid agencies.  They have been reported by states since the start of the Medicaid Drug Rebate Program.  We will be using this data to analyze drug trends between the years 2018-2020.
 
       Navigate to the year of interest (i.e., 2018) and download the data.
@@ -14,7 +15,9 @@ There are 2 data sources that are used in this solution:
       - State Drug Utilization Data 2019
       - State Drug Utilization Data 2020
 
-2. FDA Adverse Events Database [(FAERS)](https://www.fda.gov/drugs/drug-approvals-and-databases/fda-adverse-event-reporting-system-faers).   
+2. [FDA Adverse Events Database](FAERS)](https://www.fda.gov/drugs/drug-approvals-and-databases/fda-adverse-event-reporting-system-faers) - This data contains adverse event reports, medication error reports, and product quality complaints resulting in adverse events formally submitted to the FDA.  The system supports the FDA's post-marketing safety surveillance program for drug and therapeutic biologic products.  We will use this data to build a machine learning model to characterize patients that are at risk of having a fatal adverse event.
+
+Navigate to the year of interest (i.e., 2018) and download the data. 
 
      Download the following datasets:
     - diabetic_data.csv
