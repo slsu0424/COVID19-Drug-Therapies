@@ -21,7 +21,7 @@ The video provides a detailed walkthrough of the Solution Accelerator.
 ![Architecture Diagram](./Resource_Deployment/img/ReferenceArchitecture.png)
 
 ## Prerequisites
-To use this solution accelerator, you will need to have access to and/or provision the following applications:
+To use the solution accelerator, you will need to have access to and/or provision the following applications:
 
 1. Access to an [Azure Subscription ](http://portal.azure.com)
 2. [Power Apps](http://www.powerapps.com) License (or free trial)
