@@ -4,23 +4,27 @@ Please follow the steps below to set up the Azure environment.
 ## Step 1: Get the Required Datasets
 There are 2 data sources that are used in this solution.  You will download the data directly from their website.
 
-1. [State Drug Utilization Database](https://www.medicaid.gov/medicaid/prescription-drugs/state-drug-utilization-data/index.html) (SDUD) - This data represents covered outpatient drugs paid for by state Medicaid agencies.  They have been reported by states since the start of the Medicaid Drug Rebate Program.  We will be using this data to analyze drug trends between the years 2018-2020.
+1. [State Drug Utilization Database](https://www.medicaid.gov/medicaid/prescription-drugs/state-drug-utilization-data/index.html) (SDUD) - This data represents covered outpatient drugs paid for by state Medicaid agencies.  They have been reported by states since the start of the Medicaid Drug Rebate Program.  We will be using this data to analyze drug prescription rends between the years 2018-2020.
 
       Navigate to the year of interest (i.e., 2018) and download the data.
 
-      ![SDUD1](./media/SDUD1.png)
+      ![SDUD](./media/SDUD1.png)
 
       Repeat this for years 2019 and 2020.  Make sure you have downloaded the following datasets:
       - State Drug Utilization Data 2018
       - State Drug Utilization Data 2019
       - State Drug Utilization Data 2020
 
-2. [FDA Adverse Events Database](FAERS)](https://www.fda.gov/drugs/drug-approvals-and-databases/fda-adverse-event-reporting-system-faers) - This data contains adverse event reports, medication error reports, and product quality complaints resulting in adverse events formally submitted to the FDA.  The system supports the FDA's post-marketing safety surveillance program for drug and therapeutic biologic products.  We will use this data to build a machine learning model to characterize patients that are at risk of having a fatal adverse event.
+2. [FDA Adverse Events Database](https://www.fda.gov/drugs/drug-approvals-and-databases/fda-adverse-event-reporting-system-faers) (FAERS) - This data contains adverse event reports, medication error reports, and product quality complaints resulting in adverse events submitted to the FDA.  We will use this data to build a machine learning model to characterize at-risk patients for fatal adverse events between the years 2019-2021.
 
-Navigate to the year of interest (i.e., 2018) and download the data. 
+Navigate to the year of interest (i.e., 2019) and download the data. 
 
-     Download the following datasets:
-    - diabetic_data.csv
+
+
+    Repeat this for years 2019 and 2020.  Make sure you have downloaded the following datasets:
+      - State Drug Utilization Data 2018
+      - State Drug Utilization Data 2019
+      - State Drug Utilization Data 2020
 
 ## Step 2. Upload Sample Dataset
 ### Step 3.1 Upload Sample Dataset to Azure Data Lake Storage
