@@ -60,29 +60,29 @@ While not required, a working knowledge of Azure, Azure Data Factory, Azure Data
       ![GitHub_Button](./images/githubdownload.png)
 
   
-3. Go to the [Deployment Guide](./02-Deployment/Deployment.md) under [./02-Deployment](./02-Deployment) for a step-by-step tutorial to complete the solution setup.
+3. Go to the [Deployment Guide](./02-Deployment/Deployment.md) under [./02-Deployment](./02-Deployment) to complete the solution setup.
 
   > **NOTE**: Be sure to manually pause the SQL pool when you are not using it from the Synapse Workspace to reduce cost. Follow the steps below to pause the SQL pool:  
   > * Navigate to the Synapse workspace
   > *  Go to `Manage` > `SQL pools` > Pause the SQL pool 
 
 ## Folders
-## [01-Presentations](./Presentations)
+## [01-Presentations](./01-Presentations)
 This folder contains the Powerpoint decks that provide an Executive Overview and Technical Design for the solution.
 
-## [02-Deployment](./Deployment)
+## [02-Deployment](./02-Deployment)
 This folder contains the scripts used to deploy the required resources into your Azure Subscription. This can be done using the Azure Portal.  The [Deployment Guide](./02-Deployment/Deployment.md) is provided to help complete the rest of the solution setup.
 
-## [03-Data Engineering](./DataEngineering)
+## [03-Data Engineering](./03-DataEngineering)
 This folder contains the JSON templates needed to complete the data engineering tasks outlined in the Deployment Guide. You will use the content in this folder following the instructions in the Deployment Guide.
 
-## [04-Analytics & Reporting](./Analytics&Reporting)
+## [04-Analytics & Reporting](./04-Analytics&Reporting)
 This folder contains the Notebooks and SQL Scripts needed to complete the tasks to prepare the data for operational reporting and generate reports.  You will use the content in this folder following the instructions in the Deployment Guide.
 
-## [05-Data Science & Machine Learning](./DataScience&MachineLearning)
+## [05-Data Science & Machine Learning](./05-DataScience&MachineLearning)
 This folder contains the Notebooks needed to complete the tasks for building a machine learning model.  You will use the content in this folder following the instructions in the Deployment Guide.
 
-## [06-Frontend](./FrontEnd)
+## [06-Frontend](./06-FrontEnd)
 This folder contains the Web-based User Interface to be used by a end user.
 
 ## Contributing
