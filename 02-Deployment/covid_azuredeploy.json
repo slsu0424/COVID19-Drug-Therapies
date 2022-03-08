@@ -13,6 +13,12 @@
       "metadata": {
         "description": "Password for Synapse Dedicated Pool SQL Admin"
       }
+    },
+    "resourceGroupName": {
+        "type": "string",
+        "metadata": {
+          "description": "Specifies the resource group name of the Azure Machine Learning workspace."
+      }
     }
 },
   "variables": {
@@ -26,7 +32,7 @@
     "sqlComputeName": "SQLPool01",
     "sparkComputeName": "SparkPool01",
     "computeSubnetId": "",
-    "sqlServerSKU": "DW100c",
+    "sqlServerSKU": "DW500c",
     "storageBlobDataContributorRoleID": "ba92f5b4-2d11-453d-a403-e96b0029c9fe",
     "defaultDataLakeStorageAccountUrl": "[concat('https://', variables('adlsStorageAccountName'), '.dfs.core.windows.net')]",
     "sparkAutoScaleEnabled": "true",
