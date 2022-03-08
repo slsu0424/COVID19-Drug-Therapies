@@ -44,7 +44,7 @@ Upload the SDUD files to the `SDUD` folder, and the FAERS files to the `FAERS` f
 ![ADLS](./media/SDUD.png)
 
 
-## Step 3. Update Synapse storage account permisions
+## Step 3. Update Azure Synapse storage account permisions
 In order to perform the necessary actions in the Synapse workspace, you will need to grant specific access.
 
 1. Go to the Azure Data Lake Storage Account created above
@@ -56,8 +56,8 @@ In order to perform the necessary actions in the Synapse workspace, you will nee
 
 ## Step 3. Data Engineering
 
-## 3.1: Unpack FAERS Zip files using Synapse Pipelines (Persona: Data Engineer)
-As mentioned in Step 1, the FAERS data is embedded as separate files within each quarterly .zip file.  The objective is to consolidate all those files for each quarter for each year into a single location.  To make this task easier, you will use Synapse pipelines to create a pipeline through a low-code experience.  
+## 3.1: Unpack FAERS Zip files using Azure Synapse Pipelines (Persona: Data Engineer)
+As mentioned in Step 1, the FAERS data is embedded as separate files within each quarterly .zip file.  The objective is to consolidate all these files for each quarter for each year into a single location.  To make this task easier, you will use Synapse to create a pipeline through a low-code experience.  
 
 1. Launch the Synapse workspace (via Azure portal > Synapse workspace > Workspace web URL)
 2. Go to `Integrate`, click `+`, and click `Import` to select the JSON template from the repository's `/02-DataEngineering/` folder
