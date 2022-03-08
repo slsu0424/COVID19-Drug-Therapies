@@ -42,7 +42,7 @@
     "blobStorageAccountName": "[concat('amlstorage', parameters('uniqueSuffix'))]",
     "applicationInsightsName": "[concat('appinsights', parameters('uniqueSuffix'))]",
     "amlWorkspaceName": "[concat('aml', parameters('uniqueSuffix'), variables('uniqueId'))]",
-    "adbWorkspaceName": "[concat('adb', uniqueString(parameters('uniqueSuffix')))]",
+    "adbWorkspaceName": "[concat('adb', parameters('uniqueSuffix'), variables('uniqueId'))]",
     "managedResourceGroupName": "[concat('databricks-rg-', variables('adbWorkspaceName'), '-', uniqueString(variables('adbWorkspaceName'), resourceGroup().id))]",
     "managedResourceGroupId": "[concat(subscription().id, '/resourceGroups/', variables('managedResourceGroupName'))]"   
     
