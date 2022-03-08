@@ -40,7 +40,7 @@
     "keyVaultName": "[concat('asakeyvault', parameters('uniqueSuffix'))]",
     "blobStorageAccountName": "[concat('amlstorage', parameters('uniqueSuffix'))]",
     "applicationInsightsName": "[concat('appinsights', parameters('uniqueSuffix'))]",
-    "amlWorkspaceName": "[concat('aml', parameters('uniqueSuffix'), uniqueString(resourceGroup().id) )]",
+    "amlWorkspaceName": "[concat('aml', parameters('uniqueSuffix'), uniqueString(resourceGroup().id))]",
     "adbWorkspaceName": "[concat('adb', uniqueString(parameters('uniqueSuffix')))]",
     "managedResourceGroupName": "[concat('databricks-rg-', variables('adbWorkspaceName'), '-', uniqueString(variables('adbWorkspaceName'), resourceGroup().id))]",
     "managedResourceGroupId": "[concat(subscription().id, '/resourceGroups/', variables('managedResourceGroupName'))]"   
