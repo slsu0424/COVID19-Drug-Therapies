@@ -17,7 +17,7 @@
 },
   "variables": {
     "location": "[resourceGroup().location]",
-    "uniqueId":"[uniqueString(resourceGroup().Name, parameters('UniqueSuffix')]",
+    "uniqueId":"[uniqueString(resourceGroup().Name, parameters('uniqueSuffix')]",
     "sqlAdministratorLogin": "asa.sql.admin",
     "workspaceName": "[concat('asa', parameters('uniqueSuffix'))]",
     "adlsStorageAccountName": "[concat('asastorage', parameters('uniqueSuffix'))]",
