@@ -79,8 +79,8 @@
       "apiVersion": "2019-06-01",
       "name": "[concat(variables('blobStorageAccountName'), '/default/', variables('storageContainer'))]",
       "dependsOn": [
-        "[concat('Microsoft.Storage/storageAccounts/blobServices', variables('blobStorageAccountName'), 'default')]",
-        "[concat('Microsoft.Storage/storageAccounts', variables('blobStorageAccountName'))]"
+        "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('storageName'), 'default')]",
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageName'))]"
       ],
       "properties": {
         "publicAccess": "None"
