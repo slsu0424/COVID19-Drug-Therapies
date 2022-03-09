@@ -75,18 +75,6 @@
       }
     },
     {
-      "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
-      "apiVersion": "2019-06-01",
-      "name": "[concat(variables('blobStorageAccountName'), '/default/', variables('storageContainer'))]",
-      "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('blobStorageAccountName'), 'default')]",
-        "[resourceId('Microsoft.Storage/storageAccounts', variables('blobStorageAccountName'))]"
-      ],
-      "properties": {
-        "publicAccess": "None"
-      }
-    },
-    {
       "type": "Microsoft.KeyVault/vaults",
       "apiVersion": "2018-02-14",
       "name": "[variables('keyVaultName')]",
@@ -116,17 +104,23 @@
         "supportsHttpsTrafficOnly": "true",
         "isHnsEnabled": "true",
         "largeFileSharesState": "Disabled"
-      },
-      "resources": [
-        {
-          "type": "blobServices/containers",
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+      "apiVersion": "2018-07-01",
+      "name": "[concat('default/', variables('defaultDataLakeStorageFilesystemName'))]",
+      "dependsOn": [
+        "[concat('Microsoft.Storage/storageAccounts/', variables('adlsStorageAccountName'))]"
+      ]
+    },
+    {
+          "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
           "apiVersion": "2018-07-01",
-          "name": "[concat('default/', variables('defaultDataLakeStorageFilesystemName'))]",
+          "name": "[concat('default/', variables('newDataLakeStorageFilesystemName'))]",
           "dependsOn": [
             "[concat('Microsoft.Storage/storageAccounts/', variables('adlsStorageAccountName'))]"
           ]
-        }
-      ]
     },
     {
       "type": "Microsoft.Storage/storageAccounts/blobServices",
