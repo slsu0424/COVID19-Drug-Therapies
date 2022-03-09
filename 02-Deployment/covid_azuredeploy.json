@@ -6,7 +6,7 @@
       "type": "string",
       "defaultValue": "abc",
       "minLength": 3,
-      "maxLength": 3,
+      "maxLength": 8,
       "metadata": {
         "description": "Suffix added to all resource names to make them unique."
       }
