@@ -109,7 +109,7 @@
     {
       "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
       "apiVersion": "2018-07-01",
-      "name": "[concat('default/', variables('defaultDataLakeStorageFilesystemName'))]",
+      "name": "[variables('defaultDataLakeStorageFilesystemName'))]",
       "dependsOn": [
         "[concat('Microsoft.Storage/storageAccounts/', variables('adlsStorageAccountName'))]"
       ]
@@ -117,7 +117,7 @@
     {
           "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
           "apiVersion": "2018-07-01",
-          "name": "[concat('default/', variables('newDataLakeStorageFilesystemName'))]",
+          "name": "[variables('newDataLakeStorageFilesystemName'))]",
           "dependsOn": [
             "[concat('Microsoft.Storage/storageAccounts/', variables('adlsStorageAccountName'))]"
           ]
