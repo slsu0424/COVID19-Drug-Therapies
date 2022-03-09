@@ -103,14 +103,16 @@
         "supportsHttpsTrafficOnly": "true",
         "isHnsEnabled": "true",
         "largeFileSharesState": "Disabled"
-      }
-    },
-    {
-      "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
-      "apiVersion": "2018-07-01",
-      "name": "[variables('defaultDataLakeStorageFilesystemName')]",
-      "dependsOn": [
-        "[concat('Microsoft.Storage/storageAccounts/', variables('adlsStorageAccountName'))]"
+      },
+      "resources": [
+        {
+          "type": "blobServices/containers",
+          "apiVersion": "2018-07-01",
+          "name": "[concat('default/', variables('defaultDataLakeStorageFilesystemName'))]",
+          "dependsOn": [
+            "[concat('Microsoft.Storage/storageAccounts/', variables('adlsStorageAccountName'))]"
+          ]
+        }
       ]
     },
     {
