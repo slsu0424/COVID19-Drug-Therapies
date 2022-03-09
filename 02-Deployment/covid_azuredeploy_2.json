@@ -89,6 +89,77 @@
       }
     },
     {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2019-06-01",
+      "name": "[variables('adlsStorageAccountName')]",
+      "location": "[variables('location')]",
+      "dependsOn": [],
+      "tags": {},
+      "sku": {
+        "name": "Standard_LRS"
+      },
+      "kind": "StorageV2",
+      "properties": {
+        "accessTier": "Hot",
+        "supportsHttpsTrafficOnly": "true",
+        "isHnsEnabled": "true",
+        "largeFileSharesState": "Disabled"
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+      "apiVersion": "2018-07-01",
+      "name": "[variables('defaultDataLakeStorageFilesystemName')]",
+      "dependsOn": [
+        "[concat('Microsoft.Storage/storageAccounts/', variables('adlsStorageAccountName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+      "apiVersion": "2018-07-01",
+      "name": "[variables('newDataLakeStorageFilesystemName')]",
+      "dependsOn": [
+        "[concat('Microsoft.Storage/storageAccounts/', variables('adlsStorageAccountName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/blobServices",
+      "apiVersion": "2019-06-01",
+      "name": "[concat(variables('adlsStorageAccountName'), '/default')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('adlsStorageAccountName'))]"
+      ],
+      "sku": {
+        "name": "Standard_LRS",
+        "tier": "Standard"
+      },
+      "properties": {
+        "cors": {
+          "corsRules": []
+        },
+        "deleteRetentionPolicy": {
+          "enabled": false
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/fileServices",
+      "apiVersion": "2019-06-01",
+      "name": "[concat(variables('adlsStorageAccountName'), '/default')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('adlsStorageAccountName'))]"
+      ],
+      "sku": {
+        "name": "Standard_LRS",
+        "tier": "Standard"
+      },
+      "properties": {
+        "cors": {
+          "corsRules": []
+        }
+      }
+    },
+    {
       "type": "Microsoft.Synapse/workspaces",
       "apiVersion": "2019-06-01-preview",
       "name": "[variables('workspaceName')]",
