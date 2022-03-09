@@ -21,6 +21,7 @@
   "variables": {
     "location": "[resourceGroup().location]",
     "sqlAdministratorLogin": "asa.sql.admin",
+    "storageContainer": "raw",
     "workspaceName": "[concat('asa', parameters('uniqueSuffix'), uniqueString(resourceGroup().id))]",
     "adlsStorageAccountName": "[concat('asastg', parameters('uniqueSuffix'), uniqueString(resourceGroup().id))]",
     "defaultDataLakeStorageFilesystemName": "defaultfs",
@@ -74,23 +75,15 @@
       }
     },
     {
-      "type": "Microsoft.Storage/storageAccounts/blobServices",
+      "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
       "apiVersion": "2019-06-01",
-      "name": "[concat(variables('blobStorageAccountName'), '/default')]",
+      "name": "[concat(variables('blobStorageAccountName'), '/default/', variables('storageContainer'))]",
       "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts', variables('blobStorageAccountName'))]"
+        "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('storageName'), 'default')]",
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageName'))]"
       ],
-      "sku": {
-        "name": "Standard_LRS",
-        "tier": "Standard"
-      },
       "properties": {
-        "cors": {
-          "corsRules": []
-        },
-        "deleteRetentionPolicy": {
-          "enabled": false
-        }
+        "publicAccess": "None"
       }
     },
     {
