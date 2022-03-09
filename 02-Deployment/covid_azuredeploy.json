@@ -74,6 +74,26 @@
       }
     },
     {
+      "type": "Microsoft.Storage/storageAccounts/blobServices",
+      "apiVersion": "2019-06-01",
+      "name": "[concat(variables('blobStorageAccountName'), '/default')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('blobStorageAccountName'))]"
+      ],
+      "sku": {
+        "name": "Standard_LRS",
+        "tier": "Standard"
+      },
+      "properties": {
+        "cors": {
+          "corsRules": []
+        },
+        "deleteRetentionPolicy": {
+          "enabled": false
+        }
+      }
+    },
+    {
       "type": "Microsoft.KeyVault/vaults",
       "apiVersion": "2018-02-14",
       "name": "[variables('keyVaultName')]",
@@ -362,20 +382,6 @@
       }
     },
     {
-        "type": "Microsoft.Databricks/workspaces",
-        "apiVersion": "2018-04-01",
-        "name": "[variables('adbWorkspaceName')]",
-        "location": "[variables('location')]",
-        "sku": {
-            "name": "premium"
-        },
-        "comments": "Please do not use an existing resource group for ManagedResourceGroupId.",
-        "properties": {
-            "ManagedResourceGroupId": "[variables('managedResourceGroupId')]",
-            "parameters": {}
-        }
-    },
-    {
       "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
       "apiVersion": "2019-06-01",
       "name": "[concat(variables('blobStorageAccountName'), '/default/staging')]",
@@ -397,6 +403,20 @@
       ],
       "properties": {
         "publicAccess": "None"
+      }
+    },
+    {
+      "type": "Microsoft.Databricks/workspaces",
+      "apiVersion": "2018-04-01",
+      "name": "[variables('adbWorkspaceName')]",
+      "location": "[variables('location')]",
+      "sku": {
+        "name": "premium"
+      },
+      "comments": "Please do not use an existing resource group for ManagedResourceGroupId.",
+      "properties": {
+      "ManagedResourceGroupId": "[variables('managedResourceGroupId')]",
+        "parameters": {}
       }
     }
   ],
