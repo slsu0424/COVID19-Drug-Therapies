@@ -19,7 +19,7 @@
   "variables": {
     "location": "[resourceGroup().location]",
     "sqlAdministratorLogin": "asa.sql.admin",
-    "workspaceName": "[concat('asa', parameters('uniqueSuffix'), GUID(uniqueString(resourceGroup().id)))]",
+    "workspaceName": "[concat('asa', [uniqueString(resourceGroup().id, parameters('uniqueSuffix'))]]",
     "adlsStorageAccountName": "[concat('asastg', parameters('uniqueSuffix'), uniqueString(resourceGroup().id))]",
     "defaultDataLakeStorageFilesystemName": "defaultfs",
     "sqlComputeName": "SQLPool01",
