@@ -5,6 +5,8 @@
     "uniqueSuffix": {
       "type": "string",
       "defaultValue": "abc",
+      "minLength": 3,
+      "maxLength": 5,
       "metadata": {
         "description": "Suffix added to all resource names to make them unique."
       }
@@ -19,8 +21,8 @@
   "variables": {
     "location": "[resourceGroup().location]",
     "sqlAdministratorLogin": "asa.sql.admin",
-    "workspaceName": "[concat('asa', uniqueString(resourceGroup().id, parameters('uniqueSuffix')))]",
-    "adlsStorageAccountName": "[concat('asastorage', uniqueString(resourceGroup().id, parameters('uniqueSuffix')))]",
+    "workspaceName": "[concat('asa', parameters('uniqueSuffix'), uniqueString(resourceGroup().id))]",
+    "adlsStorageAccountName": "[concat('asastg', parameters('uniqueSuffix'), uniqueString(resourceGroup().id))]",
     "defaultDataLakeStorageFilesystemName": "defaultfs",
     "sqlComputeName": "SQLPool01",
     "sparkComputeName": "SparkPool01",
@@ -37,11 +39,11 @@
     "sparkAutoPauseEnabled": "true",
     "sparkAutoPauseDelayInMinutes": "15",
     "sparkVersion": "2.4",
-    "keyVaultName": "[concat('asakeyvault', uniqueString(resourceGroup().id, parameters('uniqueSuffix')))]",
-    "blobStorageAccountName": "[concat('amlstorage',  uniqueString(resourceGroup().id, parameters('uniqueSuffix')))]",
-    "applicationInsightsName": "[concat('appinsights', uniqueString(resourceGroup().id, parameters('uniqueSuffix')))]",
-    "amlWorkspaceName": "[concat('aml', uniqueString(resourceGroup().id, parameters('uniqueSuffix')))]",
-    "adbWorkspaceName": "[concat('adb', uniqueString(resourceGroup().id, parameters('uniqueSuffix')))]",
+    "keyVaultName": "[concat('asakeyvault', parameters('uniqueSuffix'), uniqueString(resourceGroup().id))]",
+    "blobStorageAccountName": "[concat('amlstg', parameters('uniqueSuffix'), uniqueString(resourceGroup().id))]",
+    "applicationInsightsName": "[concat('appinsights', parameters('uniqueSuffix'), uniqueString(resourceGroup().id))]",
+    "amlWorkspaceName": "[concat('aml', parameters('uniqueSuffix'), uniqueString(resourceGroup().id))]",
+    "adbWorkspaceName": "[concat('adb', parameters('uniqueSuffix'), uniqueString(resourceGroup().id))]",
     "managedResourceGroupName": "[concat('databricks-rg-', variables('adbWorkspaceName'), '-', uniqueString(variables('adbWorkspaceName'), resourceGroup().id))]",
     "managedResourceGroupId": "[concat(subscription().id, '/resourceGroups/', variables('managedResourceGroupName'))]"   
     
