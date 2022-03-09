@@ -20,7 +20,7 @@
     "location": "[resourceGroup().location]",
     "sqlAdministratorLogin": "asa.sql.admin",
     "workspaceName": "[concat('asa', parameters('uniqueSuffix'), uniqueString(resourceGroup().id))]",
-    "adlsStorageAccountName": "[concat('asastorage', parameters('uniqueSuffix'), uniqueString(resourceGroup().id))]",
+    "adlsStorageAccountName": "[concat('stg', parameters('uniqueSuffix'), uniqueString(resourceGroup().id))]",
     "defaultDataLakeStorageFilesystemName": "defaultfs",
     "sqlComputeName": "SQLPool01",
     "sparkComputeName": "SparkPool01",
