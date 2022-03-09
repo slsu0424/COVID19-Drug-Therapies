@@ -22,9 +22,8 @@
     "location": "[resourceGroup().location]",
     "sqlAdministratorLogin": "asa.sql.admin",
     "workspaceName": "[concat('asa', parameters('uniqueSuffix'), uniqueString(resourceGroup().id))]",
-    "adlsStorageAccountName": "[concat('asastg', parameters('uniqueSuffix'), uniqueString(resourceGroup().id))]",
+    "adlsStorageAccountName": "[concat('asastr', parameters('uniqueSuffix'), uniqueString(resourceGroup().id))]",
     "defaultDataLakeStorageFilesystemName": "defaultfs",
-    "newDataLakeStorageFilesystemName": "raw",
     "sqlComputeName": "SQLPool01",
     "sparkComputeName": "SparkPool01",
     "computeSubnetId": "",
@@ -41,7 +40,7 @@
     "sparkAutoPauseDelayInMinutes": "15",
     "sparkVersion": "2.4",
     "keyVaultName": "[concat('asakey', parameters('uniqueSuffix'), uniqueString(resourceGroup().id))]",
-    "blobStorageAccountName": "[concat('amlstg', parameters('uniqueSuffix'), uniqueString(resourceGroup().id))]",
+    "blobStorageAccountName": "[concat('amlstr', parameters('uniqueSuffix'), uniqueString(resourceGroup().id))]",
     "applicationInsightsName": "[concat('appinsights', parameters('uniqueSuffix'), uniqueString(resourceGroup().id))]",
     "amlWorkspaceName": "[concat('aml', parameters('uniqueSuffix'), uniqueString(resourceGroup().id))]",
     "adbWorkspaceName": "[concat('adb', parameters('uniqueSuffix'), uniqueString(resourceGroup().id))]",
@@ -86,6 +85,77 @@
           "family": "A"
         },
         "accessPolicies": []
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2019-06-01",
+      "name": "[variables('adlsStorageAccountName')]",
+      "location": "[variables('location')]",
+      "dependsOn": [],
+      "tags": {},
+      "sku": {
+        "name": "Standard_LRS"
+      },
+      "kind": "StorageV2",
+      "properties": {
+        "accessTier": "Hot",
+        "supportsHttpsTrafficOnly": "true",
+        "isHnsEnabled": "true",
+        "largeFileSharesState": "Disabled"
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+      "apiVersion": "2018-07-01",
+      "name": "[variables('defaultDataLakeStorageFilesystemName')]",
+      "dependsOn": [
+        "[concat('Microsoft.Storage/storageAccounts/', variables('adlsStorageAccountName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+      "apiVersion": "2018-07-01",
+      "name": "[variables('newDataLakeStorageFilesystemName')]",
+      "dependsOn": [
+        "[concat('Microsoft.Storage/storageAccounts/', variables('adlsStorageAccountName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/blobServices",
+      "apiVersion": "2019-06-01",
+      "name": "[concat(variables('adlsStorageAccountName'), '/default')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('adlsStorageAccountName'))]"
+      ],
+      "sku": {
+        "name": "Standard_LRS",
+        "tier": "Standard"
+      },
+      "properties": {
+        "cors": {
+          "corsRules": []
+        },
+        "deleteRetentionPolicy": {
+          "enabled": false
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/fileServices",
+      "apiVersion": "2019-06-01",
+      "name": "[concat(variables('adlsStorageAccountName'), '/default')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('adlsStorageAccountName'))]"
+      ],
+      "sku": {
+        "name": "Standard_LRS",
+        "tier": "Standard"
+      },
+      "properties": {
+        "cors": {
+          "corsRules": []
+        }
       }
     },
     {
@@ -271,6 +341,30 @@
         "storageAccount": "[resourceId('Microsoft.Storage/storageAccounts/',variables('blobStorageAccountName'))]",
         "hbiWorkspace": false,
         "allowPublicAccessWhenBehindVnet": false
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+      "apiVersion": "2019-06-01",
+      "name": "[concat(variables('adlsStorageAccountName'), '/default/staging')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('adlsStorageAccountName'), 'default')]",
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('adlsStorageAccountName'))]"
+      ],
+      "properties": {
+        "publicAccess": "None"
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+      "apiVersion": "2019-06-01",
+      "name": "[concat(variables('adlsStorageAccountName'), '/default/wwi-02')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('adlsStorageAccountName'), 'default')]",
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('adlsStorageAccountName'))]"
+      ],
+      "properties": {
+        "publicAccess": "None"
       }
     },
     {
