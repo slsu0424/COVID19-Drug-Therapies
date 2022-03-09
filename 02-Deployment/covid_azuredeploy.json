@@ -39,7 +39,7 @@
     "sparkAutoPauseEnabled": "true",
     "sparkAutoPauseDelayInMinutes": "15",
     "sparkVersion": "2.4",
-    "keyVaultName": "[concat('asakeyvault', parameters('uniqueSuffix'), uniqueString(resourceGroup().id))]",
+    "keyVaultName": "[concat('asakey', parameters('uniqueSuffix'), uniqueString(resourceGroup().id))]",
     "blobStorageAccountName": "[concat('amlstg', parameters('uniqueSuffix'), uniqueString(resourceGroup().id))]",
     "applicationInsightsName": "[concat('appinsights', parameters('uniqueSuffix'), uniqueString(resourceGroup().id))]",
     "amlWorkspaceName": "[concat('aml', parameters('uniqueSuffix'), uniqueString(resourceGroup().id))]",
