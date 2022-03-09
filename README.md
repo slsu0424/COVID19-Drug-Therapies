@@ -77,7 +77,7 @@ This folder contains the scripts used to deploy the required resources into your
 This folder contains the JSON templates needed to complete the data engineering tasks outlined in the Deployment Guide. You will use the content in this folder following the instructions in the Deployment Guide.
 
 ## [04-Analytics & Reporting](./04-Analytics&Reporting)
-This folder contains the Notebooks and SQL Scripts needed to complete the tasks to prepare the data for operational reporting and generate reports.  You will use the content in this folder following the instructions in the Deployment Guide.
+This folder contains the Notebooks and SQL Scripts needed to complete the tasks to prepare the data for operational reporting and reports.  You will use the content in this folder following the instructions in the Deployment Guide.
 
 ## [05-Data Science & Machine Learning](./05-DataScience&MachineLearning)
 This folder contains the Notebooks needed to complete the tasks for building a machine learning model.  You will use the content in this folder following the instructions in the Deployment Guide.

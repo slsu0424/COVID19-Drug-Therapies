@@ -3,13 +3,16 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "uniqueSuffix": {
-      "type": "String",
+      "type": "string",
+      "defaultValue": "abc",
+      "minLength": 3,
+      "maxLength": 3,
       "metadata": {
         "description": "Suffix added to all resource names to make them unique."
       }
     },
     "sqlAdministratorLoginPassword": {
-      "type": "SecureString",
+      "type": "securestring",
       "metadata": {
         "description": "Password for Synapse Dedicated Pool SQL Admin"
       }
