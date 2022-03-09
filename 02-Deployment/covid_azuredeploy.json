@@ -116,14 +116,6 @@
       ]
     },
     {
-      "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
-      "apiVersion": "2018-07-01",
-      "name": "[variables('defaultDataLakeStorageFilesystemName')]",
-      "dependsOn": [
-        "[concat('Microsoft.Storage/storageAccounts/', variables('adlsStorageAccountName'))]"
-      ]
-    },
-    {
       "type": "Microsoft.Storage/storageAccounts/blobServices",
       "apiVersion": "2019-06-01",
       "name": "[concat(variables('adlsStorageAccountName'), '/default')]",
