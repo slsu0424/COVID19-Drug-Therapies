@@ -102,7 +102,7 @@
       "properties": {
         "defaultDataLakeStorage": {
           "accountUrl": "[variables('defaultDataLakeStorageAccountUrl')]",
-          "filesystem": "[variables('newDataLakeStorageFilesystemName')]"
+          "filesystem": "[variables('defaultDataLakeStorageFilesystemName')]"
         },
         "virtualNetworkProfile": {
           "computeSubnetId": "[variables('computeSubnetId')]"
