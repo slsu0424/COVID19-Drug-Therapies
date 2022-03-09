@@ -117,7 +117,7 @@
     {
           "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
           "apiVersion": "2018-07-01",
-          "name": "[variables('newDataLakeStorageFilesystemName'))]",
+          "name": "[variables('newDataLakeStorageFilesystemName')]",
           "dependsOn": [
             "[concat('Microsoft.Storage/storageAccounts/', variables('adlsStorageAccountName'))]"
           ]
