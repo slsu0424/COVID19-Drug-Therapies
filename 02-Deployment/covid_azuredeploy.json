@@ -77,10 +77,10 @@
     {
       "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
       "apiVersion": "2019-06-01",
-      "name": "[variables('storageContainer')]",
+      "name": "[concat(variables('blobStorageAccountName'), '/default/', variables('storageContainer'))]",
       "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('blobStorageAccountName'), 'default')]",
-        "[resourceId('Microsoft.Storage/storageAccounts', variables('blobStorageAccountName'))]"
+        "[concat('Microsoft.Storage/storageAccounts/blobServices', variables('blobStorageAccountName'), 'default')]",
+        "[concat('Microsoft.Storage/storageAccounts', variables('blobStorageAccountName'))]"
       ],
       "properties": {
         "publicAccess": "None"
