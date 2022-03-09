@@ -14,12 +14,6 @@ The architecture diagram below details what will be built with this Solution Acc
 
 ![Architecture Diagram](./images/Slide1.PNG)
 
-
-## Video Overview
-The video provides a detailed walkthrough of the Solution Accelerator.  
-
-![Architecture Diagram](./Resource_Deployment/img/ReferenceArchitecture.png)
-
 ## Prerequisites
 To use this solution accelerator, you will need to have access to and/or provision the following applications:
 
@@ -68,7 +62,7 @@ A working knowledge of Azure, Azure Data Factory, Azure Databricks, Azure Synaps
 
 ## Folders
 ## [01-Presentations](./01-Presentations)
-This folder contains the Powerpoint decks that provide an Executive Overview and Technical Design for the solution.
+This folder contains the Powerpoint decks that provide an Executive Overview and Technical Design for the solution.  In addition, a video provides a detailed walkthrough of the Solution Accelerator.  
 
 ## [02-Deployment](./02-Deployment)
 This folder contains the scripts used to deploy the required resources into your Azure Subscription. This can be done using the Azure Portal.  The [Deployment Guide](./02-Deployment/Deployment.md) is provided to help complete the rest of the solution setup.
