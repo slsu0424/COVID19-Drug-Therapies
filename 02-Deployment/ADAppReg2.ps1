@@ -17,44 +17,61 @@ Set-ExecutionPolicy -ExecutionPolicy Undefined -Scope CurrentUser
 
 
 # login azure
-Write-Host "Logging into Azure..."
-az Login
+#Write-Host "Logging into Azure..."
+#az Login
 
-$subscriptionId = Read-Host "subscription Id"
-$resourcegroupName = Read-Host "resource group name"
+#$subscriptionId = Read-Host "subscription Id"
+#$resourcegroupName = Read-Host "resource group name"
+
+Write-Host "Step 1 - Get Azure IDs for the current subscription..."
+
+#$subscriptionId = az account show --query id
+#$global:logindomain = az account tenant list
+#$global:logindomain = az account show --query tenant-id
+
+#az account tenant list
+
+$subscriptionId = (Get-AzContext).Subscription.Id
+$global:logindomain = (Get-AzContext).Tenant.Id
+
+echo "Subscription ID:" $subscriptionId
+echo "Azure AD Tenant ID:" $global:logindomain
+
+#Get-AzKeyVault -ResourceGroupName 'covid2'
+
+$keyVaultName = "asakeyabcfelaqpgsfnxcy"
+#$keyVaultSQLUserSecretName = "SQL-USER-ASA"
 
 
-az account set --subscription $subscriptionId 
+#az account set --subscription "subscription Id" --resource-group "covid2"
 
-$resourceGroup = az group exists -n $resourcegroupName
-if ($resourceGroup -eq $false) {
-    throw "The Resource group '$resourcegroupName' is not exist`r`n Please check resource name and try it again"
-}
+#$resourceGroup = az group exists -n $resourcegroupName
+#if ($resourceGroup -eq $false) {
+#    throw "The Resource group '$resourcegroupName' is not exist`r`n Please check resource name and try it again"
+#}
 
-Write-Host "Step 1 - Set up App Registration..."
+Write-Host "Step 2 - Set up App Registration..."
 
-#Install-Module AzureAD
+#az ad app create --display-name covid2 --available-to-other-tenants false
 
-#Connect-AzureAD
+$objectid = ((az ad app create --display-name covid3 --available-to-other-tenants false) | ConvertFrom-JSON).ObjectId
 
-#Connect-AzureAD -TenantId $tenantId
+echo "Object ID:" $objectid
 
-az ad app create --display-name covid0 --available-to-other-tenants false
+Write-Host "Step 3 - Set up App Registration Secret..."
 
-$objectid = Read-Host "Object Id"
-
-Write-Host "Step 2 - Set up App Registration Secret..."
 az ad app credential reset --id $objectid --credential-description TestSecret
 
+$secretValue = ((az ad app credential reset --id $objectid --credential-description TestSecret) | ConvertFrom-JSON).password
 
-#$appName = "covid_appReg"
-#$appURI = "https://tailwindtraderssalesapp.twtmitt.onmicrosoft.com"
-#$appHomePageUrl = "http://www.tailwindtraders.com/"
-#$appReplyURLs = @($appURI, $appHomePageURL, "https://localhost:1234")
-#if(!($myApp = Get-AzureADApplication -Filter "DisplayName eq '$($appName)'"  -ErrorAction SilentlyContinue))
-#{
-#    $myApp = New-AzureADApplication -DisplayName $appName -IdentifierUris $appURI -Homepage $appHomePageUrl -ReplyUrls $appReplyURLs    
-#}
+echo "Secret Value:" $secretValue
+
+Write-Host "Step 4 - Store Secret in Key Vault..."
+
+Write-Information "Step 5 - Register App in Key Vault..."
+#$secretValue = ConvertTo-SecureString $sqlPassword -AsPlainText -Force
+#$secret = Set-AzKeyVaultSecret -VaultName $keyVaultName -Name $keyVaultSQLUserSecretName -SecretValue $secretValue
+
 
 
 #2. Add App Key
