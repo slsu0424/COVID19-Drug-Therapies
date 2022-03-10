@@ -64,22 +64,10 @@ az ad app credential reset --id $objectid --credential-description TestSecret
 
 $arSecretValue = ((az ad app credential reset --id $objectid --credential-description TestSecret) | ConvertFrom-JSON).password
 
-echo "App Registration Secret Value:" $secretValue
+echo "App Registration Secret Value:" $arSecretValue
 
 Write-Host "Step 4 - Store Secret in Key Vault..."
 
 Write-Information "Step 5 - Register Secret in Key Vault..."
-#$secretValue = ConvertTo-SecureString $sqlPassword -AsPlainText -Force
-$kvSecret = Set-AzKeyVaultSecret -VaultName $keyVaultName -Name $keyVaultSQLUserSecretName -SecretValue $secretValue
 
-
-
-#2. Add App Key
-#$Guid = New-Guid
-#$startDate = Get-Date
-    
-#$PasswordCredential = New-Object -TypeName Microsoft.Open.AzureAD.Model.PasswordCredential
-#$PasswordCredential.StartDate = $startDate
-#$PasswordCredential.EndDate = $startDate.AddYears(1)
-#$PasswordCredential.KeyId = $Guid
-#$PasswordCredential.Value = ([System.Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes(($Guid))))
+$kvSecret = Set-AzKeyVaultSecret -VaultName $keyVaultName -Name $keyVaultSQLUserSecretName -SecretValue $arSecretValue
