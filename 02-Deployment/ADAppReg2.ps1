@@ -40,7 +40,7 @@ echo "Azure AD Tenant ID:" $global:logindomain
 #Get-AzKeyVault -ResourceGroupName 'covid2'
 
 $keyVaultName = "asakeyabcfelaqpgsfnxcy"
-#$keyVaultSQLUserSecretName = "SQL-USER-ASA"
+$keyVaultSQLUserSecretName = "test01"
 
 
 #az account set --subscription "subscription Id" --resource-group "covid2"
@@ -62,15 +62,15 @@ Write-Host "Step 3 - Set up App Registration Secret..."
 
 az ad app credential reset --id $objectid --credential-description TestSecret
 
-$secretValue = ((az ad app credential reset --id $objectid --credential-description TestSecret) | ConvertFrom-JSON).password
+$arSecretValue = ((az ad app credential reset --id $objectid --credential-description TestSecret) | ConvertFrom-JSON).password
 
-echo "Secret Value:" $secretValue
+echo "App Registration Secret Value:" $secretValue
 
 Write-Host "Step 4 - Store Secret in Key Vault..."
 
-Write-Information "Step 5 - Register App in Key Vault..."
+Write-Information "Step 5 - Register Secret in Key Vault..."
 #$secretValue = ConvertTo-SecureString $sqlPassword -AsPlainText -Force
-#$secret = Set-AzKeyVaultSecret -VaultName $keyVaultName -Name $keyVaultSQLUserSecretName -SecretValue $secretValue
+$kvSecret = Set-AzKeyVaultSecret -VaultName $keyVaultName -Name $keyVaultSQLUserSecretName -SecretValue $secretValue
 
 
 
