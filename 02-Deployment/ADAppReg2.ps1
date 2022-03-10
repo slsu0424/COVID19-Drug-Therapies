@@ -104,8 +104,9 @@ echo "App Registration Client Secret Value:" $arSecretValue
 $secureSecret = ConvertTo-SecureString -String $arSecretValue -AsPlainText -Force
 
 Write-Information "Setting Key Vault Access Policy"
-Set-AzKeyVaultAccessPolicy -ResourceGroupName $resourceGroupName -VaultName $keyVaultName -UserPrincipalName $userName -PermissionsToSecrets set,delete,get,list
+#Set-AzKeyVaultAccessPolicy -ResourceGroupName $resourceGroupName -VaultName $keyVaultName -UserPrincipalName $userName -PermissionsToSecrets set,delete,get,list
 
+az keyvault set-policy --name $keyVaultName --object-id $objectid --secret-permissions set delete get list
 #$ws = Get-Workspace $SubscriptionId $ResourceGroupName $WorkspaceName;
 #$upid = $ws.identity.principalid
 #Set-AzKeyVaultAccessPolicy -ResourceGroupName $resourceGroupName -VaultName $keyVaultName -ObjectId $upid -PermissionsToSecrets set,delete,get,list
@@ -119,4 +120,6 @@ Write-Information "Step 4 - Register Secret in Key Vault..."
 
 #$kvSecret = Set-AzKeyVaultSecret -VaultName $keyVaultName -Name $keyVaultSQLUserSecretName -SecretValue $secureValue
 #$secretValue = ConvertTo-SecureString $Password -AsPlainText -Force
-$kvSecret = Set-AzKeyVaultSecret -VaultName $keyVaultName -Name $keyVaultSQLUserSecretName -SecretValue $Password
+#$kvSecret = Set-AzKeyVaultSecret -VaultName $keyVaultName -Name $keyVaultSQLUserSecretName -SecretValue $secureSecret
+
+az keyvault secret set --vault-name $keyVaultName --name $keyVaultSQLUserSecretName --value $secureSecret
