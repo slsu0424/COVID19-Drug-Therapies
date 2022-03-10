@@ -9,19 +9,21 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
-Set-ExecutionPolicy -ExecutionPolicy Undefined -Scope CurrentUser
-
 # Set-ExecutionPolicy -Scope Process -ExecutionPolicy ByPass
+
+
+#Clear-AzContext
+
+# login azure
+# Write-Host "Logging into Azure..."
+az Login
+
+#Get-AzSubscription | Select-Object -ExpandProperty Name
 
 #Connect-AzAccount
 
-
-# login azure
-#Write-Host "Logging into Azure..."
-#az Login
-
-#$subscriptionId = Read-Host "subscription Id"
-#$resourcegroupName = Read-Host "resource group name"
+$subscriptionId = Read-Host "subscription Id"
+$resourcegroupName = Read-Host "resource group name"
 
 Write-Host "Step 1 - Get Azure IDs for the current subscription..."
 
@@ -29,23 +31,24 @@ Write-Host "Step 1 - Get Azure IDs for the current subscription..."
 #$global:logindomain = az account tenant list
 #$global:logindomain = az account show --query tenant-id
 
-#az account tenant list
+#az account list
 
-$subscriptionId = (Get-AzContext).Subscription.Id
-$global:logindomain = (Get-AzContext).Tenant.Id
+#Get-AzSubscription 
+
+az account set --subscription $subscriptionId
+
+#$subscriptionId = (Get-AzContext).Subscription.Id
+#$global:logindomain = (Get-AzContext).Tenant.Id
 
 echo "Subscription ID:" $subscriptionId
-echo "Azure AD Tenant ID:" $global:logindomain
+#echo "Azure AD Tenant ID:" $global:logindomain
 
 #Connect-AzureAD -TenantId $global:logindomain
 
-#Get-AzKeyVault -ResourceGroupName 'covid2'
 
 $keyVaultName = "asakeyabcfelaqpgsfnxcy"
 $keyVaultSQLUserSecretName = "test01"
 $resourceGroupName = "covid2"
-
-
 
 #az account set --subscription "subscription Id" --resource-group "covid2"
 
@@ -116,6 +119,4 @@ Write-Information "Step 4 - Register Secret in Key Vault..."
 
 #$kvSecret = Set-AzKeyVaultSecret -VaultName $keyVaultName -Name $keyVaultSQLUserSecretName -SecretValue $secureValue
 #$secretValue = ConvertTo-SecureString $Password -AsPlainText -Force
-#$kvSecret = Set-AzKeyVaultSecret -VaultName $keyVaultName -Name $keyVaultSQLUserSecretName -SecretValue $Password
-
-$kvSecret = Set-AzKeyVaultSecret -VaultName $keyVaultName -SecretValue $secureSecret
+$kvSecret = Set-AzKeyVaultSecret -VaultName $keyVaultName -Name $keyVaultSQLUserSecretName -SecretValue $Password
