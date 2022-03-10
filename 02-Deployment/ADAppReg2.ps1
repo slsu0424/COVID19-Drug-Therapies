@@ -37,10 +37,14 @@ $global:logindomain = (Get-AzContext).Tenant.Id
 echo "Subscription ID:" $subscriptionId
 echo "Azure AD Tenant ID:" $global:logindomain
 
+#Connect-AzureAD -TenantId $global:logindomain
+
 #Get-AzKeyVault -ResourceGroupName 'covid2'
 
 $keyVaultName = "asakeyabcfelaqpgsfnxcy"
 $keyVaultSQLUserSecretName = "test01"
+$resourceGroupName = "covid2"
+
 
 
 #az account set --subscription "subscription Id" --resource-group "covid2"
@@ -50,24 +54,68 @@ $keyVaultSQLUserSecretName = "test01"
 #    throw "The Resource group '$resourcegroupName' is not exist`r`n Please check resource name and try it again"
 #}
 
-Write-Host "Step 2 - Set up App Registration..."
+Write-Host "Step 2 - Create App Registration..."
 
-#az ad app create --display-name covid2 --available-to-other-tenants false
+$userName = ((az ad signed-in-user show -o json) | ConvertFrom-JSON).UserPrincipalName
 
-$objectid = ((az ad app create --display-name covid3 --available-to-other-tenants false) | ConvertFrom-JSON).ObjectId
+echo "User Name:" $userName
 
+# declare variables
+$appName = "covid1"
+
+# Create app object
+$appReg = az ad app create --display-name $appName --available-to-other-tenants false
+
+$objectid = (($appReg) | ConvertFrom-JSON).objectId
+$appid = (($appReg) | ConvertFrom-JSON).appId
+$displayname = (($appReg) | ConvertFrom-JSON).displayName
+
+echo "Display Name:" $displayname
 echo "Object ID:" $objectid
+echo "Application (client) ID:" $appid
 
-Write-Host "Step 3 - Set up App Registration Secret..."
+#$appName = "covid"
+#$StartDate = Get-Date
+#$EndDate = $StartDate.AddYears(1)
 
-az ad app credential reset --id $objectid --credential-description TestSecret
+#$appReg = New-AzureADApplication -DisplayName $appName -AvailableToOtherTenants $false
+
+Write-Host "Step 3 - Generate App Registration Secret..."
+
+# Generate Client Secret for App Registration
+#az ad app credential reset --id $objectid --credential-description TestSecret
 
 $arSecretValue = ((az ad app credential reset --id $objectid --credential-description TestSecret) | ConvertFrom-JSON).password
 
-echo "App Registration Secret Value:" $arSecretValue
+# convert plain text password to a secure string
+#$secureValue = ConvertTo-SecureString -String $arSecretValue -AsPlainText -Force
 
-Write-Host "Step 4 - Store Secret in Key Vault..."
+#$Password = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($displayname.Secret))
 
-Write-Information "Step 5 - Register Secret in Key Vault..."
+echo "App Registration Client Secret Value:" $arSecretValue
+#echo "Password:" $Password
+#echo "App Registration Secret Value:" $secureValue
 
-$kvSecret = Set-AzKeyVaultSecret -VaultName $keyVaultName -Name $keyVaultSQLUserSecretName -SecretValue $arSecretValue
+#$appRegSecret = New-AzureADApplicationPasswordCredential -ObjectId $appReg.ObjectId -EndDate $EndDate
+
+$secureSecret = ConvertTo-SecureString -String $arSecretValue -AsPlainText -Force
+
+Write-Information "Setting Key Vault Access Policy"
+Set-AzKeyVaultAccessPolicy -ResourceGroupName $resourceGroupName -VaultName $keyVaultName -UserPrincipalName $userName -PermissionsToSecrets set,delete,get,list
+
+#$ws = Get-Workspace $SubscriptionId $ResourceGroupName $WorkspaceName;
+#$upid = $ws.identity.principalid
+#Set-AzKeyVaultAccessPolicy -ResourceGroupName $resourceGroupName -VaultName $keyVaultName -ObjectId $upid -PermissionsToSecrets set,delete,get,list
+
+
+Write-Information "Step 4 - Register Secret in Key Vault..."
+
+#$arSecretValue2 = Read-Host "Secret Value"
+
+#$secureValue = ConvertTo-SecureString -String $arSecretValue2 -AsPlainText -Force
+
+#$kvSecret = Set-AzKeyVaultSecret -VaultName $keyVaultName -Name $keyVaultSQLUserSecretName -SecretValue $secureValue
+#$secretValue = ConvertTo-SecureString $Password -AsPlainText -Force
+#$kvSecret = Set-AzKeyVaultSecret -VaultName $keyVaultName -Name $keyVaultSQLUserSecretName -SecretValue $Password
+
+$kvSecret = Set-AzKeyVaultSecret -VaultName $keyVaultName -SecretValue $secureSecret
