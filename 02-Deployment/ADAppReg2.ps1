@@ -1,6 +1,6 @@
 # login azure
 Write-Host "Logging into Azure..."
-    az Login
+    #az Login
 
 # variables
 $keyVaultName = "asakeyabcfelaqpgsfnxcy"
@@ -21,21 +21,21 @@ Write-Host "Step 2 - Create App Registration..."
     # create Application Registration object
     $appReg = az ad app create --display-name $appName
 
-    echo $appReg
+    #echo $appReg
 
     # grab JSON objects
     $objectid = (($appReg) | ConvertFrom-JSON).objectId
     $clientid = (($appReg) | ConvertFrom-JSON).appId
-    #$displayname = (($appReg) | ConvertFrom-JSON).displayName
+    $displayname = (($appReg) | ConvertFrom-JSON).displayName
 
-    #echo "Display Name:" $displayname
+    echo "Display Name:" $displayname
     echo "Object ID:" $objectid
     echo "Application (client) ID:" $clientid
 
 Write-Host "Step 3 - Generate secret..."
 
     # generate secret for the App
-    $secretValue = ((az ad app credential reset --id $clientid --credential-description Secret01) | ConvertFrom-JSON).password
+    $secretValue = ((az ad app credential reset --id $clientid --credential-description Secret01) | ConvertFrom-JSON).Password
 
     echo "Secret Value:" $secretValue
 
@@ -45,6 +45,9 @@ Write-Host "Step 3 - Generate secret..."
 Write-Host "Step 4 - Create Service Principal..."
 
     # create Azure AAD service principal with name = Application (client) ID
+    #$displaynameSP = $displayname + '_sp'
+    #az ad sp create-for-rbac --name $displaynameSP
+
     az ad sp create-for-rbac --name $clientid
 
     $spid = ((az ad sp list --display-name $clientid) | ConvertFrom-JSON).appId
