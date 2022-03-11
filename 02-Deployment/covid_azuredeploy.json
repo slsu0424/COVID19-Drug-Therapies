@@ -110,13 +110,16 @@
             "objectId": "0ec2b0e8-daeb-46a8-b627-0d4f61f87157",
             "permissions": {
               "keys": [
-                "Get"
+                "Get",
+                "List"
               ],
               "secrets": [
-                "Get"
+                "Get",
+                "List"
               ],
               "certificates": [
-                "Get"
+                "Get",
+                "List"
               ]
             }
           }
