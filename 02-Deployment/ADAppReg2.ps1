@@ -6,7 +6,7 @@ Write-Host "Logging into Azure..."
 $keyVaultName = "asakeyabcfelaqpgsfnxcy"
 $keyVaultSQLUserSecretName = "test01"
 $resourceGroupName = "covid2"
-$appName = "covid100"
+$appName = "covid1"
 
 # pass in arguments
 $subscriptionId = Read-Host "subscription Id"
@@ -34,7 +34,7 @@ echo "Application (client) ID:" $clientid
 
 Write-Host "Step 3 - Generate secret..."
 
-# generate secret for the client App
+# generate secret for the App
 $arSecretValue = ((az ad app credential reset --id $clientid --credential-description TestSecret) | ConvertFrom-JSON).password
 echo "Secret Value:" $arSecretValue
 
@@ -49,9 +49,9 @@ Write-Host "Step 4 - Create Service Principal..."
 # create AAD service principal - used to grant permissions (role assignments) to the client app
 #$spid = (az ad sp create --id $clientid --query objectId  --output tsv)
 
-#az ad sp create-for-rbac --name $clientid
+az ad sp create-for-rbac --name $clientid
 
-az ad sp create-for-rbac
+#az ad sp create-for-rbac
 
 #az ad sp create --id $clientid
 
@@ -59,14 +59,14 @@ az ad sp create-for-rbac
 #spid=$(az ad sp list --display-name $clientid --query "[].appId" -o tsv)
 #$spid = az ad sp list --id $clientid --query appId -o tsv
 
-#$spid = ((az ad sp list --display-name $clientid) | ConvertFrom-JSON).appId
+$spid = ((az ad sp list --display-name $clientid) | ConvertFrom-JSON).appId
 
-#echo "sp:" $spid
+echo "sp:" $spid
 
 Write-Host "Step 5 - Set Key Vault Access Policy..."
 
 # set permissions for the service principal
-#az keyvault set-policy --name $keyVaultName --secret-permissions set delete get list --object-id $spid
+az keyvault set-policy --name $keyVaultName --secret-permissions set delete get list --object-id $spid
 
 Write-Host "Step 6 - Register Secret in Key Vault..."
 
