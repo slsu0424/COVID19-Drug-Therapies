@@ -3,9 +3,8 @@ Write-Host "Step 1 - Logging into Azure..."
     az Login
 
 # variables
-$keyVaultName = "asakeyabcfelaqpgsfnxcy"
+$keyVaultName = "asakeysusaaefdbhdg2dbc4"
 $keyVaultSQLUserSecretName = "test01"
-$resourceGroupName = "covid2"
 $appName = "covidAppReg"
 
 # pass in arguments
@@ -13,7 +12,7 @@ $appName = "covidAppReg"
 #$resourcegroupName = Read-Host "resource group name"
 
 $subscriptionId = "9edd9e25-815c-4cdb-9bc8-d2ba127ec752"
-$rgName = "COVID2"
+$rgName = "COVID1"
 
 az account set --subscription $subscriptionId
 
