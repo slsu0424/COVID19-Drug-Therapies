@@ -1,6 +1,6 @@
 # login azure
-# Write-Host "Logging into Azure..."
-# az Login
+Write-Host "Logging into Azure..."
+#az Login
 
 # variables
 $keyVaultName = "asakeyabcfelaqpgsfnxcy"
@@ -18,31 +18,56 @@ echo "Subscription ID:" $subscriptionId
 
 Write-Host "Step 2 - Create App Registration..."
 
-# Create app object
-$appReg = az ad app create --display-name $appName --available-to-other-tenants false
+# create Application Registration object
+$appReg = az ad app create --display-name $appName
 
-# grab JSON variables
+echo $appReg
+
+# grab JSON objects
 $objectid = (($appReg) | ConvertFrom-JSON).objectId
-$appid = (($appReg) | ConvertFrom-JSON).appId
+$clientid = (($appReg) | ConvertFrom-JSON).appId
 #$displayname = (($appReg) | ConvertFrom-JSON).displayName
 
 #echo "Display Name:" $displayname
 echo "Object ID:" $objectid
-echo "Application (client) ID:" $appid
+echo "Application (client) ID:" $clientid
 
-Write-Host "Step 3 - Generate App Registration Secret..."
+Write-Host "Step 3 - Generate secret..."
 
-# Generate Client Secret for App Registration
-$arSecretValue = ((az ad app credential reset --id $objectid --credential-description TestSecret) | ConvertFrom-JSON).password
-echo "App Registration Client Secret Value:" $arSecretValue
+# generate secret for the client App
+$arSecretValue = ((az ad app credential reset --id $clientid --credential-description TestSecret) | ConvertFrom-JSON).password
+echo "Secret Value:" $arSecretValue
 
-# Convert to Secure string
+# convert to secure string
 $secureSecret = ConvertTo-SecureString -String $arSecretValue -AsPlainText -Force
 
-Write-Information "Step 4 - Set Key Vault Access Policy..."
+Write-Host "Step 4 - Create Service Principal..."
 
-az keyvault set-policy --name $keyVaultName --secret-permissions set delete get list --object-id $objectid
+# view existing Sp
+#az ad sp list
 
-Write-Information "Step 5 - Register Secret in Key Vault..."
+# create AAD service principal - used to grant permissions (role assignments) to the client app
+#$spid = (az ad sp create --id $clientid --query objectId  --output tsv)
 
-az keyvault secret set --vault-name $keyVaultName --name $keyVaultSQLUserSecretName --value $secureSecret
+#az ad sp create-for-rbac --name $clientid
+
+az ad sp create-for-rbac
+
+#az ad sp create --id $clientid
+
+
+#spid=$(az ad sp list --display-name $clientid --query "[].appId" -o tsv)
+#$spid = az ad sp list --id $clientid --query appId -o tsv
+
+#$spid = ((az ad sp list --display-name $clientid) | ConvertFrom-JSON).appId
+
+#echo "sp:" $spid
+
+Write-Host "Step 5 - Set Key Vault Access Policy..."
+
+# set permissions for the service principal
+#az keyvault set-policy --name $keyVaultName --secret-permissions set delete get list --object-id $spid
+
+Write-Host "Step 6 - Register Secret in Key Vault..."
+
+#az keyvault secret set --name $keyVaultSQLUserSecretName --vault-name $keyVaultName --value $secureSecret
