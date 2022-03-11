@@ -1,91 +1,64 @@
 
 # login azure
 Write-Host "Logging into Azure..."
-    #az Login
+    az Login
 
 # variables
 $keyVaultName = "asakeyabcfelaqpgsfnxcy"
 $keyVaultSQLUserSecretName = "test01"
 $resourceGroupName = "covid2"
-$appName = "covid1"
+$appName = "covid3"
 
 # pass in arguments
-$subscriptionId = Read-Host "subscription Id"
-$resourcegroupName = Read-Host "resource group name"
+#$subscriptionId = Read-Host "subscription Id"
+#$resourcegroupName = Read-Host "resource group name"
 
-Write-Host "Step 1 - Get Azure IDs for the current subscription..."
+$subscriptionId = "9edd9e25-815c-4cdb-9bc8-d2ba127ec752"
+$rgName = "COVID2"
 
-    echo "Subscription ID:" $subscriptionId
+az account set --subscription $subscriptionId
 
 Write-Host "Step 2 - Create App Registration and Service Principal..."
 
-    az ad sp create-for-rbac --name $appName --role Contributor
+#    $sp_prop = az ad sp create-for-rbac --name $appName --role Contributor --query [].[appId,password,tenant] -o tsv
 
-# JSON output
-#{
-#    "appId": "generated-app-ID", [client ID]
-#    "displayName": "service-principal-name",
-#    "name": "http://service-principal-uri",
-#    "password": "generated-password", [client secret]
-#    "tenant": "tenant-ID" [tenant ID]
-#}
+    $sp_prop = az ad sp create-for-rbac --name $appName --role Contributor
+
+    echo $sp_prop
+    # JSON output
+    #{
+    #    "appId": "generated-app-ID", [client ID]
+    #    "displayName": "service-principal-name",
+    #    "name": "http://service-principal-uri",
+    #    "password": "generated-password", [client secret]
+    #    "tenant": "tenant-ID" [tenant ID]
+    #}
+
+    # get appId of the service principal
+    #$spAppId = az ad sp create-for-rbac --name $appName --role Contributor --query appId -o tsv
+    $spAppId = (($sp_prop) | ConvertFrom-JSON).appId
+
+    echo "App ID": $spAppId
+
+    # get service principal secret
+    #$secret = az ad sp create-for-rbac --name $appName --role Contributor --query password -o tsv
+    $spSecret = (($sp_prop) | ConvertFrom-JSON).password
+    echo "Secret value": $spSecret
 
 
-$spid = az ad sp create-for-rbac --name $appName --role Contributor --query appId -o tsv
+    # get tenant ID
+    #$tenant = az ad sp create-for-rbac --name $appName --role Contributor --query tenant -o tsv
+    $spTenant = (($sp_prop) | ConvertFrom-JSON).tenant
+    echo "Tenant": $spTenant
 
-$secret = az ad sp create-for-rbac --name $appName --role Contributor --query password -o tsv
-
-#$secret = ((az ad sp create-for-rbac --name $appName --role Contributor) | ConvertFrom-JSON).password
-
-
-#$objectid = (($appReg) | ConvertFrom-JSON).objectId
-    #$spid = ((az ad sp list --display-name $clientid) | ConvertFrom-JSON).appId
-
-    #echo "Service Principal Name:" $clientid
-    #echo "Service Principal ID:" $spid
-
-    # create Application Registration object
-    #$appReg = az ad app create --display-name $appName
-
-    #echo $appReg
-
-    # grab JSON objects
-    #$objectid = (($appReg) | ConvertFrom-JSON).objectId
-    #$clientid = (($appReg) | ConvertFrom-JSON).appId
-    #$displayname = (($appReg) | ConvertFrom-JSON).displayName
-
-    #echo "Display Name:" $displayname
-    #echo "Object ID:" $objectid
-    #echo "Application (client) ID:" $clientid
-
-Write-Host "Step 3 - Generate secret..."
-
-    # generate secret for the App
-    #$secretValue = ((az ad app credential reset --id $clientid --credential-description Secret01) | ConvertFrom-JSON).Password
-
-    #echo "Secret Value:" $secretValue
-
-    # convert to secure string
-    #$secureSecret = ConvertTo-SecureString -String $secretValue -AsPlainText -Force
-
-Write-Host "Step 4 - Create Service Principal..."
-
-    # create Azure AAD service principal with name = Application (client) ID
-    #$displaynameSP = $displayname + '_sp'
-    #az ad sp create-for-rbac --name $displaynameSP
-
-    #az ad sp create-for-rbac --name $clientid
-
-    #$spid = ((az ad sp list --display-name $clientid) | ConvertFrom-JSON).appId
-
-    #echo "Service Principal Name:" $clientid
-    #echo "Service Principal ID:" $spid
-
-Write-Host "Step 5 - Set Key Vault Access Policy..."
+Write-Host "Step 3 - Set Key Vault Access Policy..."
 
     # set permissions for the service principal
-    az keyvault set-policy --name $keyVaultName --secret-permissions set delete get list --spn $spID
+    az keyvault set-policy --name $keyVaultName --secret-permissions set delete get list --spn $spAppId
 
-Write-Host "Step 6 - Register Secret in Key Vault..."
+Write-Host "Step 4 - Register Secret in Key Vault..."
+    #az logout
 
-    az keyvault secret set --name $keyVaultSQLUserSecretName --vault-name $keyVaultName --value $secret
+    az Login --service-principal -u $spAppId -p $spSecret --tenant $spTenant
+    
+    az keyvault secret set --name $keyVaultSQLUserSecretName --vault-name $keyVaultName --value $spSecret
