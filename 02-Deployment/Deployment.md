@@ -57,7 +57,7 @@ In order to perform the necessary actions in the Synapse workspace, you will nee
 ## Step 3. Data Engineering
 
 ## 3.1: Unpack FAERS Zip files using Azure Synapse Pipelines (Persona: Data Engineer)
-As mentioned in Step 1, the FAERS data is embedded as separate files within each quarterly .zip file.  The objective is to consolidate all these files for each quarter for each year into a single location.  To make this task easier, you will use Synapse to create a pipeline through a low-code experience.  
+As mentioned in Step 1, the FAERS data is embedded as separate files within each quarterly .zip file.  The objective is to consolidate all these files for each quarter for each year into a single location.  To make this task easier, you will use Synapse to create a pipeline.
 
 1. Launch the Synapse workspace (via Azure portal > Synapse workspace > Workspace web URL)
 2. Go to `Integrate`, click `+`, and click `Import` to select the JSON template from the repository's `/02-DataEngineering/` folder
@@ -98,7 +98,9 @@ Now that the data is in a relational format, you will generate reports and visua
 ## Step 5. Data Science & Machine Learning
 Next, you will build a prospective analysis.  Based on the drug trends identified from the SDUD data, the objective is to build a machine learning model based on the FAERS data associated with those drugs.  Azure Databricks will be used to handle these large datasets, pre-process the data, and perform feature engineering.  You will also use Azure Machine Learning to benchmark code-first models against autoML, and deploy the best model for real-time inferencing.
 
-## 5.1: Process FAERS data (Persona: Pro Data Scientist)
+## 5.1: Process FAERS data and build baseline model (Persona: Pro Data Scientist)
+A professional data scientist will perform initial exploratory data analysis (EDA), and pre-process the data.  After the data has been cleaned, a baseline model will be created.
+
 1. Launch the Databricks workspace (via Azure portal > Databricks > Launch workspace > Workspace web URL)
 2. Go to `Clusters`.  Create a cluster with the following variables: (TBD)
 3. Go to `Workspace` > `Users` > your username > `Import`
@@ -115,7 +117,9 @@ Next, you will build a prospective analysis.  Based on the drug trends identifie
 3. Run the notebook
 
 
-## 5.2: Process FAERS Data in Azure Machine Learning (Persona: Citizen Data Scientist)
+## 5.2:  Automatically build ML models in Azure Machine Learning (Persona: Citizen Data Scientist)
+A citizen data scientist will take the cleaned FAERS data and run some initial machine learning models using autoML.  The purpose of doing this is to enable anyone to build machine learning models fairly easily.
+
 1. Run automatedML
 
 ## 5.3: Process FAERS Data in Azure Machine Learning (Persona: Pro Data Scientist)
