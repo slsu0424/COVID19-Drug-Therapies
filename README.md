@@ -23,7 +23,7 @@ To use this solution accelerator, you will need to have access to and/or provisi
 2. [Power Apps](http://www.powerapps.com) License (or free trial)
 3. [PowerShell 7.1](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-7.1)
 4. [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
-5. [Databricks] CLI(https://docs.microsoft.com/en-us/azure/databricks/dev-tools/cli/)
+5. [Databricks CLI](https://docs.microsoft.com/en-us/azure/databricks/dev-tools/cli/)
 
 A working knowledge of Azure, Azure Data Factory, Azure Databricks, Azure Synapse Analytics, Azure Machine Learning, Azure Container Services, and PowerBI will also be helpful.  To learn more about these services, please visit:
 1. [Azure Data Factory](https://azure.microsoft.com/en-us/services/data-factory/)
