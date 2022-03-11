@@ -64,10 +64,10 @@ A working knowledge of Azure, Azure Data Factory, Azure Databricks, Azure Synaps
 
 ## Folders
 ## [01-Presentations](./01-Presentations)
-This folder contains the Powerpoint decks that provide an Executive Overview and Technical Design for the solution.  In addition, a video provides a detailed walkthrough of the Solution Accelerator.  
+This folder contains the Powerpoint decks that provide an Executive Overview and Technical Design for the solution.  In addition, a video provides a detailed walkthrough of the solutions setup.
 
 ## [02-Deployment](./02-Deployment)
-This folder contains the scripts used to deploy the required resources into your Azure Subscription. This can be done using the Azure Portal.  The [Deployment Guide](./02-Deployment/Deployment.md) is provided to help complete the rest of the solution setup.
+This folder contains the scripts used to deploy the required resources into your Azure Subscription. This can be done using the scripts or Azure Portal.  The [Deployment Guide](./02-Deployment/Deployment.md) is provided to help complete the rest of the solution setup.
 
 ## [03-Data Engineering](./03-DataEngineering)
 This folder contains the JSON templates needed to complete the data engineering tasks outlined in the Deployment Guide. You will use the content in this folder following the instructions in the Deployment Guide.
