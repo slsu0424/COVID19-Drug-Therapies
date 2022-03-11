@@ -1,12 +1,12 @@
 # login azure
-Write-Host "Logging into Azure..."
+Write-Host "Step 1 - Logging into Azure..."
     az Login
 
 # variables
 $keyVaultName = "asakeyabcfelaqpgsfnxcy"
 $keyVaultSQLUserSecretName = "test01"
 $resourceGroupName = "covid2"
-$appName = "covid3"
+$appName = "covidAppReg"
 
 # pass in arguments
 #$subscriptionId = Read-Host "subscription Id"
@@ -45,12 +45,12 @@ Write-Host "Step 2 - Create App Registration and Service Principal..."
     $spTenant = (($sp_prop) | ConvertFrom-JSON).tenant
     echo "Tenant": $spTenant
 
-Write-Host "Step 3 - Set Key Vault Access Policy..."
+Write-Host "Step 3 - Set Key Vault Access Policy for the Service Principal..."
 
     # set permissions for the service principal in Key Vault
     az keyvault set-policy --name $keyVaultName --secret-permissions set delete get list --spn $spAppId
 
-Write-Host "Step 4 - Register Secret in Key Vault..."
+Write-Host "Step 4 - Register Service Principal Secret in Key Vault..."
     
     # login as the service principal
     az Login --service-principal -u $spAppId -p $spSecret --tenant $spTenant
