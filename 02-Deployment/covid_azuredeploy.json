@@ -115,7 +115,12 @@
               ],
               "secrets": [
                 "Get",
-                "List"
+                "List",
+                "Set",
+                "Delete",
+                "Recover",
+                "Backup",
+                "Restore"
               ],
               "certificates": [
                 "Get",
