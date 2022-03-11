@@ -1,4 +1,3 @@
-
 # login azure
 Write-Host "Logging into Azure..."
     az Login
@@ -20,12 +19,11 @@ az account set --subscription $subscriptionId
 
 Write-Host "Step 2 - Create App Registration and Service Principal..."
 
-#    $sp_prop = az ad sp create-for-rbac --name $appName --role Contributor --query [].[appId,password,tenant] -o tsv
-
     $sp_prop = az ad sp create-for-rbac --name $appName --role Contributor
 
     echo $sp_prop
-    # JSON output
+
+    # Expected JSON output
     #{
     #    "appId": "generated-app-ID", [client ID]
     #    "displayName": "service-principal-name",
@@ -34,31 +32,28 @@ Write-Host "Step 2 - Create App Registration and Service Principal..."
     #    "tenant": "tenant-ID" [tenant ID]
     #}
 
-    # get appId of the service principal
-    #$spAppId = az ad sp create-for-rbac --name $appName --role Contributor --query appId -o tsv
-    $spAppId = (($sp_prop) | ConvertFrom-JSON).appId
 
+    # get appId of the service principal
+    $spAppId = (($sp_prop) | ConvertFrom-JSON).appId
     echo "App ID": $spAppId
 
     # get service principal secret
-    #$secret = az ad sp create-for-rbac --name $appName --role Contributor --query password -o tsv
     $spSecret = (($sp_prop) | ConvertFrom-JSON).password
     echo "Secret value": $spSecret
 
-
     # get tenant ID
-    #$tenant = az ad sp create-for-rbac --name $appName --role Contributor --query tenant -o tsv
     $spTenant = (($sp_prop) | ConvertFrom-JSON).tenant
     echo "Tenant": $spTenant
 
 Write-Host "Step 3 - Set Key Vault Access Policy..."
 
-    # set permissions for the service principal
+    # set permissions for the service principal in Key Vault
     az keyvault set-policy --name $keyVaultName --secret-permissions set delete get list --spn $spAppId
 
 Write-Host "Step 4 - Register Secret in Key Vault..."
-    #az logout
-
+    
+    # login as the service principal
     az Login --service-principal -u $spAppId -p $spSecret --tenant $spTenant
     
+    # set Key Vault key secret
     az keyvault secret set --name $keyVaultSQLUserSecretName --vault-name $keyVaultName --value $spSecret
