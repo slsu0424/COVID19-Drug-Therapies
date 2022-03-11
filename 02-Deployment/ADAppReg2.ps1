@@ -4,7 +4,7 @@ Write-Host "Step 1 - Logging into Azure..."
 
 # variables
 $keyVaultName = "asakeysusaaefdbhdg2dbc4"
-$keyVaultSQLUserSecretName = "test01"
+$keyVaultSQLUserSecretName = "testsecret01"
 $appName = "covidAppReg"
 
 # pass in arguments
