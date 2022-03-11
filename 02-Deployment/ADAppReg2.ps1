@@ -1,3 +1,4 @@
+
 # login azure
 Write-Host "Logging into Azure..."
     #az Login
@@ -6,7 +7,7 @@ Write-Host "Logging into Azure..."
 $keyVaultName = "asakeyabcfelaqpgsfnxcy"
 $keyVaultSQLUserSecretName = "test01"
 $resourceGroupName = "covid2"
-$appName = "covid0"
+$appName = "covid1"
 
 # pass in arguments
 $subscriptionId = Read-Host "subscription Id"
@@ -16,31 +17,54 @@ Write-Host "Step 1 - Get Azure IDs for the current subscription..."
 
     echo "Subscription ID:" $subscriptionId
 
-Write-Host "Step 2 - Create App Registration..."
+Write-Host "Step 2 - Create App Registration and Service Principal..."
+
+    az ad sp create-for-rbac --name $appName --role Contributor
+
+# JSON output
+#{
+#    "appId": "generated-app-ID", [client ID]
+#    "displayName": "service-principal-name",
+#    "name": "http://service-principal-uri",
+#    "password": "generated-password", [client secret]
+#    "tenant": "tenant-ID" [tenant ID]
+#}
+
+$spname = ((az ad sp create-for-rbac --name $appName --role Contributor) | ConvertFrom-JSON).displayName
+$spid = ((az ad sp create-for-rbac --name $appName --role Contributor) | ConvertFrom-JSON).appId
+
+$secret = ((az ad sp create-for-rbac --name $appName --role Contributor) | ConvertFrom-JSON).password
+
+
+#$objectid = (($appReg) | ConvertFrom-JSON).objectId
+    #$spid = ((az ad sp list --display-name $clientid) | ConvertFrom-JSON).appId
+
+    #echo "Service Principal Name:" $clientid
+    #echo "Service Principal ID:" $spid
 
     # create Application Registration object
-    $appReg = az ad app create --display-name $appName
+    #$appReg = az ad app create --display-name $appName
 
     #echo $appReg
 
     # grab JSON objects
-    $objectid = (($appReg) | ConvertFrom-JSON).objectId
-    $clientid = (($appReg) | ConvertFrom-JSON).appId
-    $displayname = (($appReg) | ConvertFrom-JSON).displayName
+    #$objectid = (($appReg) | ConvertFrom-JSON).objectId
+    #$clientid = (($appReg) | ConvertFrom-JSON).appId
+    #$displayname = (($appReg) | ConvertFrom-JSON).displayName
 
-    echo "Display Name:" $displayname
-    echo "Object ID:" $objectid
-    echo "Application (client) ID:" $clientid
+    #echo "Display Name:" $displayname
+    #echo "Object ID:" $objectid
+    #echo "Application (client) ID:" $clientid
 
 Write-Host "Step 3 - Generate secret..."
 
     # generate secret for the App
-    $secretValue = ((az ad app credential reset --id $clientid --credential-description Secret01) | ConvertFrom-JSON).Password
+    #$secretValue = ((az ad app credential reset --id $clientid --credential-description Secret01) | ConvertFrom-JSON).Password
 
-    echo "Secret Value:" $secretValue
+    #echo "Secret Value:" $secretValue
 
     # convert to secure string
-    $secureSecret = ConvertTo-SecureString -String $secretValue -AsPlainText -Force
+    #$secureSecret = ConvertTo-SecureString -String $secretValue -AsPlainText -Force
 
 Write-Host "Step 4 - Create Service Principal..."
 
@@ -48,18 +72,18 @@ Write-Host "Step 4 - Create Service Principal..."
     #$displaynameSP = $displayname + '_sp'
     #az ad sp create-for-rbac --name $displaynameSP
 
-    az ad sp create-for-rbac --name $clientid
+    #az ad sp create-for-rbac --name $clientid
 
-    $spid = ((az ad sp list --display-name $clientid) | ConvertFrom-JSON).appId
+    #$spid = ((az ad sp list --display-name $clientid) | ConvertFrom-JSON).appId
 
-    echo "Service Principal Name:" $clientid
-    echo "Service Principal ID:" $spid
+    #echo "Service Principal Name:" $clientid
+    #echo "Service Principal ID:" $spid
 
 Write-Host "Step 5 - Set Key Vault Access Policy..."
 
     # set permissions for the service principal
-    az keyvault set-policy --name $keyVaultName --secret-permissions set delete get list --object-id $spid
+    az keyvault set-policy --name $keyVaultName --secret-permissions set delete get list --spn $spID
 
 Write-Host "Step 6 - Register Secret in Key Vault..."
 
-    az keyvault secret set --name $keyVaultSQLUserSecretName --vault-name $keyVaultName --value $secureSecret
+    az keyvault secret set --name $keyVaultSQLUserSecretName --vault-name $keyVaultName --value $secret
