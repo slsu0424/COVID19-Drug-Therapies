@@ -23,6 +23,7 @@ To use this solution accelerator, you will need to have access to and/or provisi
 2. [Power Apps](http://www.powerapps.com) License (or free trial)
 3. [PowerShell 7.1](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-7.1)
 4. [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
+5. [Databricks] CLI(https://docs.microsoft.com/en-us/azure/databricks/dev-tools/cli/)
 
 A working knowledge of Azure, Azure Data Factory, Azure Databricks, Azure Synapse Analytics, Azure Machine Learning, Azure Container Services, and PowerBI will also be helpful.  To learn more about these services, please visit:
 1. [Azure Data Factory](https://azure.microsoft.com/en-us/services/data-factory/)
@@ -34,7 +35,7 @@ A working knowledge of Azure, Azure Data Factory, Azure Databricks, Azure Synaps
 
 
 ## Getting Started
-1. An ARM template deploys and configures all the resources required to run the solution.  Click the Deploy to Azure button below:
+1. An [ARM](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/overview) template deploys and configures all the resources required to run the solution.  Click the Deploy to Azure button below:
 
     [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fslsu0424%2FCOVID19-Drug-Therapies%2Fmain%2F02-Deployment%2Fcovid_azuredeploy.json)
 
