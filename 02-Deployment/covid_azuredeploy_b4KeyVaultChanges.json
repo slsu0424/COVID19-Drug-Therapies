@@ -104,35 +104,10 @@
           "name": "standard",
           "family": "A"
         },
-        "accessPolicies": [
-          {
-            "tenantId": "[subscription().tenantId]",
-            "objectId": "0ec2b0e8-daeb-46a8-b627-0d4f61f87157",
-            "permissions": {
-              "keys": [
-                "Get"
-              ],
-              "secrets": [
-                "Get"
-              ],
-              "certificates": [
-                "Get"
-              ]
-            }
-          }
-        ],
-        "enabledForDeployment": false,
-        "enabledForDiskEncryption": false,
-        "enabledForTemplateDeployment": false,
-        "enableSoftDelete": true,
-        "softDeleteRetentionInDays": 90,
-        "enableRbacAuthorization": false,
-        "vaultUri": "[concat('https://', variables('keyVaultName'), '.vault.azure.net/')]",
-        "provisioningState": "Succeeded",
-        "publicNetworkAccess": "Enabled"
+        "accessPolicies": []
       }
-  },
-  {
+    },
+    {
       "type": "Microsoft.Storage/storageAccounts",
       "apiVersion": "2019-06-01",
       "name": "[variables('adlsStorageAccountName')]",
