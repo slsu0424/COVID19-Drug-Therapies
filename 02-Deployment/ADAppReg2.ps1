@@ -30,10 +30,12 @@ Write-Host "Step 2 - Create App Registration and Service Principal..."
 #    "tenant": "tenant-ID" [tenant ID]
 #}
 
-$spname = ((az ad sp create-for-rbac --name $appName --role Contributor) | ConvertFrom-JSON).displayName
-$spid = ((az ad sp create-for-rbac --name $appName --role Contributor) | ConvertFrom-JSON).appId
 
-$secret = ((az ad sp create-for-rbac --name $appName --role Contributor) | ConvertFrom-JSON).password
+$spid = az ad sp create-for-rbac --name $appName --role Contributor --query appId -o tsv
+
+$secret = az ad sp create-for-rbac --name $appName --role Contributor --query password -o tsv
+
+#$secret = ((az ad sp create-for-rbac --name $appName --role Contributor) | ConvertFrom-JSON).password
 
 
 #$objectid = (($appReg) | ConvertFrom-JSON).objectId
