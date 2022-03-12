@@ -6,7 +6,7 @@ az Login
 # variables
 $keyVaultName = "asakeysusaaefdbhdg2dbc4"
 $keyVaultSQLUserSecretName = "testsecret01"
-$appName = "covidAppReg0"
+$appName = "covidAppReg424"
 
 # pass in arguments
 #$subscriptionId = Read-Host "subscription Id"
@@ -56,6 +56,6 @@ Write-Host "Step 4 - Register Service Principal Secret in Key Vault..."
     az Login --service-principal -u $spAppId -p $spSecret --tenant $spTenant
     
     # set Key Vault key secret
-    az keyvault secret set --name $keyVaultSQLUserSecretName --vault-name $keyVaultName --value $spSecret
+#    az keyvault secret set --name $keyVaultSQLUserSecretName --vault-name $keyVaultName --value $spSecret
 
     
