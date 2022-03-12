@@ -4,34 +4,27 @@ Write-Host "Step 1 - Logging into Azure..."
 az Login
 
 # variables
-$keyVaultName = "asakeysusaaefdbhdg2dbc4"
+$keyVaultName = "asakeysusa4bhqynzjymxma"
 $keyVaultSQLUserSecretName = "testsecret01"
 $appName = "COVID0_sp1"
+#$rgName = "COVID1"
 
-# pass in arguments
-#$subscriptionId = Read-Host "subscription Id"
-#$resourcegroupName = Read-Host "resource group name"
-
-#$subscriptionId = "9edd9e25-815c-4cdb-9bc8-d2ba127ec752"
-
-#$subscriptionId = "[subscription().tenantId]"
-#$currAccount = az account list --query "[?contains(IsDefault, 'true')]" --o table
+# get info on currently signed-in user
+#az ad signed-in-user show
 
 # get all the subscriptions for the logged in account
 az account list --output table
 
-# get current active subscriptionId (isDefault = True)
-$subId = az account list --query "[?contains(IsDefault, 'true')]"
+# get current active subscription ID
+$subId = az account show --query id --output tsv
 
-#$rgName = "COVID1"
+echo "Current Subscription ID is": $subId
 
-echo $subId
-
-az account set --subscription $subId
+#az account set --subscription $subId
 
 Write-Host "Step 2 - Create App Registration and Service Principal..."
 
-    $sp_prop = az ad sp create-for-rbac --name $appName --role Contributor
+    $sp_prop = az ad sp create-for-rbac --name $appName --role Contributor 
 
     #echo $sp_prop
 
