@@ -6,7 +6,7 @@ az Login
 # variables
 $keyVaultName = "asakeysusa4bhqynzjymxma"
 $keyVaultSQLUserSecretName = "testsecret01"
-$appName = "COVID0_sp1"
+$appName = "COVID0_sp2"
 #$rgName = "COVID1"
 
 # get info on currently signed-in user
@@ -26,7 +26,7 @@ Write-Host "Step 2 - Create App Registration and Service Principal..."
 
     $sp_prop = az ad sp create-for-rbac --name $appName --role Contributor 
 
-    #echo $sp_prop
+    echo $sp_prop
 
     # Expected JSON output
     #{
@@ -61,6 +61,6 @@ Write-Host "Step 4 - Register Service Principal Secret in Key Vault..."
     az Login --service-principal -u $spAppId -p $spSecret --tenant $spTenant
     
     # set Key Vault key secret
-#    az keyvault secret set --name $keyVaultSQLUserSecretName --vault-name $keyVaultName --value $spSecret
+    az keyvault secret set --name $keyVaultSQLUserSecretName --vault-name $keyVaultName --value $spSecret
 
     
