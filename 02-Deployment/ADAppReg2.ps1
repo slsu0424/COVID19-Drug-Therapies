@@ -5,23 +5,21 @@ az Login
 
 # variables
 $keyVaultName = "asakeysusa4bhqynzjymxma"
-$keyVaultSQLUserSecretName = "testsecret01"
-$appName = "COVID0_sp2"
+$keyVaultSQLUserSecretName = "testsecret02"
+$appName = "COVID0_sp1"
 #$rgName = "COVID1"
 
 # get info on currently signed-in user
 #az ad signed-in-user show
 
 # get all the subscriptions for the logged in account
-az account list --output table
+# az account list --output table
 
 # get current active subscription ID
 $subId = az account show --query id --output tsv
 
 echo "Current Subscription ID is": $subId
-
-#az account set --subscription $subId
-
+d
 Write-Host "Step 2 - Create App Registration and Service Principal..."
 
     $sp_prop = az ad sp create-for-rbac --name $appName --role Contributor 
