@@ -82,6 +82,13 @@ This folder contains the Notebooks needed to complete the tasks for building a m
 ## [06-Frontend](./06-FrontEnd)
 This folder contains the Web-based User Interface to be used by a end user.
 
+
+## Acknowledgements
+
+This project is developed as part of the Microsoft HLS CSU Data & AI Data Science & AI Transformational Projects Initiative led by Iksha Herr.
+
+Author: Sandy Su
+
 ## Contributing
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
