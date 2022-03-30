@@ -83,12 +83,6 @@ This folder contains the Notebooks needed to complete the tasks for building a m
 This folder contains the Web-based User Interface to be used by a end user.
 
 
-## Acknowledgements
-
-This project is developed as part of the Microsoft HLS CSU Data & AI Data Science & AI Transformational Projects Initiative led by Iksha Herr.
-
-Author: Sandy Su
-
 ## Contributing
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
@@ -103,6 +97,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
+
 ## Trademarks
 
 This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft
@@ -110,3 +105,10 @@ trademarks or logos is subject to and must follow
 [Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).
 Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship.
 Any use of third-party trademarks or logos are subject to those third-party's policies.
+
+
+## Acknowledgements
+
+This project is developed as part of the Microsoft Healthcare & Life Sciences Customer Success Unit Data Science & AI Transformational Projects Initiative led by Iksha Herr.
+
+Author: Sandy Su
