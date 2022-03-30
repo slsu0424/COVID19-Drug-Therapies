@@ -18,7 +18,7 @@ There are 2 data sources that will be used to build the solution.  Due to the si
 
 2. [FDA Adverse Events Database](https://www.fda.gov/drugs/drug-approvals-and-databases/fda-adverse-event-reporting-system-faers) (FAERS) - This data contains adverse event reports, medication error reports, and product quality complaints resulting in adverse events submitted to the FDA.  We will use this data to build a machine learning model to characterize at-risk patients for fatal adverse events between the years 2019-2021.
 
-      As the data is reported on a quarterly basis for each year, navigate to the [Quarterly Data Files](https://www.fda.gov/drugs/questions-and-answers-fdas-adverse-event-reporting-system-faers/fda-adverse-event-reporting-system-faers-latest-quarterly-data-files).  Download the data to your local machine in the ASCII format.
+      As the data is reported on a quarterly basis for each year, navigate to the [Quarterly Data Files](https://www.fda.gov/drugs/questions-and-answers-fdas-adverse-event-reporting-system-faers/fda-adverse-event-reporting-system-faers-latest-quarterly-data-files).  Click on the `FDA Adverse Event Reporting System (FAERS) Quarterly Data Extract Files` link and download the data to your local machine in the ASCII format.
 
       Note that each quarterly .zip file contains 7 different files that will need to be consolidated later.
 
