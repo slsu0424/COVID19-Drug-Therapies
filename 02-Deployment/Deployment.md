@@ -57,14 +57,14 @@ In order to perform the necessary actions in the Synapse workspace, you will nee
 
 ## Step 3. Data Engineering
 ## 3.1 Process SDUD data using Azure Synapse Spark Notebooks (Persona: Data Engineer)
-First, you will build the retrospective analysis. The objective is to process and analyze the SDUD data to identify drug prescription trends between 2018-2021.  
+First, you will build the retrospective analysis. The objective is to process and analyze the SDUD data to identify drug prescription trends between 2018-2021.  The notebook will load and explore the raw SDUD data.  Using tabular and chart views, several drug trends will be identified.  The data will be pre-processed into a curated layer for downstream reporting.
 
 1. Launch the Synapse workspace (via Azure portal > Synapse workspace > Workspace web URL)
 2. Go to `Develop`, click `+`, and click `Import` to select the Notebook `01_SDUD` from the repository's `/02-Data Engineering/Notebooks` folder
 
 ### 01_SDUD
-1. Update `storage_account_name` variable to your ADLS in the [00_preparedata.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/00_preparedata.ipynb) notebook
-2. Update `container_name` variable to your container in the [00_preparedata.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/00_preparedata.ipynb) notebook
+1. Update the `storage_account_name` variable to your ADLS2 in the [00_preparedata.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/00_preparedata.ipynb) notebook
+2. Update the `container_name` variable to your container in the [00_preparedata.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/00_preparedata.ipynb) notebook
 3. Run the notebook
 
 ## 3.2 Unpack FAERS Zip files using Azure Synapse Pipelines (Persona: Data Engineer)
