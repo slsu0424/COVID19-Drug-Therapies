@@ -60,7 +60,7 @@ In order to perform the necessary actions in the Synapse workspace, you will nee
 First, you will build the retrospective analysis. The objective is to process and analyze the SDUD data to identify drug prescription trends between 2018-2021.  
 
 1. Launch the Synapse workspace (via Azure portal > Synapse workspace > Workspace web URL)
-2. Go to `Develop`, click `+`, and click `Import` to select the Notebook `01_SDUD` from the repository's `/02-Data Engineering/Spark Notebooks` folder
+2. Go to `Develop`, click `+`, and click `Import` to select the Notebook `01_SDUD` from the repository's `/02-Data Engineering/Notebooks` folder
 
 ### 01_SDUD
 1. Update `data_lake_account_name` variable to your ADLS in the [00_preparedata.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/00_preparedata.ipynb) notebook
