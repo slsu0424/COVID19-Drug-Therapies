@@ -4,16 +4,17 @@ Please follow the steps below to set up the Azure environment.
 ## Step 1. Download Datasets
 There are 2 data sources that will be used to build the solution.  Due to the size of the data, you will download the data directly from their website.
 
-1. [State Drug Utilization Database](https://www.medicaid.gov/medicaid/prescription-drugs/state-drug-utilization-data/index.html) (SDUD) - This data represents covered outpatient drugs paid for by state Medicaid agencies.  We will be using this data to analyze drug prescription rends between the years 2018-2020.
+1. [State Drug Utilization Database](https://www.medicaid.gov/medicaid/prescription-drugs/state-drug-utilization-data/index.html) (SDUD) - This data represents covered outpatient drugs paid for by state Medicaid agencies.  We will be using this data to analyze drug prescription trends between the years 2018-2021.
 
       Navigate to the year of interest (i.e., 2018) and download the data to your local machine.
 
       ![SDUD](./images/SDUD.png)
 
-      Repeat this for years 2019 and 2020.  Make sure you have downloaded the following datasets (.csv):
+      Repeat this for years 2019-2021.  Make sure you have downloaded the following datasets (.csv):
       - State Drug Utilization Data 2018
       - State Drug Utilization Data 2019
       - State Drug Utilization Data 2020
+      - State Drug Utilization Data 2021
 
 2. [FDA Adverse Events Database](https://www.fda.gov/drugs/drug-approvals-and-databases/fda-adverse-event-reporting-system-faers) (FAERS) - This data contains adverse event reports, medication error reports, and product quality complaints resulting in adverse events submitted to the FDA.  We will use this data to build a machine learning model to characterize at-risk patients for fatal adverse events between the years 2019-2021.
 
