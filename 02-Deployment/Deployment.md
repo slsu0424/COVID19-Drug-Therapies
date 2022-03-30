@@ -57,7 +57,7 @@ In order to perform the necessary actions in the Synapse workspace, you will nee
 
 ## Step 3. Data Engineering
 ## 3.1 Process SDUD data using Azure Synapse Spark Notebooks (Persona: Data Engineer)
-First, you will build the retrospective analysis. The objective is to process and analyze the SDUD data to identify drug prescription trends between 2018-2021.  The notebook will load and explore the raw SDUD data.  Using Spark SQL, several drug trends will be identified through various tabular and chart views.  The data will then be pre-processed into a curated layer, and saved to a SQL dedicated pool for downstream reporting.
+First, you will build the retrospective analysis. The objective is to process and analyze the SDUD data to identify drug prescription trends between 2018-2021.  The notebook will load and explore the raw data.  Using Spark SQL, several drug trends will be identified through various tabular and chart views.  The data is then pre-processed into a curated layer, and saved to a SQL dedicated pool for downstream reporting.
 
 1. Launch the Synapse workspace (via Azure portal > Synapse workspace > Workspace web URL)
 2. Go to `Develop`, click `+`, and click `Import` to select the Notebook `01_SDUD` from the repository's `/02-Data Engineering/Notebooks` folder
@@ -68,7 +68,7 @@ First, you will build the retrospective analysis. The objective is to process an
 3. Run the notebook
 
 ## 3.2 Unpack FAERS Zip files using Azure Synapse Pipelines (Persona: Data Engineer)
-As mentioned in Step 1, the FAERS data is embedded as separate files within each quarterly .zip file.  The objective is to consolidate all these files for each quarter for each year into a single location.  To make this task easier, you will use Synapse to create a pipeline.
+The FAERS data is embedded as separate files within each quarterly .zip file.  The objective is to consolidate all these files for each quarter for each year into a single location.  To make this task easier, you will use Synapse to create a pipeline.
 
 1. Launch the Synapse workspace (via Azure portal > Synapse workspace > Workspace web URL)
 2. Go to `Integrate`, click `+`, and click `Import` to select the JSON template from the repository's `/02-DataEngineering/` folder
