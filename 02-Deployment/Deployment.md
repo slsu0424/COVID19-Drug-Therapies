@@ -6,7 +6,7 @@ There are 2 data sources that will be used to build the solution.  Due to the si
 
 1. [State Drug Utilization Database](https://www.medicaid.gov/medicaid/prescription-drugs/state-drug-utilization-data/index.html) (SDUD) - This data represents covered outpatient drugs paid for by state Medicaid agencies.  This data will be used to analyze drug prescription trends between the years 2018-2021.
 
-      Navigate to the year of interest and navigate to the last page.  Select the link `State Drug Utilization Data 2018` and download the data to your local machine.
+      Navigate to the year of interest and navigate to the last page.  Clikc on the `State Drug Utilization Data 2018` link and download the data to your local machine.
 
       ![SDUD](./images/SDUD.png)
 
@@ -18,7 +18,7 @@ There are 2 data sources that will be used to build the solution.  Due to the si
 
 2. [FDA Adverse Events Database](https://www.fda.gov/drugs/drug-approvals-and-databases/fda-adverse-event-reporting-system-faers) (FAERS) - This data contains adverse event reports, medication error reports, and product quality complaints resulting in adverse events submitted to the FDA.  We will use this data to build a machine learning model to characterize at-risk patients for fatal adverse events between the years 2019-2021.
 
-      As the data is reported on a quarterly basis for each year, navigate to the [Quarterly Data Files](https://www.fda.gov/drugs/questions-and-answers-fdas-adverse-event-reporting-system-faers/fda-adverse-event-reporting-system-faers-latest-quarterly-data-files).  Download the data to your local machine in the ASCII format.
+      As the data is reported on a quarterly basis for each year, navigate to the [Quarterly Data Files](https://www.fda.gov/drugs/questions-and-answers-fdas-adverse-event-reporting-system-faers/fda-adverse-event-reporting-system-faers-latest-quarterly-data-files).  Click on the `FDA Adverse Event Reporting System (FAERS) Quarterly Data Extract Files` link and download the data to your local machine in the ASCII format.
 
       Note that each quarterly .zip file contains 7 different files that will need to be consolidated later.
 
@@ -57,7 +57,7 @@ In order to perform the necessary actions in the Synapse workspace, you will nee
 
 ## Step 3. Data Engineering
 ## 3.1 Process SDUD data using Azure Synapse Spark Notebooks (Persona: Data Engineer)
-First, you will build the retrospective analysis. The objective is to process and analyze the SDUD data to identify drug prescription trends between 2018-2021.  The notebook will load and explore the raw SDUD data.  Using Spark SQL, several drug trends will be identified through various tabular and chart views.  The data will then be pre-processed into a curated layer, and saved to a SQL dedicated pool for downstream reporting.
+First, you will build the retrospective analysis. The objective is to process and analyze the SDUD data to identify drug prescription trends between 2018-2021.  The notebook will load and explore the raw data.  Using Spark SQL, several drug trends will be identified through various tabular and chart views.  The data is then pre-processed into a curated layer, and saved to a SQL dedicated pool for downstream reporting.
 
 1. Launch the Synapse workspace (via Azure portal > Synapse workspace > Workspace web URL)
 2. Go to `Develop`, click `+`, and click `Import` to select the Notebook `01_SDUD` from the repository's `/02-Data Engineering/Notebooks` folder
@@ -68,7 +68,7 @@ First, you will build the retrospective analysis. The objective is to process an
 3. Run the notebook
 
 ## 3.2 Unpack FAERS Zip files using Azure Synapse Pipelines (Persona: Data Engineer)
-As mentioned in Step 1, the FAERS data is embedded as separate files within each quarterly .zip file.  The objective is to consolidate all these files for each quarter for each year into a single location.  To make this task easier, you will use Synapse to create a pipeline.
+The FAERS data is embedded as separate files within each quarterly .zip file.  The objective is to consolidate all these files for each quarter for each year into a single location.  To make this task easier, you will use Synapse to create a pipeline.
 
 1. Launch the Synapse workspace (via Azure portal > Synapse workspace > Workspace web URL)
 2. Go to `Integrate`, click `+`, and click `Import` to select the JSON template from the repository's `/02-DataEngineering/` folder
