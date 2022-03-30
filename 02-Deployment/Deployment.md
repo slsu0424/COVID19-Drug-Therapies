@@ -4,7 +4,7 @@ Please follow the steps below to set up the Azure environment.
 ## Step 1. Download Datasets
 There are 2 data sources that will be used to build the solution.  Due to the size of the data, you will download the data directly from their website.
 
-1. [State Drug Utilization Database](https://www.medicaid.gov/medicaid/prescription-drugs/state-drug-utilization-data/index.html) (SDUD) - This data represents covered outpatient drugs paid for by state Medicaid agencies.  We will be using this data to analyze drug prescription trends between the years 2018-2021.
+1. [State Drug Utilization Database](https://www.medicaid.gov/medicaid/prescription-drugs/state-drug-utilization-data/index.html) (SDUD) - This data represents covered outpatient drugs paid for by state Medicaid agencies.  This data will be used to analyze drug prescription trends between the years 2018-2021.
 
       Navigate to the year of interest (i.e., 'State Drug Utilization Data 2018') and download the data to your local machine.
 
