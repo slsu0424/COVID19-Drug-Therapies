@@ -6,7 +6,7 @@ There are 2 data sources that will be used to build the solution.  Due to the si
 
 1. [State Drug Utilization Database](https://www.medicaid.gov/medicaid/prescription-drugs/state-drug-utilization-data/index.html) (SDUD) - This data represents covered outpatient drugs paid for by state Medicaid agencies.  This data will be used to analyze drug prescription trends between the years 2018-2021.
 
-      Navigate to the year of interest and navigate to the last page.  Select the link 'State Drug Utilization Data 2018' and download the data to your local machine.
+      Navigate to the year of interest and navigate to the last page.  Select the link `State Drug Utilization Data 2018` and download the data to your local machine.
 
       ![SDUD](./images/SDUD.png)
 
