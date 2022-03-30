@@ -56,8 +56,18 @@ In order to perform the necessary actions in the Synapse workspace, you will nee
 .
 
 ## Step 3. Data Engineering
+## 3.1 Process SDUD data using Azure Synapse Spark Notebooks (Persona: Data Engineer)
+First, you will build the retrospective analysis. The objective is to process and analyze the SDUD data to identify drug prescription trends between 2018-2021.  
 
-## 3.1: Unpack FAERS Zip files using Azure Synapse Pipelines (Persona: Data Engineer)
+1. Launch the Synapse workspace (via Azure portal > Synapse workspace > Workspace web URL)
+2. Go to `Develop`, click `+`, and click `Import` to select the Notebook `01_SDUD` from the repository's `/02-DataEngineering/SQL` folder
+
+### 01_SDUD
+1. Update `data_lake_account_name` variable to your ADLS in the [00_preparedata.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/00_preparedata.ipynb) notebook
+2. Update `file_system_name` variable to your container in the [00_preparedata.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/00_preparedata.ipynb) notebook
+3. Run the notebook
+
+## 3.2 Unpack FAERS Zip files using Azure Synapse Pipelines (Persona: Data Engineer)
 As mentioned in Step 1, the FAERS data is embedded as separate files within each quarterly .zip file.  The objective is to consolidate all these files for each quarter for each year into a single location.  To make this task easier, you will use Synapse to create a pipeline.
 
 1. Launch the Synapse workspace (via Azure portal > Synapse workspace > Workspace web URL)
@@ -66,20 +76,7 @@ As mentioned in Step 1, the FAERS data is embedded as separate files within each
 4. View the extracted files in ADLS
 
 ## Step 4. Analytics & Visualization
-## 4.1: Process and analyze SDUD data (Persona: Pro Data Scientist, Data Architect)
-First, you will build the retrospective analysis. The objective is to process and analyze the SDUD data to identify any drug prescription trends.  Due to the large size of these datasets, Azure Databricks will be used for this task.
-
-1. Launch the Databricks workspace (via Azure portal > Databricks > Launch workspace > Workspace web URL)
-2. Go to `Clusters`.  Create a cluster with the following variables: (TBD)
-3. Go to `Workspace` > `Users` > your username > `Import`
-4. Select `Import from file` and select the notebook (.py) from the repository's `/04-Analytics&Reporting/Notebooks` folder
-
-### 01_SDUD
-1. Update `data_lake_account_name` variable to your ADLS in the [00_preparedata.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/00_preparedata.ipynb) notebook
-2. Update `file_system_name` variable to your container in the [00_preparedata.ipynb](./Analytics_Deployment/Synapse-Workspace/Notebooks/00_preparedata.ipynb) notebook
-3. Run the notebook
-
-## 4.2: Prepare SDUD data for operational reporting (Persona: Data Architect)
+## 4.1 Prepare SDUD data for operational reporting (Persona: Data Architect)
 The merged SDUD data is now saved in ADLS.  The data will be accessed from the data lake and transformed into a data warehouse object for querying, reporting, and visualization.  This will also include masking personal health information (PHI/PII) that can only be seen by specific users or groups.
 
 1. Launch the Synapse workspace (via Azure portal > Synapse workspace > Workspace web URL)
@@ -88,7 +85,7 @@ The merged SDUD data is now saved in ADLS.  The data will be accessed from the d
     - TBD
     - TBD
 
-## 4.3 Visualize SDUD data trends (Persona: Data Analyst)
+## 4.2 Visualize SDUD data trends (Persona: Data Analyst)
 Now that the data is in a relational format, you will generate reports and visualizations.
 
 1. Launch the PowerBI embedded workspace (via Azure portal > PowerBI workspace > Workspace web URL)
