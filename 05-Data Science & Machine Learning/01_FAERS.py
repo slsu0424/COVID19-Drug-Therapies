@@ -452,15 +452,21 @@ print((df2.count(), len(df2.columns)))
 
 # convert to pandas
 
-df3 = df2.toPandas()
+#df3 = df2.toPandas()
 
 #df2 = df1.toPandas()
 
 # COMMAND ----------
 
-df3.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess1.csv', index=False)
+df2.write.csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess1.csv')
 
 #df2.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess1.csv', index=False)
+
+#df2.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess1.csv', index=False)
+
+# COMMAND ----------
+
+df2.write.parquet('/dbfs/mnt/adls/FAERS_CSteroid_preprocess1.parquet')
 
 # COMMAND ----------
 
