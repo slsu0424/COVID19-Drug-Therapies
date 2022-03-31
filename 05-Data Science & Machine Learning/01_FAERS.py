@@ -1,68 +1,108 @@
 # Databricks notebook source
-# MAGIC %md #Part 1: Curate Corticosteroid Dataset
+# MAGIC %md
+# MAGIC #Part 1: Curate Corticosteroids Dataset
 
 # COMMAND ----------
 
-# MAGIC %md #Set Spark Configuration
+# MAGIC %md
+# MAGIC # Update Variables
 
 # COMMAND ----------
 
-# Define access key to connect to adls2
-
-# https://www.mssqltips.com/sqlservertip/6499/reading-and-writing-data-in-azure-data-lake-storage-gen-2-with-azure-databricks/
-
-# http://peter.lalovsky.com/2021/07/azure/azure-databricks-read-write-files-from-to-azure-data-lake/
-
-#spark.conf.set(
-#  "fs.azure.account.key.sdudsynapseadls2.dfs.core.windows.net",
-#  dbutils.secrets.get(scope="secret01",key="testsecret01")
-#)
+service_principal_client_id = '34e3f258-4f4f-404a-8c60-8cc2eab1ac60' # app registration app (client) id
+tenant_id = '72f988bf-86f1-41af-91ab-2d7cd011db47' # app registration tenant id
+storage_account_name = 'asastgssuaefdbhdg2dbc4'
+container_name = 'curated'
 
 # COMMAND ----------
 
-# MAGIC %md #Load data
+# MAGIC %md
+# MAGIC # Use Azure Key Vault and Databricks Scope for Secure Access
+# MAGIC 
+# MAGIC By interacting with Azure Key Vault, you can access your storage without writing secure information in Databricks.
+# MAGIC 
+# MAGIC Before starting:
+# MAGIC 1. Create your key vault resource in Azure Portal
+# MAGIC 2. Create new secret and set service principal's secret as value in your key vault. Here we assume the key name is "testsecret01".
+# MAGIC 2. Go to https://YOUR_AZURE_DATABRICKS_URL#secrets/createScope    
+# MAGIC (Once you've created scope, you should manage with Databricks CLI.)    
+# MAGIC     - Set scope name. Here we assume the name is "scope01", which is needed for the following "dbutils" commands.
+# MAGIC     - Select "Creator" (needing Azure Databricks Premium tier)
+# MAGIC     - Input your key vault's settings, such as DNS name and resource id. (You can copy settings in key vault's "Properties".)
 
 # COMMAND ----------
 
-# Load datasets from DBFS into Spark dataframe
+# get mount points
 
-# display(dbutils.fs.ls("/mnt/adls/FAERS_Output/ASCII"))
-
-display(dbutils.fs.ls("/mnt/adls/FAERS_Output_v3/ASCII"))
+for mount in dbutils.fs.mounts():
+    print(mount.mountPoint)
 
 # COMMAND ----------
+
+# https://transform365.blog/2020/06/15/mount-a-blob-storage-in-azure-databricks-only-if-it-does-not-exist-using-python/
+# https://docs.microsoft.com/en-us/azure/databricks/security/secrets/secret-scopes
+
+sp_secret = dbutils.secrets.get(scope = "scope01", key = "testsecret01")
+
+configs = {"fs.azure.account.auth.type": "OAuth",
+           "fs.azure.account.oauth.provider.type": "org.apache.hadoop.fs.azurebfs.oauth2.ClientCredsTokenProvider",
+           "fs.azure.account.oauth2.client.id": service_principal_client_id,
+           "fs.azure.account.oauth2.client.secret": sp_secret,
+           "fs.azure.account.oauth2.client.endpoint": "https://login.microsoftonline.com/" + tenant_id + "/oauth2/token"}
+
+try:
+    dbutils.fs.mount(
+    source = "abfss://{}@{}.dfs.core.windows.net".format(container_name, storage_account_name),
+    mount_point = "/mnt/adls",
+    extra_configs = configs
+    )
+except Exception as e:
+    print("already mounted. Try to unmount first")
+
+# COMMAND ----------
+
+# unmount folders as needed
+
+dbutils.fs.unmount("/mnt/adls")
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC #Load data
+
+# COMMAND ----------
+
+# view folders and files from mounted ADLS container in DBFS
+
+display(dbutils.fs.ls("/mnt/adls/FAERS_output"))
+
+# COMMAND ----------
+
+# view files in the ASCII folder
+
+display(dbutils.fs.ls("/mnt/adls/FAERS_output/ASCII"))
+
+# COMMAND ----------
+
+# Load datasets into Spark dataframe
 
 # https://intellipaat.com/community/8588/how-to-import-multiple-csv-files-in-a-single-load
 
-#df_demo = spark.read.csv("/mnt/adls/FAERS_Output/ASCII/DEMO*.txt", header="true", nullValue = "NA", inferSchema="true", sep = "$") # demographic
-#df_drug = spark.read.csv("/mnt/adls/FAERS_Output/ASCII/DRUG*", header="true", nullValue = "NA", inferSchema="true", sep = "$") # drug
-#df_indi = spark.read.csv("/mnt/adls/FAERS_Output/ASCII/INDI*", header="true", nullValue = "NA", inferSchema="true", sep = "$") # indication
-#df_outc = spark.read.csv("/mnt/adls/FAERS_Output/ASCII/OUTC*", header="true", nullValue = "NA", inferSchema="true", sep = "$") # outcome
-#df_reac = spark.read.csv("/mnt/adls/FAERS_Output/ASCII/REAC*", header="true", nullValue = "NA", inferSchema="true", sep = "$") # reaction
-#df_rpsr = spark.read.csv("/mnt/adls/FAERS_Output/ASCII/RPSR*", header="true", nullValue = "NA", inferSchema="true", sep = "$") # report sources
-#df_ther = spark.read.csv("/mnt/adls/FAERS_Output/ASCII/THER*.txt", header="true", nullValue = "NA", inferSchema="true", sep = "$") # therapy
-
-# display sample dataset
-#display(df_demo)
-
-# COMMAND ----------
-
-# https://intellipaat.com/community/8588/how-to-import-multiple-csv-files-in-a-single-load
-
-df_demo = spark.read.csv("/mnt/adls/FAERS_Output_v3/ASCII/DEMO*.txt", header="true", nullValue = "NA", inferSchema="true", sep = "$") # demographic
-df_drug = spark.read.csv("/mnt/adls/FAERS_Output_v3/ASCII/DRUG*", header="true", nullValue = "NA", inferSchema="true", sep = "$") # drug
-df_indi = spark.read.csv("/mnt/adls/FAERS_Output_v3/ASCII/INDI*", header="true", nullValue = "NA", inferSchema="true", sep = "$") # indication
-df_outc = spark.read.csv("/mnt/adls/FAERS_Output_v3/ASCII/OUTC*", header="true", nullValue = "NA", inferSchema="true", sep = "$") # outcome
-df_reac = spark.read.csv("/mnt/adls/FAERS_Output_v3/ASCII/REAC*", header="true", nullValue = "NA", inferSchema="true", sep = "$") # reaction
-df_rpsr = spark.read.csv("/mnt/adls/FAERS_Output_v3/ASCII/RPSR*", header="true", nullValue = "NA", inferSchema="true", sep = "$") # report sources
-df_ther = spark.read.csv("/mnt/adls/FAERS_Output_v3/ASCII/THER*.txt", header="true", nullValue = "NA", inferSchema="true", sep = "$") # therapy
+df_demo = spark.read.csv("/mnt/adls/FAERS_output/ASCII/DEMO*.txt", header="true", nullValue = "NA", inferSchema="true", sep = "$") # demographic
+df_drug = spark.read.csv("/mnt/adls/FAERS_output/ASCII/DRUG*.txt", header="true", nullValue = "NA", inferSchema="true", sep = "$") # drug
+df_indi = spark.read.csv("/mnt/adls/FAERS_output/ASCII/INDI*.txt", header="true", nullValue = "NA", inferSchema="true", sep = "$") # indication
+df_outc = spark.read.csv("/mnt/adls/FAERS_output/ASCII/OUTC*.txt", header="true", nullValue = "NA", inferSchema="true", sep = "$") # outcome
+df_reac = spark.read.csv("/mnt/adls/FAERS_output/ASCII/REAC*.txt", header="true", nullValue = "NA", inferSchema="true", sep = "$") # reaction
+df_rpsr = spark.read.csv("/mnt/adls/FAERS_output/ASCII/RPSR*.txt", header="true", nullValue = "NA", inferSchema="true", sep = "$") # report sources
+df_ther = spark.read.csv("/mnt/adls/FAERS_output/ASCII/THER*.txt", header="true", nullValue = "NA", inferSchema="true", sep = "$") # therapy
 
 # display sample dataset
 display(df_demo)
 
 # COMMAND ----------
 
-# MAGIC %md ##Rows and Columns
+# MAGIC %md
+# MAGIC ##Rows and Columns
 
 # COMMAND ----------
 
@@ -78,7 +118,8 @@ print((df_ther.count(), len(df_ther.columns)))
 
 # COMMAND ----------
 
-# MAGIC %md ##Sample Schema
+# MAGIC %md
+# MAGIC ##Sample Schema
 
 # COMMAND ----------
 
@@ -86,7 +127,8 @@ df_demo.printSchema()
 
 # COMMAND ----------
 
-# MAGIC %md #Query Datasets
+# MAGIC %md
+# MAGIC #Query Datasets
 
 # COMMAND ----------
 
@@ -106,7 +148,8 @@ df_ther.createOrReplaceTempView("2020_Ther")
 
 # COMMAND ----------
 
-# MAGIC %md ##Demographic
+# MAGIC %md
+# MAGIC ##Demographic
 
 # COMMAND ----------
 
@@ -125,7 +168,8 @@ display(spark.sql("select * from 2020_Demo where caseid = '18523926'"))
 
 # COMMAND ----------
 
-# MAGIC %md ##Drug
+# MAGIC %md
+# MAGIC ##Drug
 
 # COMMAND ----------
 
@@ -143,7 +187,8 @@ display(spark.sql("select * from 2020_Drug"))
 
 # COMMAND ----------
 
-# MAGIC %md ##Indication
+# MAGIC %md
+# MAGIC ##Indication
 
 # COMMAND ----------
 
@@ -153,7 +198,8 @@ display(spark.sql("select * from 2020_INDI"))
 
 # COMMAND ----------
 
-# MAGIC %md ##Outcome
+# MAGIC %md
+# MAGIC ##Outcome
 
 # COMMAND ----------
 
@@ -187,7 +233,8 @@ display(spark.sql("select A.drugname, B.outc_cod, count(B.outc_cod) \
 
 # COMMAND ----------
 
-# MAGIC %md ##Reaction
+# MAGIC %md
+# MAGIC ##Reaction
 
 # COMMAND ----------
 
@@ -197,7 +244,8 @@ display(spark.sql("select * from 2020_REAC where caseid = '17356818'"))
 
 # COMMAND ----------
 
-# MAGIC %md ##Report Sources
+# MAGIC %md
+# MAGIC ##Report Sources
 
 # COMMAND ----------
 
@@ -205,7 +253,8 @@ display(spark.sql("select * from 2020_RPSR"))
 
 # COMMAND ----------
 
-# MAGIC %md ##Therapy
+# MAGIC %md
+# MAGIC ##Therapy
 
 # COMMAND ----------
 
@@ -248,7 +297,8 @@ display(spark.sql("select * from 2020_Demo where caseid = '17363177'"))
 
 # COMMAND ----------
 
-# MAGIC %md #Join Tables
+# MAGIC %md
+# MAGIC #Join Tables
 
 # COMMAND ----------
 
@@ -302,7 +352,8 @@ df_demo1.createOrReplaceTempView("2020_DEMO1")
 
 # COMMAND ----------
 
-# MAGIC %md ##Corticosteroids
+# MAGIC %md
+# MAGIC ##Corticosteroids
 
 # COMMAND ----------
 
@@ -369,7 +420,8 @@ print((df1.count(), len(df1.columns)))
 
 # COMMAND ----------
 
-# MAGIC %md ##Filter Event Dates
+# MAGIC %md
+# MAGIC ##Filter Event Dates
 
 # COMMAND ----------
 
@@ -393,7 +445,8 @@ print((df2.count(), len(df2.columns)))
 
 # COMMAND ----------
 
-# MAGIC %md #Save to ADLS
+# MAGIC %md
+# MAGIC #Save to ADLS
 
 # COMMAND ----------
 
