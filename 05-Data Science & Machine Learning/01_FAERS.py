@@ -457,12 +457,3 @@ df3.to_csv("/dbfs/mnt/adls/FAERS_CSteroid_preprocess1.csv", index=False)
 # COMMAND ----------
 
 df2.write.parquet('/mnt/adls/FAERS_CSteroid_preprocess1.parquet')
-
-# COMMAND ----------
-
-#df3.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess1_minwhereclauses.csv', index=False)
-
-# COMMAND ----------
-
-#dbutils.fs.rm("/dbfs/mnt/adls/FAERS_CSteroid_preprocess1.parquet", True)
-dbutils.fs.rm("/dbfs/mnt/adls/FAERS_CSteroid_preprocess1.csv", True)
