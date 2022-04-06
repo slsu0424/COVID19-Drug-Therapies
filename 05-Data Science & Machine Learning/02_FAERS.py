@@ -1,5 +1,5 @@
 # Databricks notebook source
-# MAGIC %md #Part 2: EDA & Preprocessing for AutoML
+# MAGIC %md #Part 2: Eexploratory Data Analysis & Preprocessing for AutoML
 
 # COMMAND ----------
 
@@ -60,15 +60,11 @@ print((df.count(), len(df.columns)))
 
 # COMMAND ----------
 
-# Exploratory Data Analysis
+# Exploratory Data Analysis (EDA)
 
 # convert to pandas
 
 df1 = df.toPandas()
-
-# COMMAND ----------
-
-
 
 # COMMAND ----------
 
