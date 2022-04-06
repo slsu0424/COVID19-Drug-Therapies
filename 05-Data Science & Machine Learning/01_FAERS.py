@@ -63,7 +63,7 @@ except Exception as e:
 
 # unmount folders as needed
 
-dbutils.fs.unmount("/mnt/adls")
+#dbutils.fs.unmount("/mnt/adls")
 
 # COMMAND ----------
 
@@ -74,13 +74,7 @@ dbutils.fs.unmount("/mnt/adls")
 
 # view folders and files from mounted ADLS container in DBFS
 
-display(dbutils.fs.ls("/mnt/adls/FAERS_output"))
-
-# COMMAND ----------
-
-# view files in the ASCII folder
-
-display(dbutils.fs.ls("/mnt/adls/FAERS_output/ASCII"))
+display(dbutils.fs.ls("/mnt/adls/FAERS_output_txt"))
 
 # COMMAND ----------
 
@@ -88,13 +82,13 @@ display(dbutils.fs.ls("/mnt/adls/FAERS_output/ASCII"))
 
 # https://intellipaat.com/community/8588/how-to-import-multiple-csv-files-in-a-single-load
 
-df_demo = spark.read.csv("/mnt/adls/FAERS_output/ASCII/DEMO*.txt", header="true", nullValue = "NA", inferSchema="true", sep = "$") # demographic
-df_drug = spark.read.csv("/mnt/adls/FAERS_output/ASCII/DRUG*.txt", header="true", nullValue = "NA", inferSchema="true", sep = "$") # drug
-df_indi = spark.read.csv("/mnt/adls/FAERS_output/ASCII/INDI*.txt", header="true", nullValue = "NA", inferSchema="true", sep = "$") # indication
-df_outc = spark.read.csv("/mnt/adls/FAERS_output/ASCII/OUTC*.txt", header="true", nullValue = "NA", inferSchema="true", sep = "$") # outcome
-df_reac = spark.read.csv("/mnt/adls/FAERS_output/ASCII/REAC*.txt", header="true", nullValue = "NA", inferSchema="true", sep = "$") # reaction
-df_rpsr = spark.read.csv("/mnt/adls/FAERS_output/ASCII/RPSR*.txt", header="true", nullValue = "NA", inferSchema="true", sep = "$") # report sources
-df_ther = spark.read.csv("/mnt/adls/FAERS_output/ASCII/THER*.txt", header="true", nullValue = "NA", inferSchema="true", sep = "$") # therapy
+df_demo = spark.read.csv("/mnt/adls/FAERS_output_txt/DEMO*.txt", header="true", nullValue = "NA", inferSchema="true", sep = "$") # demographic
+df_drug = spark.read.csv("/mnt/adls/FAERS_output_txt/DRUG*.txt", header="true", nullValue = "NA", inferSchema="true", sep = "$") # drug
+df_indi = spark.read.csv("/mnt/adls/FAERS_output_txt/INDI*.txt", header="true", nullValue = "NA", inferSchema="true", sep = "$") # indication
+df_outc = spark.read.csv("/mnt/adls/FAERS_output_txt/OUTC*.txt", header="true", nullValue = "NA", inferSchema="true", sep = "$") # outcome
+df_reac = spark.read.csv("/mnt/adls/FAERS_output_txt/REAC*.txt", header="true", nullValue = "NA", inferSchema="true", sep = "$") # reaction
+df_rpsr = spark.read.csv("/mnt/adls/FAERS_output_txt/RPSR*.txt", header="true", nullValue = "NA", inferSchema="true", sep = "$") # report sources
+df_ther = spark.read.csv("/mnt/adls/FAERS_output_txt/THER*.txt", header="true", nullValue = "NA", inferSchema="true", sep = "$") # therapy
 
 # display sample dataset
 display(df_demo)
