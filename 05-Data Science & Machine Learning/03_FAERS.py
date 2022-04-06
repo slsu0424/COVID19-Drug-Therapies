@@ -50,6 +50,12 @@ print((df.count(), len(df.columns)))
 
 # COMMAND ----------
 
+# convert to pandas
+
+df1 = df.toPandas()
+
+# COMMAND ----------
+
 # MAGIC %md ##Impute missing values
 
 # COMMAND ----------
@@ -60,7 +66,7 @@ print((df.count(), len(df.columns)))
 
 # check null values in numerical variables 
 
-df3.select_dtypes(exclude='object').isnull().sum()
+df1.select_dtypes(exclude='object').isnull().sum()
 
 # COMMAND ----------
 
@@ -76,7 +82,7 @@ df3.select_dtypes(exclude='object').isnull().sum()
 
 from sklearn.impute import SimpleImputer
 
-df4 = df3.copy() 
+df4 = df1.copy() 
 
 imputer = SimpleImputer(missing_values=np.nan, strategy= 'median')
 
@@ -132,13 +138,15 @@ df5.select_dtypes(exclude='object').dtypes
 
 # curate feature set (numerical values only)
 
-df6 = df5.copy() 
+#df6 = df5.copy()
+
+df6 = df5
 
 # df6 = df5.select_dtypes(exclude='object').drop(['mfr_dt','wt','start_dt','end_dt'], axis=1)
 
-df6 = df5.select_dtypes(exclude='object') \
-                            .drop(['primaryid','caseid','caseversion','event_dt','mfr_dt','init_fda_dt','fda_dt','age','wt', \
-                                    'rept_dt','last_case_version','val_vbm','start_dt','end_dt','drug_seq','dsg_drug_seq'], axis=1)
+#df6 = df5.select_dtypes(exclude='object') \
+#                            .drop(['primaryid','caseid','caseversion','event_dt','mfr_dt','init_fda_dt','fda_dt','age','wt', \
+#                                    'rept_dt','last_case_version','val_vbm','start_dt','end_dt','drug_seq','dsg_drug_seq'], axis=1)
 
 # COMMAND ----------
 

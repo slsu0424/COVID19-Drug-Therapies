@@ -1,5 +1,5 @@
 # Databricks notebook source
-# MAGIC %md #Part 2: Eexploratory Data Analysis & Preprocessing for AutoML
+# MAGIC %md #Part 2: Exploratory Data Analysis & Preprocessing for AutoML
 
 # COMMAND ----------
 
@@ -209,7 +209,7 @@ df2.insert(loc = 15,
 
 # COMMAND ----------
 
-# convert to years
+# convert age to years
 
 for index, row in df2.iterrows():
   if (row['age_cod'] == "YR"):
@@ -262,6 +262,15 @@ df2.head(1)
 
 # COMMAND ----------
 
+# convert new columns to numeric
+
+# https://stackoverflow.com/questions/21197774/assign-pandas-dataframe-column-dtypes
+
+df2["age_in_yrs"] = pd.to_numeric(df2["age_in_yrs"])
+df2["wt_in_lbs"] = pd.to_numeric(df2["wt_in_lbs"])    
+
+# COMMAND ----------
+
 # MAGIC %md ##Drop NULL values
 
 # COMMAND ----------
@@ -270,7 +279,13 @@ df2.head(1)
 
 # COMMAND ----------
 
-# display all null values per column
+# get all column types
+
+df2.dtypes
+
+# COMMAND ----------
+
+# sum up number of null values per column
 
 # https://www.analyticsvidhya.com/blog/2021/10/a-beginners-guide-to-feature-engineering-everything-you-need-to-know/
 
@@ -287,11 +302,17 @@ df3.columns
 
 # COMMAND ----------
 
+# remaining null values per column
+
+df3.isnull().sum()
+
+# COMMAND ----------
+
 df3.shape
 
 # COMMAND ----------
 
-# inspect remaining missing values in data
+# visually inspect remaining missing column values in data
 
 import missingno as msno
 
@@ -303,19 +324,16 @@ msno.matrix(df3)
 
 # COMMAND ----------
 
-# count number of 0 values per column
-
-df3.isin([0]).sum()
+# 2022-04-06 Drop Rows with Nan Values in certain columns
 
 # COMMAND ----------
 
 # drop rows where age_in_yrs, wt_in_lbs, dose_amt = 0
 
-df4 = df3.drop(df3[(df3['age_in_yrs'] < 1) | (df3['wt_in_lbs'] < 1) | (df3['dose_amt'] < 1)].index) # https://datagy.io/pandas-drop-columns-rows
+# https://datagy.io/pandas-drop-columns-rows
 
-# COMMAND ----------
-
-df4.isnull().sum()
+#df4 = df3.drop(df3[(df3['age_in_yrs'] == 0) | (df3['wt_in_lbs'] == 0) | (df3['dose_amt'] == 0)].index)
+df4 = df3
 
 # COMMAND ----------
 
@@ -340,10 +358,11 @@ df4.dtypes
 
 # select numerical variables of interest
 num_cols = ['age_in_yrs','wt_in_lbs','drug_seq','dose_amt','dsg_drug_seq']
+#num_cols = ['age_in_yrs','drug_seq','dose_amt','dsg_drug_seq']
 
 plt.figure(figsize=(18,9))
 df4[num_cols].boxplot()
-plt.title("Numerical variables in the Corticosteroid dataset", fontsize=20)
+plt.title("Numerical variables in the Corticosteroids dataset", fontsize=20)
 plt.show()
 
 # COMMAND ----------
@@ -354,8 +373,6 @@ sns.boxplot(x=df4['age_in_yrs'])
 
 # COMMAND ----------
 
-import seaborn as sns
-
 sns.boxplot(x=df4['wt_in_lbs'])
 
 # COMMAND ----------
@@ -364,7 +381,8 @@ sns.boxplot(x=df4['wt_in_lbs'])
 
 # also drops all weights that are NULL
 
-df5 = df4[df4['wt_in_lbs'] <= 600]
+df5 = df4[df4['wt_in_lbs'] <= 1000]
+# df5 = df4
 
 # COMMAND ----------
 
@@ -380,9 +398,12 @@ display(df5)
 
 # 2022-02-04 Drop columns that will not be used for training and inference
 
+# list all data types
 df5.dtypes
 
 # COMMAND ----------
+
+# drop columns
 
 df6 = df5.drop(['primaryid', 'caseid', 'caseversion', 'i_f_code', \
 #df6 = df5.drop(['event_dt', 'mfr_dt', 'init_fda_dt', 'fda_dt', \
@@ -400,7 +421,7 @@ df6 = df5.drop(['primaryid', 'caseid', 'caseversion', 'i_f_code', \
 
 # COMMAND ----------
 
-# columns that will be used for training
+# final columns that will be used for training
 
 df6.dtypes
 
@@ -422,7 +443,15 @@ df6.shape
 
 # COMMAND ----------
 
-#identify remaining null values in numeric columns only
+# visually inspect remaining missing values in data - 11 columns
+
+import missingno as msno
+
+msno.matrix(df6)
+
+# COMMAND ----------
+
+# count remaining null values
 
 df6.select_dtypes(exclude='object').isnull().sum()
 
@@ -436,4 +465,5 @@ df6.select_dtypes(exclude='object').isnull().sum()
 
 # df6.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess2.csv', index=False)
 # df6.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess2_8740.csv', index=False)
-df6.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess2_8740with11Cols.csv', index=False)
+# df6.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess2_8740with11Cols.csv', index=False)
+df6.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess2.csv', index=False)
