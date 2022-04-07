@@ -169,6 +169,10 @@ df2['outc_cod_DE'].value_counts()
 
 # COMMAND ----------
 
+display(df2)
+
+# COMMAND ----------
+
 # MAGIC %md ### Check for imbalance
 
 # COMMAND ----------
@@ -335,11 +339,14 @@ df4 = df3.dropna(subset=['age', 'wt', 'dose_amt'],how='all')
 # https://datagy.io/pandas-drop-columns-rows
 
 #df4 = df3.drop(df3[(df3['age_in_yrs'] == 0) | (df3['wt_in_lbs'] == 0) | (df3['dose_amt'] == 0)].index)
-#df4 = df3
 
 # COMMAND ----------
 
 df4.shape
+
+# COMMAND ----------
+
+display(df4)
 
 # COMMAND ----------
 
