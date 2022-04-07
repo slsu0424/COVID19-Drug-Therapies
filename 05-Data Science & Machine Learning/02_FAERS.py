@@ -9,15 +9,6 @@
 
 # COMMAND ----------
 
-# check python version
-
-# https://vincentlauzon.com/2018/04/18/python-version-in-databricks
-import sys
-
-sys.version
-
-# COMMAND ----------
-
 pip install missingno pandasql pycaret[full]
 
 # COMMAND ----------
@@ -342,10 +333,6 @@ df4["wt_in_lbs"] = pd.to_numeric(df4["wt_in_lbs"])
 
 # COMMAND ----------
 
-df4.dtypes
-
-# COMMAND ----------
-
 # MAGIC %md ###Convert 0 to NULL
 
 # COMMAND ----------
@@ -459,10 +446,6 @@ df6.dtypes
 # COMMAND ----------
 
 df6.shape
-
-# COMMAND ----------
-
-#display(df6)
 
 # COMMAND ----------
 
