@@ -188,93 +188,6 @@ sns.countplot(x='outc_cod_DE', data=df2) # data already looks wildly imbalanced 
 
 # COMMAND ----------
 
-# MAGIC %md ##Recode variables
-
-# COMMAND ----------
-
-# age code
-
-# DEC DECADE
-# YR YEAR
-# MON MONTH
-# WK WEEK
-# DY DAY
-# HR HOUR
-
-df2['age_cod'].value_counts(dropna = False) # https://www.statology.org/pandas-drop-rows-with-value
-
-# COMMAND ----------
-
-# age in years - insert new column next to 'age' column
-
-df2.insert(loc = 15, 
-  column = 'age_in_yrs', 
-  value = '0')
-
-# COMMAND ----------
-
-# convert age to years
-
-for index, row in df2.iterrows():
-  if (row['age_cod'] == "YR"):
-    df2.loc[index, 'age_in_yrs'] = df2.loc[index, 'age']
-  elif (row['age_cod'] == "DEC"):
-     df2.loc[index, 'age_in_yrs'] = df2.loc[index, 'age'] / 10
-  elif (row['age_cod'] == "MON"):
-    df2.loc[index, 'age_in_yrs'] = df2.loc[index, 'age'] / 12
-  elif (row['age_cod'] == "WK"):
-    df2.loc[index, 'age_in_yrs'] = df2.loc[index, 'age'] / 52
-  elif (row['age_cod'] == "DY"):
-    df2.loc[index, 'age_in_yrs']  = df2.loc[index, 'age'] / 365
-  else:
-    df2.loc[index, 'age_in_yrs'] = 0
-    
-# Test
-df2[df2['age_cod'] == "DY"].head(5)
-
-# COMMAND ----------
-
-# weight code
-
-df2['wt_cod'].value_counts()
-
-# COMMAND ----------
-
-# spot inspect
-
-df2[df2['wt_cod'] == "LBS"].head(5)
-
-# COMMAND ----------
-
-# weight in lbs - insert new column next to 'wt' column
-
-df2.insert(loc = 21, 
-  column = 'wt_in_lbs', 
-  value = 0)
-
-# COMMAND ----------
-
-# convert to lbs
-
-for index, row in df2.iterrows():
-  if (row['wt_cod'] == "KG"): # https://www.learndatasci.com/solutions/python-valueerror-truth-value-series-ambiguous-use-empty-bool-item-any-or-all/
-    df2.loc[index, 'wt_in_lbs'] = df2.loc[index, 'wt'] * 2.20462262
-  else:
-    df2.loc[index, 'wt_in_lbs'] = df2.loc[index, 'wt']
-
-df2.head(1)
-
-# COMMAND ----------
-
-# convert new columns to numeric
-
-# https://stackoverflow.com/questions/21197774/assign-pandas-dataframe-column-dtypes
-
-df2["age_in_yrs"] = pd.to_numeric(df2["age_in_yrs"])
-df2["wt_in_lbs"] = pd.to_numeric(df2["wt_in_lbs"])    
-
-# COMMAND ----------
-
 # MAGIC %md ##Drop NULL values
 
 # COMMAND ----------
@@ -347,6 +260,103 @@ df4.shape
 # COMMAND ----------
 
 display(df4)
+
+# COMMAND ----------
+
+# MAGIC %md ##Recode input variables
+
+# COMMAND ----------
+
+# MAGIC %md ###Convert 0 to NULL
+
+# COMMAND ----------
+
+df4.isin([0]).sum()
+
+# COMMAND ----------
+
+df4['age'].replace(0, np.nan, inplace=True)
+df4['wt'].replace(0, np.nan, inplace=True)
+df4['dose_amt'].replace(0, np.nan, inplace=True)
+
+# COMMAND ----------
+
+# MAGIC %md ###Convert columns
+
+# COMMAND ----------
+
+# age code
+
+# DEC DECADE
+# YR YEAR
+# MON MONTH
+# WK WEEK
+# DY DAY
+# HR HOUR
+
+df4['age_cod'].value_counts(dropna = False) # https://www.statology.org/pandas-drop-rows-with-value
+
+# COMMAND ----------
+
+# convert age to years
+
+for index, row in df4.iterrows():
+  if (row['age_cod'] == "YR"):
+    df4.loc[index, 'age_in_yrs'] = df4.loc[index, 'age']
+  elif (row['age_cod'] == "DEC"):
+     df4.loc[index, 'age_in_yrs'] = df4.loc[index, 'age'] / 10
+  elif (row['age_cod'] == "MON"):
+    df4.loc[index, 'age_in_yrs'] = df4.loc[index, 'age'] / 12
+  elif (row['age_cod'] == "WK"):
+    df4.loc[index, 'age_in_yrs'] = df4.loc[index, 'age'] / 52
+  elif (row['age_cod'] == "DY"):
+    df4.loc[index, 'age_in_yrs']  = df4.loc[index, 'age'] / 365
+  else:
+    df4.loc[index, 'age_in_yrs'] = 0
+    
+# Test
+df4[df4['age_cod'] == "DY"].head(5)
+
+# COMMAND ----------
+
+# weight code
+
+df4['wt_cod'].value_counts()
+
+# COMMAND ----------
+
+# spot inspect
+
+df4[df4['wt_cod'] == "LBS"].head(5)
+
+# COMMAND ----------
+
+# weight in lbs - insert new column next to 'wt' column
+
+df4.insert(loc = 21, 
+  column = 'wt_in_lbs', 
+  value = 0)
+
+# COMMAND ----------
+
+# convert to lbs
+
+for index, row in df4.iterrows():
+  if (row['wt_cod'] == "KG"): # https://www.learndatasci.com/solutions/python-valueerror-truth-value-series-ambiguous-use-empty-bool-item-any-or-all/
+    df4.loc[index, 'wt_in_lbs'] = df4.loc[index, 'wt'] * 2.20462262
+  else:
+    df4.loc[index, 'wt_in_lbs'] = df4.loc[index, 'wt']
+
+df4.head(1)
+
+# COMMAND ----------
+
+# convert new columns to numeric
+
+# https://stackoverflow.com/questions/21197774/assign-pandas-dataframe-column-dtypes
+
+df4["age_in_yrs"] = pd.to_numeric(df4["age_in_yrs"])
+df4["wt_in_lbs"] = pd.to_numeric(df4["wt_in_lbs"])    
 
 # COMMAND ----------
 
