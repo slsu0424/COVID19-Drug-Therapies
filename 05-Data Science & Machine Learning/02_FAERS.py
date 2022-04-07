@@ -312,7 +312,7 @@ df3.shape
 
 # COMMAND ----------
 
-# visually inspect remaining missing column values in data
+# visually inspect remaining missing values in data
 
 import missingno as msno
 
@@ -324,7 +324,9 @@ msno.matrix(df3)
 
 # COMMAND ----------
 
-# 2022-04-06 Drop Rows with Nan Values in certain columns
+# 2022-04-06 drop rows with Nan Values in certain columns
+
+df4 = df3.dropna(subset=['age', 'wt', 'dose_amt'])
 
 # COMMAND ----------
 
@@ -333,7 +335,7 @@ msno.matrix(df3)
 # https://datagy.io/pandas-drop-columns-rows
 
 #df4 = df3.drop(df3[(df3['age_in_yrs'] == 0) | (df3['wt_in_lbs'] == 0) | (df3['dose_amt'] == 0)].index)
-df4 = df3
+#df4 = df3
 
 # COMMAND ----------
 

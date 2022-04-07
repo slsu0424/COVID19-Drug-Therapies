@@ -56,6 +56,10 @@ df1 = df.toPandas()
 
 # COMMAND ----------
 
+df1.dtypes
+
+# COMMAND ----------
+
 # MAGIC %md ##Impute missing values
 
 # COMMAND ----------
@@ -88,7 +92,7 @@ imputer = SimpleImputer(missing_values=np.nan, strategy= 'median')
 
 df4.age_in_yrs = imputer.fit_transform(df4['age_in_yrs'].values.reshape(-1,1)) # only convert age if age_cod is in years.
 df4.wt_in_lbs = imputer.fit_transform(df4['wt_in_lbs'].values.reshape(-1,1))
-#df4.dose_amt = imputer.fit_transform(df4['dose_amt'].values.reshape(-1,1))
+df4.dose_amt = imputer.fit_transform(df4['dose_amt'].values.reshape(-1,1))
 
 display(df4)
 
@@ -132,7 +136,7 @@ msno.matrix(df5)
 
 # COMMAND ----------
 
-df5.select_dtypes(exclude='object').dtypes
+#df5.select_dtypes(exclude='object').dtypes
 
 # COMMAND ----------
 
@@ -140,9 +144,7 @@ df5.select_dtypes(exclude='object').dtypes
 
 #df6 = df5.copy()
 
-df6 = df5
-
-# df6 = df5.select_dtypes(exclude='object').drop(['mfr_dt','wt','start_dt','end_dt'], axis=1)
+df6 = df5.select_dtypes(exclude='object')
 
 #df6 = df5.select_dtypes(exclude='object') \
 #                            .drop(['primaryid','caseid','caseversion','event_dt','mfr_dt','init_fda_dt','fda_dt','age','wt', \
