@@ -144,11 +144,11 @@ msno.matrix(df5)
 
 #df6 = df5.copy()
 
-df6 = df5.select_dtypes(exclude='object')
+#df6 = df5.select_dtypes(exclude='object')
 
-#df6 = df5.select_dtypes(exclude='object') \
-#                            .drop(['primaryid','caseid','caseversion','event_dt','mfr_dt','init_fda_dt','fda_dt','age','wt', \
-#                                    'rept_dt','last_case_version','val_vbm','start_dt','end_dt','drug_seq','dsg_drug_seq'], axis=1)
+df6 = df5.select_dtypes(exclude='object') \
+                            .drop(['primaryid','caseid','caseversion','event_dt','mfr_dt','init_fda_dt','fda_dt','age','wt', \
+                                    'rept_dt','last_case_version','val_vbm','start_dt','end_dt','drug_seq','dsg_drug_seq', 'nda_num'], axis=1)
 
 # COMMAND ----------
 
@@ -157,7 +157,7 @@ display(df6)
 # COMMAND ----------
 
 # X = input
-X = df6.drop("outc_cod_DE" ,axis= 1)
+X = df6.drop('outc_cod_DE', axis= 1)
 
 # y = output
 y = df6['outc_cod_DE']

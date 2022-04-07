@@ -169,10 +169,6 @@ df2['outc_cod_DE'].value_counts()
 
 # COMMAND ----------
 
-display(df2)
-
-# COMMAND ----------
-
 # MAGIC %md ### Check for imbalance
 
 # COMMAND ----------
@@ -202,7 +198,7 @@ df2.dtypes
 
 # COMMAND ----------
 
-# sum up number of null values per column
+# sum of null values per column
 
 # https://www.analyticsvidhya.com/blog/2021/10/a-beginners-guide-to-feature-engineering-everything-you-need-to-know/
 
@@ -255,22 +251,6 @@ df4.shape
 
 # COMMAND ----------
 
-# MAGIC %md ###Convert 0 to NULL
-
-# COMMAND ----------
-
-df4.isin([0]).sum()
-
-# COMMAND ----------
-
-df4 = df4.copy()
-
-df4['age'].replace(0, np.nan, inplace=True)
-df4['wt'].replace(0, np.nan, inplace=True)
-df4['dose_amt'].replace(0, np.nan, inplace=True)
-
-# COMMAND ----------
-
 # MAGIC %md ###Convert columns
 
 # COMMAND ----------
@@ -299,21 +279,25 @@ df4.insert(loc = 15,
 # convert age to years
 
 for index, row in df4.iterrows():
-  if (row['age_cod'] == "YR"):
-    df4.loc[index, 'age_in_yrs'] = df4.loc[index, 'age']
-  elif (row['age_cod'] == "DEC"):
-     df4.loc[index, 'age_in_yrs'] = df4.loc[index, 'age'] / 10
-  elif (row['age_cod'] == "MON"):
-    df4.loc[index, 'age_in_yrs'] = df4.loc[index, 'age'] / 12
-  elif (row['age_cod'] == "WK"):
-    df4.loc[index, 'age_in_yrs'] = df4.loc[index, 'age'] / 52
-  elif (row['age_cod'] == "DY"):
-    df4.loc[index, 'age_in_yrs']  = df4.loc[index, 'age'] / 365
-  else:
-    df4.loc[index, 'age_in_yrs'] = 0
+    if (row['age_cod'] == "YR"):
+        df4.loc[index, 'age_in_yrs'] = df4.loc[index, 'age']
+    elif (row['age_cod'] == "DEC"):
+        df4.loc[index, 'age_in_yrs'] = df4.loc[index, 'age'] * 10
+    elif (row['age_cod'] == "MON"):
+        df4.loc[index, 'age_in_yrs'] = df4.loc[index, 'age'] / 12
+    elif (row['age_cod'] == "WK"):
+        df4.loc[index, 'age_in_yrs'] = df4.loc[index, 'age'] / 52
+    elif (row['age_cod'] == "DY"):
+        df4.loc[index, 'age_in_yrs'] = df4.loc[index, 'age'] / 365
+    else:
+        df4.loc[index, 'age_in_yrs'] = 0
     
 # Test
 df4[df4['age_cod'] == "DY"].head(5)
+
+# COMMAND ----------
+
+display(df4)
 
 # COMMAND ----------
 
@@ -340,10 +324,10 @@ df4.insert(loc = 20,
 # convert to lbs
 
 for index, row in df4.iterrows():
-  if (row['wt_cod'] == "KG"): # https://www.learndatasci.com/solutions/python-valueerror-truth-value-series-ambiguous-use-empty-bool-item-any-or-all/
-    df4.loc[index, 'wt_in_lbs'] = df4.loc[index, 'wt'] * 2.20462262
-  else:
-    df4.loc[index, 'wt_in_lbs'] = df4.loc[index, 'wt']
+    if (row['wt_cod'] == "KG"): # https://www.learndatasci.com/solutions/python-valueerror-truth-value-series-ambiguous-use-empty-bool-item-any-or-all/
+        df4.loc[index, 'wt_in_lbs'] = df4.loc[index, 'wt'] * 2.20462262
+    else:
+        df4.loc[index, 'wt_in_lbs'] = df4.loc[index, 'wt']
 
 df4.head(1)
 
@@ -355,6 +339,26 @@ df4.head(1)
 
 df4["age_in_yrs"] = pd.to_numeric(df4["age_in_yrs"])
 df4["wt_in_lbs"] = pd.to_numeric(df4["wt_in_lbs"])    
+
+# COMMAND ----------
+
+# MAGIC %md ###Convert 0 to NULL
+
+# COMMAND ----------
+
+df4.isin([0]).sum()
+
+# COMMAND ----------
+
+#df4 = df4.copy(deep=True)
+
+df4['age_in_yrs'].replace(0, np.nan, inplace=True)
+df4['wt_in_lbs'].replace(0, np.nan, inplace=True)
+df4['dose_amt'].replace(0, np.nan, inplace=True)
+
+# COMMAND ----------
+
+df4.isin([0]).sum()
 
 # COMMAND ----------
 
@@ -396,12 +400,15 @@ sns.boxplot(x=df4['wt_in_lbs'])
 
 # also drops all weights that are NULL
 
-df5 = df4[df4['wt_in_lbs'] <= 1000]
-# df5 = df4
+#df5 = df4[df4['wt_in_lbs'] <= 1000]
 
 # COMMAND ----------
 
-df5.shape
+df4.shape
+
+# COMMAND ----------
+
+display(df4)
 
 # COMMAND ----------
 
@@ -411,25 +418,31 @@ df5.shape
 
 # 2022-02-04 Drop columns that will not be used for training and inference
 
+df5 = df4
+
 # list all data types
 df5.dtypes
 
 # COMMAND ----------
 
+df6 = df5
+
+# COMMAND ----------
+
 # drop columns
 
-df6 = df5.drop(['primaryid', 'caseid', 'caseversion', 'i_f_code', \
+#df6 = df5.drop(['primaryid', 'caseid', 'caseversion', 'i_f_code', \
 #df6 = df5.drop(['event_dt', 'mfr_dt', 'init_fda_dt', 'fda_dt', \
-                'event_dt', 'mfr_dt', 'init_fda_dt', 'fda_dt', \
-                'rept_cod', 'auth_num', 'mfr_num', \
+#                'event_dt', 'mfr_dt', 'init_fda_dt', 'fda_dt', \
+#                'rept_cod', 'auth_num', 'mfr_num', \
                 #'age', 'age_cod', 
-                'age_grp', 'e_sub', \
-                'wt', 'wt_cod', 'rept_dt', \
-                'occp_cod', 'reporter_country', 'last_case_version', \
-                'role_cod', 'prod_ai', 'val_vbm', 'dose_vbm', 'lot_num', 'nda_num', \
-                'dose_unit','dose_form', 'dose_freq', \
-                'drug_seq', 'dsg_drug_seq', \
-                'pt','outc_cod', 'start_dt', 'end_dt'], axis=1)
+#                'age_grp', 'e_sub', \
+#                'wt', 'wt_cod', 'rept_dt', \
+#                'occp_cod', 'reporter_country', 'last_case_version', \
+#                'role_cod', 'prod_ai', 'val_vbm', 'dose_vbm', 'lot_num', 'nda_num', \
+#                'dose_unit','dose_form', 'dose_freq', \
+#                'drug_seq', 'dsg_drug_seq', \
+#                'pt','outc_cod', 'start_dt', 'end_dt'], axis=1)
 
 
 # COMMAND ----------
@@ -444,21 +457,15 @@ df6.shape
 
 # COMMAND ----------
 
-display(df6)
+#display(df6)
 
 # COMMAND ----------
 
-df6 = df6.drop(['age', 'age_cod'], axis=1)
+#df6 = df6.drop(['age', 'age_cod'], axis=1)
 
 # COMMAND ----------
 
 df6.shape
-
-# COMMAND ----------
-
-# count remaining null values
-
-df6.select_dtypes(exclude='object').isnull().sum()
 
 # COMMAND ----------
 
