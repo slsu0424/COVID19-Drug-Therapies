@@ -275,6 +275,8 @@ df4.isin([0]).sum()
 
 # COMMAND ----------
 
+df4 = df4.copy()
+
 df4['age'].replace(0, np.nan, inplace=True)
 df4['wt'].replace(0, np.nan, inplace=True)
 df4['dose_amt'].replace(0, np.nan, inplace=True)
@@ -295,6 +297,14 @@ df4['dose_amt'].replace(0, np.nan, inplace=True)
 # HR HOUR
 
 df4['age_cod'].value_counts(dropna = False) # https://www.statology.org/pandas-drop-rows-with-value
+
+# COMMAND ----------
+
+# age in years - insert new column next to 'age' column
+
+df4.insert(loc = 15, 
+  column = 'age_in_yrs', 
+  value = '0')
 
 # COMMAND ----------
 
@@ -333,7 +343,7 @@ df4[df4['wt_cod'] == "LBS"].head(5)
 
 # weight in lbs - insert new column next to 'wt' column
 
-df4.insert(loc = 21, 
+df4.insert(loc = 20, 
   column = 'wt_in_lbs', 
   value = 0)
 
