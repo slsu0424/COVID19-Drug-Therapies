@@ -324,9 +324,9 @@ msno.matrix(df3)
 
 # COMMAND ----------
 
-# 2022-04-06 drop rows with Nan Values in certain columns
+# drop rows with Nan Values in all columns
 
-df4 = df3.dropna(subset=['age', 'wt', 'dose_amt'])
+df4 = df3.dropna(subset=['age', 'wt', 'dose_amt'],how='all')
 
 # COMMAND ----------
 
@@ -340,8 +340,6 @@ df4 = df3.dropna(subset=['age', 'wt', 'dose_amt'])
 # COMMAND ----------
 
 df4.shape
-
-display(df4)
 
 # COMMAND ----------
 
