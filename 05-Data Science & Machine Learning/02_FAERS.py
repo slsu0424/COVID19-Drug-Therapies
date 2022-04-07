@@ -247,19 +247,7 @@ df4 = df3.dropna(subset=['age', 'wt', 'dose_amt'],how='all')
 
 # COMMAND ----------
 
-# drop rows where age_in_yrs, wt_in_lbs, dose_amt = 0
-
-# https://datagy.io/pandas-drop-columns-rows
-
-#df4 = df3.drop(df3[(df3['age_in_yrs'] == 0) | (df3['wt_in_lbs'] == 0) | (df3['dose_amt'] == 0)].index)
-
-# COMMAND ----------
-
 df4.shape
-
-# COMMAND ----------
-
-display(df4)
 
 # COMMAND ----------
 
@@ -415,8 +403,6 @@ df5 = df4[df4['wt_in_lbs'] <= 1000]
 
 df5.shape
 
-display(df5)
-
 # COMMAND ----------
 
 # MAGIC %md ##Drop irrelevant variables
@@ -467,14 +453,6 @@ df6 = df6.drop(['age', 'age_cod'], axis=1)
 # COMMAND ----------
 
 df6.shape
-
-# COMMAND ----------
-
-# visually inspect remaining missing values in data - 11 columns
-
-import missingno as msno
-
-msno.matrix(df6)
 
 # COMMAND ----------
 
