@@ -342,6 +342,10 @@ df4["wt_in_lbs"] = pd.to_numeric(df4["wt_in_lbs"])
 
 # COMMAND ----------
 
+df4.dtypes
+
+# COMMAND ----------
+
 # MAGIC %md ###Convert 0 to NULL
 
 # COMMAND ----------
@@ -350,7 +354,8 @@ df4.isin([0]).sum()
 
 # COMMAND ----------
 
-#df4 = df4.copy(deep=True)
+df4 = df4.copy(deep=True)
+#df5 = df4
 
 df4['age_in_yrs'].replace(0, np.nan, inplace=True)
 df4['wt_in_lbs'].replace(0, np.nan, inplace=True)
