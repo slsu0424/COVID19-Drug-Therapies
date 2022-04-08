@@ -583,6 +583,30 @@ df5.display(5)
 
 # COMMAND ----------
 
+# MAGIC %md ##Remove outliers
+
+# COMMAND ----------
+
+df3.dtypes
+
+# COMMAND ----------
+
+# detect outliers
+
+# https://www.kaggle.com/agrawaladitya/step-by-step-data-preprocessing-eda
+# https://www.machinelearningplus.com/plots/python-boxplot
+
+# select numerical variables of interest
+num_cols = ['age_in_yrs','wt_in_lbs','drug_seq','dose_amt','dsg_drug_seq']
+#num_cols = ['age_in_yrs','drug_seq','dose_amt','dsg_drug_seq']
+
+plt.figure(figsize=(18,9))
+df3[num_cols].boxplot()
+plt.title("Numerical variables in the Corticosteroids dataset", fontsize=20)
+plt.show()
+
+# COMMAND ----------
+
 # MAGIC %md ##Interaction variables
 
 # COMMAND ----------
