@@ -356,56 +356,6 @@ df4.isin([0]).sum()
 
 # COMMAND ----------
 
-# MAGIC %md ##Remove outliers
-
-# COMMAND ----------
-
-df4.dtypes
-
-# COMMAND ----------
-
-# detect outliers
-
-# https://www.kaggle.com/agrawaladitya/step-by-step-data-preprocessing-eda
-# https://www.machinelearningplus.com/plots/python-boxplot
-
-# select numerical variables of interest
-num_cols = ['age_in_yrs','wt_in_lbs','drug_seq','dose_amt','dsg_drug_seq']
-#num_cols = ['age_in_yrs','drug_seq','dose_amt','dsg_drug_seq']
-
-plt.figure(figsize=(18,9))
-df4[num_cols].boxplot()
-plt.title("Numerical variables in the Corticosteroids dataset", fontsize=20)
-plt.show()
-
-# COMMAND ----------
-
-import seaborn as sns
-
-sns.boxplot(x=df4['age_in_yrs'])
-
-# COMMAND ----------
-
-sns.boxplot(x=df4['wt_in_lbs'])
-
-# COMMAND ----------
-
-# https://www.cdc.gov/obesity/adult/defining.html
-
-# also drops all weights that are NULL
-
-#df5 = df4[df4['wt_in_lbs'] <= 1000]
-
-# COMMAND ----------
-
-df4.shape
-
-# COMMAND ----------
-
-display(df4)
-
-# COMMAND ----------
-
 # MAGIC %md ##Drop irrelevant variables
 
 # COMMAND ----------

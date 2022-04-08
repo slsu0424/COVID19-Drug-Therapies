@@ -607,6 +607,24 @@ plt.show()
 
 # COMMAND ----------
 
+import seaborn as sns
+
+sns.boxplot(x=df3['age_in_yrs'])
+
+# COMMAND ----------
+
+sns.boxplot(x=df3['wt_in_lbs'])
+
+# COMMAND ----------
+
+# https://www.cdc.gov/obesity/adult/defining.html
+
+# also drops all weights that are NULL
+
+#df5 = df4[df4['wt_in_lbs'] <= 1000]
+
+# COMMAND ----------
+
 # MAGIC %md ##Interaction variables
 
 # COMMAND ----------
