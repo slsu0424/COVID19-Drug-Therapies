@@ -356,20 +356,17 @@ df4.isin([0]).sum()
 
 # COMMAND ----------
 
+df4.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess2.csv', index=False)
+
+# COMMAND ----------
+
 # MAGIC %md ##Drop irrelevant variables
 
 # COMMAND ----------
 
-# 2022-02-04 Drop columns that will not be used for training and inference
+# drop columns that will not be used for training and inference
 
-df5 = df4
-
-# list all data types
-df5.dtypes
-
-# COMMAND ----------
-
-df6 = df5
+df4.dtypes
 
 # COMMAND ----------
 
@@ -402,10 +399,6 @@ df6.shape
 # COMMAND ----------
 
 #df6 = df6.drop(['age', 'age_cod'], axis=1)
-
-# COMMAND ----------
-
-df6.shape
 
 # COMMAND ----------
 
