@@ -59,6 +59,12 @@ df1 = df.toPandas()
 
 # COMMAND ----------
 
+#import pandas_profiling
+
+#displayHTML(pandas_profiling.ProfileReport(df1).html)
+
+# COMMAND ----------
+
 # data distribution of numerical variables
 
 # https://thecleverprogrammer.com/2021/02/05/what-is-exploratory-data-analysis-eda/
@@ -206,12 +212,6 @@ df3.columns
 
 # COMMAND ----------
 
-# remaining null values per column
-
-df3.isnull().sum()
-
-# COMMAND ----------
-
 df3.shape
 
 # COMMAND ----------
@@ -228,7 +228,13 @@ msno.matrix(df3)
 
 # COMMAND ----------
 
-# drop rows with Nan values in all of the specified columns of interest
+# null values per numerical column
+
+df3.select_dtypes(exclude='object').isnull().sum()
+
+# COMMAND ----------
+
+# drop rows with Nan Values in ALL columns of interest
 
 df4 = df3.dropna(subset=['age', 'wt', 'dose_amt'],how='all')
 
@@ -271,6 +277,8 @@ df4.insert(loc = 15,
 
 # convert age to years
 
+df4 = df4.copy(deep=True)
+
 for index, row in df4.iterrows():
     if (row['age_cod'] == "YR"):
         df4.loc[index, 'age_in_yrs'] = df4.loc[index, 'age']
@@ -287,10 +295,6 @@ for index, row in df4.iterrows():
     
 # Test
 df4[df4['age_cod'] == "DY"].head(5)
-
-# COMMAND ----------
-
-display(df4)
 
 # COMMAND ----------
 
@@ -339,12 +343,11 @@ df4["wt_in_lbs"] = pd.to_numeric(df4["wt_in_lbs"])
 
 # COMMAND ----------
 
-df4.isin([0]).sum()
+df4.select_dtypes(exclude='object').isin([0]).sum()
 
 # COMMAND ----------
 
-df4 = df4.copy(deep=True)
-#df5 = df4
+#df4 = df4.copy(deep=True)
 
 df4['age_in_yrs'].replace(0, np.nan, inplace=True)
 df4['wt_in_lbs'].replace(0, np.nan, inplace=True)
@@ -356,7 +359,48 @@ df4.isin([0]).sum()
 
 # COMMAND ----------
 
-df4.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess2.csv', index=False)
+# MAGIC %md ##Remove outliers
+
+# COMMAND ----------
+
+# detect outliers
+
+# https://www.kaggle.com/agrawaladitya/step-by-step-data-preprocessing-eda
+# https://www.machinelearningplus.com/plots/python-boxplot
+
+# select numerical variables of interest
+num_cols = ['age_in_yrs','wt_in_lbs','drug_seq','dose_amt','dsg_drug_seq']
+#num_cols = ['age_in_yrs','drug_seq','dose_amt','dsg_drug_seq']
+
+plt.figure(figsize=(18,9))
+df4[num_cols].boxplot()
+plt.title("Numerical variables in the Corticosteroids dataset", fontsize=20)
+plt.show()
+
+# COMMAND ----------
+
+import seaborn as sns
+
+sns.boxplot(x=df4['age_in_yrs'])
+
+# COMMAND ----------
+
+sns.boxplot(x=df4['wt_in_lbs'])
+
+# COMMAND ----------
+
+df4['wt_in_lbs'].nlargest(n=10)
+
+# COMMAND ----------
+
+# https://www.cdc.gov/obesity/adult/defining.html
+
+df5 = df4[df4.wt_in_lbs != 1690.94554954]
+#df5 = df4.drop(df4.index[df4['wt_in_lbs'] == '1124.357536'], inplace=True)
+
+# COMMAND ----------
+
+df5.shape
 
 # COMMAND ----------
 
@@ -366,7 +410,12 @@ df4.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess2.csv', index=False)
 
 # drop columns that will not be used for training and inference
 
-df4.dtypes
+# list all data types
+df5.dtypes
+
+# COMMAND ----------
+
+df6 = df5
 
 # COMMAND ----------
 
@@ -399,6 +448,10 @@ df6.shape
 # COMMAND ----------
 
 #df6 = df6.drop(['age', 'age_cod'], axis=1)
+
+# COMMAND ----------
+
+df6.shape
 
 # COMMAND ----------
 
