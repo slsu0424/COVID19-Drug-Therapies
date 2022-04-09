@@ -9,31 +9,19 @@ display(df)
 
 # COMMAND ----------
 
-import numpy as np
-import pandas as pd
-from pyspark.sql.types import *
-
-
-data_lake_account_name = ''
-file_system_name = 'raw'
-
-subscription_id = "" 
-resource_group = "" 
-workspace_name = "" 
-workspace_region = ""
-
-# COMMAND ----------
-
 from sklearn.model_selection import train_test_split 
 import pandas as pd
 
-df_train = spark.read.format("csv").load(f"abfss://{file_system_name}@{data_lake_account_name}.dfs.core.windows.net/DatasetDiabetes/preparedtraindata/",header=True,schema=transformedSchema)
+#df_train = spark.read.format("csv").load(f"abfss://{file_system_name}@{data_lake_account_name}.dfs.core.windows.net/DatasetDiabetes/preparedtraindata/",header=True,schema=transformedSchema)
+#df_train = df_train.toPandas()
+
+df_train = spark.read.csv("/mnt/adls/FAERS_CSteroid_preprocess2.csv", header="true", nullValue = "NA", inferSchema="true")
 df_train = df_train.toPandas()
 
-outcome_column = 'is_readmitted'
+outcome_column = 'out_cod_DE'
 
-id_column = 'Id'
-df_train = df_train.drop(id_column,axis=1) 
+#id_column = 'Id'
+#df_train = df_train.drop(id_column,axis=1) 
 
 # COMMAND ----------
 
@@ -71,7 +59,7 @@ automl_config = AutoMLConfig(task = 'classification',
                              label_column_name = 'is_readmitted',
                              **automl_settings
                             )
-experiment = Experiment(ws, "DiabetesPredictionExperiment")
+experiment = Experiment(ws, "COVIDPredictionExperiment")
 
 # COMMAND ----------
 

@@ -427,11 +427,6 @@ df2 = df1.where((df1.event_dt>='20200101'))
 
 display(df2)
 
-# if using pandas
-#df2 = df1[df1['event_dt'] >= 20200101]
-
-#display(df2)
-
 # COMMAND ----------
 
 # how many rows, columns
