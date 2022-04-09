@@ -420,9 +420,10 @@ print((df1.count(), len(df1.columns)))
 # COMMAND ----------
 
 # https://www.geeksforgeeks.org/filtering-rows-based-on-column-values-in-pyspark-dataframe/
+# https://www.history.com/this-day-in-history/first-confirmed-case-of-coronavirus-found-in-us-washington-state
 
-#df2 = df1.where((df1.event_dt>='20200101'))
-df2 = df1.where((df1.event_dt>='20190101'))
+df2 = df1.where((df1.event_dt>='20200101'))
+#df2 = df1.where((df1.event_dt>='20190101'))
 
 display(df2)
 

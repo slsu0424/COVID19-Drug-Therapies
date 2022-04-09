@@ -3,12 +3,6 @@
 
 # COMMAND ----------
 
-# https://docs.microsoft.com/en-us/azure/machine-learning/how-to-understand-automated-ml
-# https://towardsdatascience.com/feature-engineering-for-machine-learning-3a5e293a5114
-# https://matthewrocklin.com/blog/work/2017/10/16/streaming-dataframes-1
-
-# COMMAND ----------
-
 # import libraries needed
 import pandas as pd # for data analysis
 import numpy as np # for numeric calculation
@@ -52,12 +46,6 @@ print((df.count(), len(df.columns)))
 # convert to pandas
 
 df1 = df.toPandas()
-
-# COMMAND ----------
-
-#import pandas_profiling
-
-#displayHTML(pandas_profiling.ProfileReport(df1).html)
 
 # COMMAND ----------
 
@@ -322,7 +310,7 @@ for index, row in df4.iterrows():
     else:
         df4.loc[index, 'wt_in_lbs'] = df4.loc[index, 'wt']
 
-df4.head(1)
+df4.head(5)
 
 # COMMAND ----------
 
@@ -351,7 +339,7 @@ df4['dose_amt'].replace(0, np.nan, inplace=True)
 
 # COMMAND ----------
 
-df4.isin([0]).sum()
+df4.select_dtypes(exclude='object').isin([0]).sum()
 
 # COMMAND ----------
 
@@ -365,8 +353,7 @@ df4.isin([0]).sum()
 # https://www.machinelearningplus.com/plots/python-boxplot
 
 # select numerical variables of interest
-num_cols = ['age_in_yrs','wt_in_lbs','drug_seq','dose_amt','dsg_drug_seq']
-#num_cols = ['age_in_yrs','drug_seq','dose_amt','dsg_drug_seq']
+num_cols = ['age_in_yrs','wt_in_lbs','drug_seq','dose_amt']
 
 plt.figure(figsize=(18,9))
 df4[num_cols].boxplot()
@@ -377,7 +364,7 @@ plt.show()
 
 import seaborn as sns
 
-sns.boxplot(x=df4['age_in_yrs'])
+sns.boxplot(x=df4['dose_amt'])
 
 # COMMAND ----------
 
@@ -406,29 +393,24 @@ df5.shape
 
 # drop columns that will not be used for training and inference
 
-# list all data types
 df5.dtypes
-
-# COMMAND ----------
-
-df6 = df5
 
 # COMMAND ----------
 
 # drop columns
 
-#df6 = df5.drop(['primaryid', 'caseid', 'caseversion', 'i_f_code', \
+df6 = df5.drop(['primaryid', 'caseid', 'caseversion', 'i_f_code', \
 #df6 = df5.drop(['event_dt', 'mfr_dt', 'init_fda_dt', 'fda_dt', \
-#                'event_dt', 'mfr_dt', 'init_fda_dt', 'fda_dt', \
-#                'rept_cod', 'auth_num', 'mfr_num', \
-                #'age', 'age_cod', 
-#                'age_grp', 'e_sub', \
-#                'wt', 'wt_cod', 'rept_dt', \
-#                'occp_cod', 'reporter_country', 'last_case_version', \
-#                'role_cod', 'prod_ai', 'val_vbm', 'dose_vbm', 'lot_num', 'nda_num', \
-#                'dose_unit','dose_form', 'dose_freq', \
-#                'drug_seq', 'dsg_drug_seq', \
-#                'pt','outc_cod', 'start_dt', 'end_dt'], axis=1)
+                'event_dt', 'mfr_dt', 'init_fda_dt', 'fda_dt', \
+                'rept_cod', 'auth_num', 'mfr_num', \
+                'age', 'age_cod', 
+                'age_grp', 'e_sub', \
+                'wt', 'wt_cod', 'rept_dt', \
+                'occp_cod', 'reporter_country', 'last_case_version', \
+                'role_cod', 'prod_ai', 'val_vbm', 'dose_vbm', 'lot_num', 'nda_num', \
+                'dose_unit','dose_form', 'dose_freq', \
+                'drug_seq', 'dsg_drug_seq', \
+                'pt','outc_cod', 'start_dt', 'end_dt'], axis=1)
 
 
 # COMMAND ----------
