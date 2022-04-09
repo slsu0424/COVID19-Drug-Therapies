@@ -351,41 +351,7 @@ df_demo1.createOrReplaceTempView("2020_DEMO1")
 
 # COMMAND ----------
 
-# query #4 - exclude indications
-
-df1_old = spark.sql("select D.*, \
-                         DR.drug_seq, DR.role_cod, DR.drugname, DR.prod_ai, DR.val_vbm, DR.route, DR.dose_vbm, DR.cum_dose_chr, DR.cum_dose_unit, DR.dechal, DR.rechal, DR.lot_num, DR.exp_dt, DR.nda_num, DR.dose_amt, DR.dose_unit, DR.dose_form, DR.dose_freq, \
-                         R.pt, R.drug_rec_act, \
-                         O.outc_cod, \
-                         T.dsg_drug_seq, T.start_dt, T.end_dt, T.dur, T.dur_cod \
-                         from 2020_DEMO1 D INNER JOIN 2020_DRUG DR \
-                         ON D.primaryid = DR.primaryid \
-                         INNER JOIN 2020_REAC R \
-                         ON D.primaryid = R.primaryid \
-                         INNER JOIN 2020_OUTC O \
-                         ON D.primaryid = O.primaryid \
-                         INNER JOIN 2020_THER T \
-                         ON (DR.primaryid = T.primaryid and DR.drug_seq = T.dsg_drug_seq) \
-                         WHERE D.age is not null \
-                         AND \
-                         D.event_dt > '20200101' \
-                         AND \
-                         O.outc_cod IN ('HO', 'DE') \
-                         AND \
-                         DR.drugname IN ('DEXAMETHASONE.', 'PREDNISONE', 'PREDNISONE.', 'METHYLPREDNISOLONE.') \
-                         AND DR.route NOT IN ('null' 'unknown') \
-                         AND DR.dose_amt NOT IN ('null') ")
-
-                         # AND DR.dose_vbm NOT IN ('null', 'UNK') ")
-                         # AND DR.dose_amt NOT IN ('null') ")
-                         # AND \
-                         # D.caseid = '17363177' \
-
-display(df1_old)
-
-# COMMAND ----------
-
-# final query #4
+# final query
 # exclude indications
 
 df1 = spark.sql("select D.*, \
