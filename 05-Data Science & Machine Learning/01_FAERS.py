@@ -424,6 +424,7 @@ print((df1.count(), len(df1.columns)))
 
 df2 = df1.where((df1.event_dt>='20200101'))
 #df2 = df1.where((df1.event_dt>='20190101'))
+#df2 = df1.where((df1.event_dt>='20191201'))
 
 display(df2)
 

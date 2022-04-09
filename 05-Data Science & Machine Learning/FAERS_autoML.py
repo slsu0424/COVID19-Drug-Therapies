@@ -1,5 +1,13 @@
 # Databricks notebook source
-# MAGIC %md #Part 2: Exploratory Data Analysis & Preprocessing for AutoML
+# MAGIC %md #AutoML
+
+# COMMAND ----------
+
+https://docs.microsoft.com/en-us/azure/machine-learning/how-to-configure-databricks-automl-environment
+
+# COMMAND ----------
+
+pip install azureml-sdk[databricks]
 
 # COMMAND ----------
 
@@ -22,6 +30,68 @@ outcome_column = 'out_cod_DE'
 
 #id_column = 'Id'
 #df_train = df_train.drop(id_column,axis=1) 
+
+# COMMAND ----------
+
+import mlflow
+import mlflow.azureml
+import azureml.mlflow
+import azureml.core
+
+from azureml.core import Workspace
+
+subscription_id = '9edd9e25-815c-4cdb-9bc8-d2ba127ec752'
+
+# Azure Machine Learning resource group NOT the managed resource group
+resource_group = '2021-06-22_SDUD' 
+
+#Azure Machine Learning workspace name, NOT Azure Databricks workspace
+workspace_name = 'SDUDaml'  
+
+# Instantiate Azure Machine Learning workspace
+ws = Workspace.get(name=workspace_name,
+                   subscription_id=subscription_id,
+                   resource_group=resource_group)
+
+#Set MLflow experiment. 
+#experimentName = "/Users/sansu@microsoft.com/Drug_Utilization/Notebook 3_FAERS" 
+experimentName = "test2" 
+mlflow.set_experiment(experimentName)
+
+# COMMAND ----------
+
+uri = ws.get_mlflow_tracking_uri()
+
+print(uri)
+
+mlflow.set_tracking_uri(uri)
+
+# COMMAND ----------
+
+# start a new MLflow training run
+
+with mlflow.start_run():
+#import mlflow
+
+  # log metrics
+  mlflow.log_metric("Accuracy", accuracy)
+  mlflow.log_metric("Precision", precision)
+  mlflow.log_metric("Recall", recall)
+  mlflow.log_metric("F1-score", f1)
+  #mlflow.log_metric("ROC AUC", auc)
+  
+  # log artifacts
+  mlflow.log_artifact("confusion-matrix.png")
+  #mlflow.log_artifact("roc-curve.png")
+  
+  # save the model to the outputs directory
+  mlflow.sklearn.log_model(model, "model") # https://mlflow.org/docs/latest/python_api/mlflow.sklearn.html#mlflow.sklearn.log_model
+  
+  # run id is logged as Azure ML Experiments Run ID
+  print("Runid is:", mlflow.active_run().info.run_uuid)
+  
+  # end run
+  mlflow.end_run()
 
 # COMMAND ----------
 

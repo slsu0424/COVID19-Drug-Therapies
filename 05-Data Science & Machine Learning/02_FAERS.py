@@ -393,6 +393,7 @@ df5.shape
 
 # drop columns that will not be used for training and inference
 
+# list all columns
 df5.dtypes
 
 # COMMAND ----------
@@ -405,9 +406,9 @@ df6 = df5.drop(['primaryid', 'caseid', 'caseversion', 'i_f_code', \
                 'rept_cod', 'auth_num', 'mfr_num', \
                 'age', 'age_cod', 
                 'age_grp', 'e_sub', \
-                'wt', 'wt_cod', 'rept_dt', \
+                'wt', 'wt_cod', 'rept_dt', 'to_mfr', \
                 'occp_cod', 'reporter_country', 'last_case_version', \
-                'role_cod', 'prod_ai', 'val_vbm', 'dose_vbm', 'lot_num', 'nda_num', \
+                'role_cod', 'prod_ai', 'val_vbm', 'dose_vbm', 'cum_dose_chr', 'cum_dose_unit', 'lot_num', 'nda_num', \
                 'dose_unit','dose_form', 'dose_freq', \
                 'drug_seq', 'dsg_drug_seq', \
                 'pt','outc_cod', 'start_dt', 'end_dt'], axis=1)
