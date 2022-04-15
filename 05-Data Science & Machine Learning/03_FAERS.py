@@ -1,5 +1,5 @@
 # Databricks notebook source
-# MAGIC %md #Part 3: Feature Engineering (Simple) & Baseline Modeling
+# MAGIC %md #Part 3: Basic Feature Engineering & Baseline Modeling
 
 # COMMAND ----------
 
@@ -295,7 +295,7 @@ display_dict_models(dict_models)
 
 # COMMAND ----------
 
-# MAGIC %md #Feature Engineering (Advanced)
+# MAGIC %md #Advanced Feature Engineering
 
 # COMMAND ----------
 
