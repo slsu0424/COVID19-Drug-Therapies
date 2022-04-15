@@ -69,6 +69,71 @@ df1.describe()
 
 # COMMAND ----------
 
+# MAGIC %md ##Drop NULL values
+
+# COMMAND ----------
+
+# MAGIC %md ###NULL columns
+
+# COMMAND ----------
+
+# get all column types
+
+df1.dtypes
+
+# COMMAND ----------
+
+# sum of null values per column
+
+# https://www.analyticsvidhya.com/blog/2021/10/a-beginners-guide-to-feature-engineering-everything-you-need-to-know/
+
+df1.isnull().sum()
+
+# COMMAND ----------
+
+# drop columns with > 90% missing values
+
+threshold = 0.9
+df3 = df2[df2.columns[df2.isnull().mean() < threshold]]
+
+df3.columns
+
+# COMMAND ----------
+
+df3.shape
+
+# COMMAND ----------
+
+# visually inspect remaining missing values in data
+
+import missingno as msno
+
+msno.matrix(df3)
+
+# COMMAND ----------
+
+# MAGIC %md ###NULL rows
+
+# COMMAND ----------
+
+# null values per numerical column
+
+df3.select_dtypes(exclude='object').isnull().sum()
+
+# COMMAND ----------
+
+# drop rows with Nan Values in ALL columns of interest
+
+df4 = df3.dropna(subset=['age', 'wt', 'dose_amt'],how='all')
+
+#df4 = df3.dropna(subset=['age', 'wt', 'dose_amt'])
+
+# COMMAND ----------
+
+df4.shape
+
+# COMMAND ----------
+
 # MAGIC %md ##Create target variable
 
 # COMMAND ----------
@@ -162,71 +227,6 @@ df2['outc_cod_DE'].value_counts()
 # 1 is minority class
 
 sns.countplot(x='outc_cod_DE', data=df2) # data already looks wildly imbalanced but let us continue
-
-# COMMAND ----------
-
-# MAGIC %md ##Drop NULL values
-
-# COMMAND ----------
-
-# MAGIC %md ###NULL columns
-
-# COMMAND ----------
-
-# get all column types
-
-df2.dtypes
-
-# COMMAND ----------
-
-# sum of null values per column
-
-# https://www.analyticsvidhya.com/blog/2021/10/a-beginners-guide-to-feature-engineering-everything-you-need-to-know/
-
-df2.isnull().sum()
-
-# COMMAND ----------
-
-# drop columns with > 90% missing values
-
-threshold = 0.9
-df3 = df2[df2.columns[df2.isnull().mean() < threshold]]
-
-df3.columns
-
-# COMMAND ----------
-
-df3.shape
-
-# COMMAND ----------
-
-# visually inspect remaining missing values in data
-
-import missingno as msno
-
-msno.matrix(df3)
-
-# COMMAND ----------
-
-# MAGIC %md ###NULL rows
-
-# COMMAND ----------
-
-# null values per numerical column
-
-df3.select_dtypes(exclude='object').isnull().sum()
-
-# COMMAND ----------
-
-# drop rows with Nan Values in ALL columns of interest
-
-df4 = df3.dropna(subset=['age', 'wt', 'dose_amt'],how='all')
-
-#df4 = df3.dropna(subset=['age', 'wt', 'dose_amt'])
-
-# COMMAND ----------
-
-df4.shape
 
 # COMMAND ----------
 
