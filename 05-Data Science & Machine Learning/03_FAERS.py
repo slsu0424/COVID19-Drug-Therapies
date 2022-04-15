@@ -1,5 +1,5 @@
 # Databricks notebook source
-# MAGIC %md #Part 3: Baseline Modeling and Feature Engineering
+# MAGIC %md #Part 3: Feature Engineering (Simple) & Baseline Modeling
 
 # COMMAND ----------
 
@@ -295,7 +295,7 @@ display_dict_models(dict_models)
 
 # COMMAND ----------
 
-# MAGIC %md #Feature Engineering
+# MAGIC %md #Feature Engineering (Advanced)
 
 # COMMAND ----------
 
@@ -313,10 +313,7 @@ df5.select_dtypes(include='object').head(5).T
 
 # convert select categorical features to numerical as these will be useful features for modeling
 
-# 2021-09-27 - Dropped reporter country as not relevant
-
-df_converted = pd.get_dummies(df5, columns=['sex',
-                                    'occr_country','role_cod','drugname','prod_ai','route','dechal','dose_freq','mfr_sndr'])
+df_converted = pd.get_dummies(df5, columns=['mfr_sndr', 'sex', 'occr_country', 'drugname', 'route', 'dechal', 'rechal'], drop_first=True)
 
 df_converted.head(2)
 
@@ -327,12 +324,6 @@ df_converted.select_dtypes(exclude='object').dtypes
 # COMMAND ----------
 
 df_converted.shape
-
-# COMMAND ----------
-
-# save data to ADLS Gen2
-
-df_converted.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess3.csv', index=False)
 
 # COMMAND ----------
 
@@ -572,6 +563,16 @@ df5[numerics] = standardize(df5[numerics])
 # COMMAND ----------
 
 df5.display(5)
+
+# COMMAND ----------
+
+# MAGIC %md ##Impute missing values (KNN)
+
+# COMMAND ----------
+
+# https://medium.com/@kyawsawhtoon/a-guide-to-knn-imputation-95e2dc496e
+
+from sklearn.impute import KNNImputer
 
 # COMMAND ----------
 

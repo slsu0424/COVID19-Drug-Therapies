@@ -436,7 +436,4 @@ df6.shape
 
 # save data to ADLS Gen2
 
-# df6.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess2.csv', index=False)
-# df6.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess2_8740.csv', index=False)
-# df6.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess2_8740with11Cols.csv', index=False)
 df6.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess2.csv', index=False)
