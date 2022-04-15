@@ -123,7 +123,7 @@ msno.matrix(df5)
 
 # COMMAND ----------
 
-# MAGIC %md #Build a baseline model
+# MAGIC %md #Build baseline model
 
 # COMMAND ----------
 
