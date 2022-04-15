@@ -313,9 +313,9 @@ df5.select_dtypes(include='object').head(5).T
 
 # convert select categorical features to numerical as these will be useful features for modeling
 
-df_converted = pd.get_dummies(df5, columns=['mfr_sndr', 'sex', 'occr_country', 'drugname', 'route', 'dechal', 'rechal'], drop_first=True)
+df_dummies = pd.get_dummies(df5, columns=['mfr_sndr', 'sex', 'occr_country', 'drugname', 'route', 'dechal', 'rechal'], drop_first=True)
 
-df_converted.head(2)
+df_dummies.head(2)
 
 # COMMAND ----------
 
@@ -324,6 +324,32 @@ df_converted.select_dtypes(exclude='object').dtypes
 # COMMAND ----------
 
 df_converted.shape
+
+# COMMAND ----------
+
+# drop categorical columns and add dummies
+
+df5 = df5.drop(['mfr_sndr', 'sex', 'occr_country', 'drugname', 'route', 'dechal', 'rechal'], axis=1)
+df6 = pd.concat([df5, df_dummies], axis=1)
+df6.head()
+
+
+# COMMAND ----------
+
+# simple scaling
+
+from sklearn.preprocessing import MinMaxScaler
+
+scaler = MinMaxScaler()
+df7 = pd.DataFrame(scaler.fit_transform(df6), columns = df6.columns)
+df7.head()
+
+# COMMAND ----------
+
+from sklearn.impute import KNNImputer
+
+imputer = KNNImputer(n_neighbors=5)
+df8 = pd.DataFrame(imputer.fit_transform(df7),columns = df7.columns)
 
 # COMMAND ----------
 
