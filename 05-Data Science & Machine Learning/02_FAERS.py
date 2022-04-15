@@ -1,24 +1,5 @@
 # Databricks notebook source
-# MAGIC %md #Part 2: EDA & Preprocessing for AutoML
-
-# COMMAND ----------
-
-# https://docs.microsoft.com/en-us/azure/machine-learning/how-to-understand-automated-ml
-# https://towardsdatascience.com/feature-engineering-for-machine-learning-3a5e293a5114
-# https://matthewrocklin.com/blog/work/2017/10/16/streaming-dataframes-1
-
-# COMMAND ----------
-
-# check python version
-
-# https://vincentlauzon.com/2018/04/18/python-version-in-databricks
-import sys
-
-sys.version
-
-# COMMAND ----------
-
-pip install missingno pandasql pycaret[full]
+# MAGIC %md #Part 2: Exploratory Data Analysis & Preprocessing for AutoML
 
 # COMMAND ----------
 
@@ -60,15 +41,11 @@ print((df.count(), len(df.columns)))
 
 # COMMAND ----------
 
-# Exploratory Data Analysis
+# Exploratory Data Analysis (EDA)
 
 # convert to pandas
 
 df1 = df.toPandas()
-
-# COMMAND ----------
-
-
 
 # COMMAND ----------
 
@@ -92,35 +69,100 @@ df1.describe()
 
 # COMMAND ----------
 
+# MAGIC %md ##Drop NULL values
+
+# COMMAND ----------
+
+# MAGIC %md ###NULL columns
+
+# COMMAND ----------
+
+# get all column types
+
+df1.dtypes
+
+# COMMAND ----------
+
+# sum of null values per column
+
+# https://www.analyticsvidhya.com/blog/2021/10/a-beginners-guide-to-feature-engineering-everything-you-need-to-know/
+
+df1.isnull().sum()
+
+# COMMAND ----------
+
+# drop columns with > 95% missing values
+
+threshold = 0.95
+df2 = df1[df1.columns[df1.isnull().mean() < threshold]]
+
+df2.columns
+
+# COMMAND ----------
+
+df2.shape
+
+# COMMAND ----------
+
+# visually inspect remaining missing values in data
+
+import missingno as msno
+
+msno.matrix(df2)
+
+# COMMAND ----------
+
+# MAGIC %md ###NULL rows
+
+# COMMAND ----------
+
+# null values per numerical column
+
+df2.select_dtypes(exclude='object').isnull().sum()
+
+# COMMAND ----------
+
+# drop rows with Nan Values in ALL columns of interest
+
+df3 = df2.dropna(subset=['age', 'wt', 'dose_amt'],how='all')
+
+#df4 = df3.dropna(subset=['age', 'wt', 'dose_amt'])
+
+# COMMAND ----------
+
+df3.shape
+
+# COMMAND ----------
+
 # MAGIC %md ##Create target variable
 
 # COMMAND ----------
 
 # outcome values
 
-df1['outc_cod'].value_counts()
+df3['outc_cod'].value_counts()
 
 # COMMAND ----------
 
 # new column - outcome code = DE
 
-df1.insert(loc = 52, 
+df3.insert(loc = 41, 
           column = 'outc_cod_DE', 
           value = 0)
 
-# display(df1)
+#display(df3)
 
 # COMMAND ----------
 
 # target will be binary classification - did a patient die?
 
-df1['outc_cod_DE'] = np.where(df1['outc_cod']=='DE',1,0)
+df3['outc_cod_DE'] = np.where(df3['outc_cod']=='DE',1,0)
 
 # COMMAND ----------
 
 # outcome values = DE only
 
-df1['outc_cod_DE'].value_counts()
+df3['outc_cod_DE'].value_counts()
 
 # COMMAND ----------
 
@@ -132,7 +174,7 @@ df1['outc_cod_DE'].value_counts()
 
 # return some records where outcome of death = 1
 
-df1.loc[df1['outc_cod_DE'] == 1].head(5)
+df3.loc[df3['outc_cod_DE'] == 1].head(5)
 
 # COMMAND ----------
 
@@ -142,20 +184,20 @@ df1.loc[df1['outc_cod_DE'] == 1].head(5)
 
 #https://stackoverflow.com/questions/49343860/how-to-drop-duplicate-values-based-in-specific-columns-using-pandas
 
-df2 = df1.sort_values(by=['outc_cod_DE'], ascending = False) \
+df4 = df3.sort_values(by=['outc_cod_DE'], ascending = False) \
         .drop_duplicates(subset=['caseid'], keep = 'first')
 
 # COMMAND ----------
 
 # re-inspect case
 
-df2[df2['caseid'] == 18322071].head(5)
+df4[df4['caseid'] == 18322071].head(5)
 
 # COMMAND ----------
 
 # how many records after removing dups
 
-df2.shape
+df4.shape
 
 # COMMAND ----------
 
@@ -163,13 +205,13 @@ df2.shape
 
 # https://datascienceparichay.com/article/pandas-count-of-unique-values-in-each-column
 
-print(df2.nunique())
+print(df4.nunique())
 
 # COMMAND ----------
 
 # new value counts
 
-df2['outc_cod_DE'].value_counts()
+df4['outc_cod_DE'].value_counts()
 
 # COMMAND ----------
 
@@ -184,11 +226,15 @@ df2['outc_cod_DE'].value_counts()
 # 0 is majority class
 # 1 is minority class
 
-sns.countplot(x='outc_cod_DE', data=df2) # data already looks wildly imbalanced but let us continue
+sns.countplot(x='outc_cod_DE', data=df4) # data already looks wildly imbalanced but let us continue
 
 # COMMAND ----------
 
-# MAGIC %md ##Recode variables
+# MAGIC %md ##Recode input variables
+
+# COMMAND ----------
+
+# MAGIC %md ###Convert columns
 
 # COMMAND ----------
 
@@ -201,54 +247,56 @@ sns.countplot(x='outc_cod_DE', data=df2) # data already looks wildly imbalanced 
 # DY DAY
 # HR HOUR
 
-df2['age_cod'].value_counts(dropna = False) # https://www.statology.org/pandas-drop-rows-with-value
+df4['age_cod'].value_counts(dropna = False) # https://www.statology.org/pandas-drop-rows-with-value
 
 # COMMAND ----------
 
 # age in years - insert new column next to 'age' column
 
-df2.insert(loc = 15, 
+df4.insert(loc = 15, 
   column = 'age_in_yrs', 
   value = '0')
 
 # COMMAND ----------
 
-# convert to years
+# convert age to years
 
-for index, row in df2.iterrows():
-  if (row['age_cod'] == "YR"):
-    df2.loc[index, 'age_in_yrs'] = df2.loc[index, 'age']
-  elif (row['age_cod'] == "DEC"):
-     df2.loc[index, 'age_in_yrs'] = df2.loc[index, 'age'] / 10
-  elif (row['age_cod'] == "MON"):
-    df2.loc[index, 'age_in_yrs'] = df2.loc[index, 'age'] / 12
-  elif (row['age_cod'] == "WK"):
-    df2.loc[index, 'age_in_yrs'] = df2.loc[index, 'age'] / 52
-  elif (row['age_cod'] == "DY"):
-    df2.loc[index, 'age_in_yrs']  = df2.loc[index, 'age'] / 365
-  else:
-    df2.loc[index, 'age_in_yrs'] = 0
+df4 = df4.copy(deep=True)
+
+for index, row in df4.iterrows():
+    if (row['age_cod'] == "YR"):
+        df4.loc[index, 'age_in_yrs'] = df4.loc[index, 'age']
+    elif (row['age_cod'] == "DEC"):
+        df4.loc[index, 'age_in_yrs'] = df4.loc[index, 'age'] * 10
+    elif (row['age_cod'] == "MON"):
+        df4.loc[index, 'age_in_yrs'] = df4.loc[index, 'age'] / 12
+    elif (row['age_cod'] == "WK"):
+        df4.loc[index, 'age_in_yrs'] = df4.loc[index, 'age'] / 52
+    elif (row['age_cod'] == "DY"):
+        df4.loc[index, 'age_in_yrs'] = df4.loc[index, 'age'] / 365
+    else:
+        df4.loc[index, 'age_in_yrs'] = 0
     
 # Test
-df2[df2['age_cod'] == "DY"].head(5)
+df4[df4['age_cod'] == "DY"].head(5)
 
 # COMMAND ----------
 
 # weight code
 
-df2['wt_cod'].value_counts()
+df4['wt_cod'].value_counts()
 
 # COMMAND ----------
 
 # spot inspect
 
-df2[df2['wt_cod'] == "LBS"].head(5)
+df4[df4['wt_cod'] == "LBS"].head(5)
 
 # COMMAND ----------
 
 # weight in lbs - insert new column next to 'wt' column
 
-df2.insert(loc = 21, 
+df4.insert(loc = 20, 
   column = 'wt_in_lbs', 
   value = 0)
 
@@ -256,84 +304,46 @@ df2.insert(loc = 21,
 
 # convert to lbs
 
-for index, row in df2.iterrows():
-  if (row['wt_cod'] == "KG"): # https://www.learndatasci.com/solutions/python-valueerror-truth-value-series-ambiguous-use-empty-bool-item-any-or-all/
-    df2.loc[index, 'wt_in_lbs'] = df2.loc[index, 'wt'] * 2.20462262
-  else:
-    df2.loc[index, 'wt_in_lbs'] = df2.loc[index, 'wt']
+for index, row in df4.iterrows():
+    if (row['wt_cod'] == "KG"): # https://www.learndatasci.com/solutions/python-valueerror-truth-value-series-ambiguous-use-empty-bool-item-any-or-all/
+        df4.loc[index, 'wt_in_lbs'] = df4.loc[index, 'wt'] * 2.20462262
+    else:
+        df4.loc[index, 'wt_in_lbs'] = df4.loc[index, 'wt']
 
-df2.head(1)
-
-# COMMAND ----------
-
-# MAGIC %md ##Drop NULL values
+df4.head(5)
 
 # COMMAND ----------
 
-# MAGIC %md ###NULL columns
+# convert new columns to numeric
+
+# https://stackoverflow.com/questions/21197774/assign-pandas-dataframe-column-dtypes
+
+df4["age_in_yrs"] = pd.to_numeric(df4["age_in_yrs"])
+df4["wt_in_lbs"] = pd.to_numeric(df4["wt_in_lbs"])    
 
 # COMMAND ----------
 
-# display all null values per column
-
-# https://www.analyticsvidhya.com/blog/2021/10/a-beginners-guide-to-feature-engineering-everything-you-need-to-know/
-
-df2.isnull().sum()
+# MAGIC %md ###Convert 0 to NULL
 
 # COMMAND ----------
 
-# drop columns with > 90% missing values
-
-threshold = 0.9
-df3 = df2[df2.columns[df2.isnull().mean() < threshold]]
-
-df3.columns
+df4.select_dtypes(exclude='object').isin([0]).sum()
 
 # COMMAND ----------
 
-df3.shape
+#df4 = df4.copy(deep=True)
+
+df4['age_in_yrs'].replace(0, np.nan, inplace=True)
+df4['wt_in_lbs'].replace(0, np.nan, inplace=True)
+df4['dose_amt'].replace(0, np.nan, inplace=True)
 
 # COMMAND ----------
 
-# inspect remaining missing values in data
-
-import missingno as msno
-
-msno.matrix(df3)
-
-# COMMAND ----------
-
-# MAGIC %md ###NULL rows
-
-# COMMAND ----------
-
-# count number of 0 values per column
-
-df3.isin([0]).sum()
-
-# COMMAND ----------
-
-# drop rows where age_in_yrs, wt_in_lbs, dose_amt = 0
-
-df4 = df3.drop(df3[(df3['age_in_yrs'] < 1) | (df3['wt_in_lbs'] < 1) | (df3['dose_amt'] < 1)].index) # https://datagy.io/pandas-drop-columns-rows
-
-# COMMAND ----------
-
-df4.isnull().sum()
-
-# COMMAND ----------
-
-df4.shape
-
-display(df4)
+df4.select_dtypes(exclude='object').isin([0]).sum()
 
 # COMMAND ----------
 
 # MAGIC %md ##Remove outliers
-
-# COMMAND ----------
-
-df4.dtypes
 
 # COMMAND ----------
 
@@ -343,38 +353,37 @@ df4.dtypes
 # https://www.machinelearningplus.com/plots/python-boxplot
 
 # select numerical variables of interest
-num_cols = ['age_in_yrs','wt_in_lbs','drug_seq','dose_amt','dsg_drug_seq']
+num_cols = ['age_in_yrs','wt_in_lbs','drug_seq','dose_amt']
 
 plt.figure(figsize=(18,9))
 df4[num_cols].boxplot()
-plt.title("Numerical variables in the Corticosteroid dataset", fontsize=20)
+plt.title("Numerical variables in the Corticosteroids dataset", fontsize=20)
 plt.show()
 
 # COMMAND ----------
 
 import seaborn as sns
 
-sns.boxplot(x=df4['age_in_yrs'])
+sns.boxplot(x=df4['dose_amt'])
 
 # COMMAND ----------
-
-import seaborn as sns
 
 sns.boxplot(x=df4['wt_in_lbs'])
 
 # COMMAND ----------
 
+df4['wt_in_lbs'].nlargest(n=10)
+
+# COMMAND ----------
+
 # https://www.cdc.gov/obesity/adult/defining.html
 
-# also drops all weights that are NULL
-
-df5 = df4[df4['wt_in_lbs'] <= 600]
+df5 = df4[df4.wt_in_lbs != 1690.94554954]
+#df5 = df4.drop(df4.index[df4['wt_in_lbs'] == '1124.357536'], inplace=True)
 
 # COMMAND ----------
 
 df5.shape
-
-display(df5)
 
 # COMMAND ----------
 
@@ -382,21 +391,24 @@ display(df5)
 
 # COMMAND ----------
 
-# 2022-02-04 Drop columns that will not be used for training and inference
+# drop columns that will not be used for training and inference
 
+# list all columns
 df5.dtypes
 
 # COMMAND ----------
+
+# drop columns
 
 df6 = df5.drop(['primaryid', 'caseid', 'caseversion', 'i_f_code', \
 #df6 = df5.drop(['event_dt', 'mfr_dt', 'init_fda_dt', 'fda_dt', \
                 'event_dt', 'mfr_dt', 'init_fda_dt', 'fda_dt', \
                 'rept_cod', 'auth_num', 'mfr_num', \
-                #'age', 'age_cod', 
+                'age', 'age_cod', 
                 'age_grp', 'e_sub', \
-                'wt', 'wt_cod', 'rept_dt', \
+                'wt', 'wt_cod', 'rept_dt', 'to_mfr', \
                 'occp_cod', 'reporter_country', 'last_case_version', \
-                'role_cod', 'prod_ai', 'val_vbm', 'dose_vbm', 'lot_num', 'nda_num', \
+                'role_cod', 'prod_ai', 'val_vbm', 'dose_vbm', 'cum_dose_chr', 'cum_dose_unit', 'lot_num', 'nda_num', \
                 'dose_unit','dose_form', 'dose_freq', \
                 'drug_seq', 'dsg_drug_seq', \
                 'pt','outc_cod', 'start_dt', 'end_dt'], axis=1)
@@ -404,31 +416,17 @@ df6 = df5.drop(['primaryid', 'caseid', 'caseversion', 'i_f_code', \
 
 # COMMAND ----------
 
-# columns that will be used for training
+# final columns that will be used for training
 
 df6.dtypes
 
 # COMMAND ----------
 
-df6.shape
-
-# COMMAND ----------
-
-display(df6)
-
-# COMMAND ----------
-
-df6 = df6.drop(['age', 'age_cod'], axis=1)
+#df6 = df6.drop(['age', 'age_cod'], axis=1)
 
 # COMMAND ----------
 
 df6.shape
-
-# COMMAND ----------
-
-#identify remaining null values in numeric columns only
-
-df6.select_dtypes(exclude='object').isnull().sum()
 
 # COMMAND ----------
 
@@ -440,4 +438,5 @@ df6.select_dtypes(exclude='object').isnull().sum()
 
 # df6.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess2.csv', index=False)
 # df6.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess2_8740.csv', index=False)
-df6.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess2_8740with11Cols.csv', index=False)
+# df6.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess2_8740with11Cols.csv', index=False)
+df6.to_csv('/dbfs/mnt/adls/FAERS_CSteroid_preprocess2.csv', index=False)

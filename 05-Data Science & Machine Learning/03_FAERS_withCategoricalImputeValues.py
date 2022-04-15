@@ -3,7 +3,16 @@
 
 # COMMAND ----------
 
-# pip install missingno pandasql pycaret[full]
+# check python version
+
+# https://vincentlauzon.com/2018/04/18/python-version-in-databricks
+import sys
+
+sys.version
+
+# COMMAND ----------
+
+pip install missingno pandasql pycaret[full]
 
 # COMMAND ----------
 
@@ -128,7 +137,6 @@ msno.matrix(df5)
 # COMMAND ----------
 
 #df5.select_dtypes(exclude='object').dtypes
-df6 = df5
 
 # COMMAND ----------
 
@@ -136,11 +144,11 @@ df6 = df5
 
 #df6 = df5.copy()
 
-df6 = df5.select_dtypes(exclude='object')
+#df6 = df5.select_dtypes(exclude='object')
 
-#df6 = df5.select_dtypes(exclude='object') \
-#                            .drop(['primaryid','caseid','caseversion','event_dt','mfr_dt','init_fda_dt','fda_dt','age','wt', \
-#                                    'rept_dt','last_case_version','val_vbm','start_dt','end_dt','drug_seq','dsg_drug_seq', 'nda_num'], axis=1)
+df6 = df5.select_dtypes(exclude='object') \
+                            .drop(['primaryid','caseid','caseversion','event_dt','mfr_dt','init_fda_dt','fda_dt','age','wt', \
+                                    'rept_dt','last_case_version','val_vbm','start_dt','end_dt','drug_seq','dsg_drug_seq', 'nda_num'], axis=1)
 
 # COMMAND ----------
 
