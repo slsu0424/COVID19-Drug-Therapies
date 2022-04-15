@@ -91,16 +91,16 @@ df1.isnull().sum()
 
 # COMMAND ----------
 
-# drop columns with > 90% missing values
+# drop columns with > 95% missing values
 
-threshold = 0.9
-df3 = df2[df2.columns[df2.isnull().mean() < threshold]]
+threshold = 0.95
+df2 = df1[df1.columns[df1.isnull().mean() < threshold]]
 
-df3.columns
+df2.columns
 
 # COMMAND ----------
 
-df3.shape
+df2.shape
 
 # COMMAND ----------
 
@@ -108,7 +108,7 @@ df3.shape
 
 import missingno as msno
 
-msno.matrix(df3)
+msno.matrix(df2)
 
 # COMMAND ----------
 
@@ -118,19 +118,19 @@ msno.matrix(df3)
 
 # null values per numerical column
 
-df3.select_dtypes(exclude='object').isnull().sum()
+df2.select_dtypes(exclude='object').isnull().sum()
 
 # COMMAND ----------
 
 # drop rows with Nan Values in ALL columns of interest
 
-df4 = df3.dropna(subset=['age', 'wt', 'dose_amt'],how='all')
+df3 = df2.dropna(subset=['age', 'wt', 'dose_amt'],how='all')
 
 #df4 = df3.dropna(subset=['age', 'wt', 'dose_amt'])
 
 # COMMAND ----------
 
-df4.shape
+df3.shape
 
 # COMMAND ----------
 
@@ -140,29 +140,29 @@ df4.shape
 
 # outcome values
 
-df1['outc_cod'].value_counts()
+df3['outc_cod'].value_counts()
 
 # COMMAND ----------
 
 # new column - outcome code = DE
 
-df1.insert(loc = 52, 
+df3.insert(loc = 41, 
           column = 'outc_cod_DE', 
           value = 0)
 
-# display(df1)
+#display(df3)
 
 # COMMAND ----------
 
 # target will be binary classification - did a patient die?
 
-df1['outc_cod_DE'] = np.where(df1['outc_cod']=='DE',1,0)
+df3['outc_cod_DE'] = np.where(df3['outc_cod']=='DE',1,0)
 
 # COMMAND ----------
 
 # outcome values = DE only
 
-df1['outc_cod_DE'].value_counts()
+df3['outc_cod_DE'].value_counts()
 
 # COMMAND ----------
 
@@ -174,7 +174,7 @@ df1['outc_cod_DE'].value_counts()
 
 # return some records where outcome of death = 1
 
-df1.loc[df1['outc_cod_DE'] == 1].head(5)
+df3.loc[df3['outc_cod_DE'] == 1].head(5)
 
 # COMMAND ----------
 
@@ -184,20 +184,20 @@ df1.loc[df1['outc_cod_DE'] == 1].head(5)
 
 #https://stackoverflow.com/questions/49343860/how-to-drop-duplicate-values-based-in-specific-columns-using-pandas
 
-df2 = df1.sort_values(by=['outc_cod_DE'], ascending = False) \
+df4 = df3.sort_values(by=['outc_cod_DE'], ascending = False) \
         .drop_duplicates(subset=['caseid'], keep = 'first')
 
 # COMMAND ----------
 
 # re-inspect case
 
-df2[df2['caseid'] == 18322071].head(5)
+df4[df4['caseid'] == 18322071].head(5)
 
 # COMMAND ----------
 
 # how many records after removing dups
 
-df2.shape
+df4.shape
 
 # COMMAND ----------
 
@@ -205,13 +205,13 @@ df2.shape
 
 # https://datascienceparichay.com/article/pandas-count-of-unique-values-in-each-column
 
-print(df2.nunique())
+print(df4.nunique())
 
 # COMMAND ----------
 
 # new value counts
 
-df2['outc_cod_DE'].value_counts()
+df4['outc_cod_DE'].value_counts()
 
 # COMMAND ----------
 
@@ -226,7 +226,7 @@ df2['outc_cod_DE'].value_counts()
 # 0 is majority class
 # 1 is minority class
 
-sns.countplot(x='outc_cod_DE', data=df2) # data already looks wildly imbalanced but let us continue
+sns.countplot(x='outc_cod_DE', data=df4) # data already looks wildly imbalanced but let us continue
 
 # COMMAND ----------
 
