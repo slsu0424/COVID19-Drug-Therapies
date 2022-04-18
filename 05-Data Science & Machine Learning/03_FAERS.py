@@ -298,7 +298,7 @@ display_dict_models(dict_models)
 
 # COMMAND ----------
 
-display(df5)
+display(df1)
 
 # COMMAND ----------
 
@@ -306,13 +306,13 @@ display(df5)
 
 # https://stats.idre.ucla.edu/other/mult-pkg/whatstat/what-is-the-difference-between-categorical-ordinal-and-numerical-variables/
 
-df5.select_dtypes(include='object').head(5).T
+df1.select_dtypes(include='object').head(5).T
 
 # COMMAND ----------
 
 # convert select categorical features to numerical as these will be useful features for modeling
 
-df_dummies = pd.get_dummies(df5, columns=['mfr_sndr', 'sex', 'occr_country', 'drugname', 'route', 'dechal', 'rechal'], drop_first=True)
+df_dummies = pd.get_dummies(df1, columns=['mfr_sndr', 'sex', 'occr_country', 'drugname', 'route', 'dechal', 'rechal'], drop_first=True)
 
 df_dummies.head(2)
 
@@ -322,38 +322,34 @@ df_dummies.dtypes
 
 # COMMAND ----------
 
-df7 = pd.concat([df6, df_dummies], axis=1)
-
-df7.head()
-
-# COMMAND ----------
-
 # simple scaling
 
 from sklearn.preprocessing import MinMaxScaler
 
 scaler = MinMaxScaler()
-df7 = pd.DataFrame(scaler.fit_transform(df6), columns = df6.columns)
-df7.head()
+df_dummies1 = pd.DataFrame(scaler.fit_transform(df_dummies), columns = df_dummies.columns)
+
+# COMMAND ----------
+
+# MAGIC %md ##Impute missing values (KNN)
 
 # COMMAND ----------
 
 from sklearn.impute import KNNImputer
 
+# https://medium.com/@kyawsawhtoon/a-guide-to-knn-imputation-95e2dc496e
+
 imputer = KNNImputer(n_neighbors=5)
-df8 = pd.DataFrame(imputer.fit_transform(df7),columns = df7.columns)
-
-# COMMAND ----------
-
-df8.dtypes
+df_dummies2 = pd.DataFrame(imputer.fit_transform(df_dummies1),columns = df_dummies1.columns)
+df_dummies2.head()
 
 # COMMAND ----------
 
 # X = input
-X = df8.drop('outc_cod_DE', axis= 1)
+X = df_dummies2.drop('outc_cod_DE', axis= 1)
 
 # y = output
-y = df8['outc_cod_DE']
+y = df_dummies2['outc_cod_DE']
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.3, random_state = 0)
  
@@ -614,21 +610,7 @@ df5.display(5)
 
 # COMMAND ----------
 
-# MAGIC %md ##Impute missing values (KNN)
-
-# COMMAND ----------
-
-# https://medium.com/@kyawsawhtoon/a-guide-to-knn-imputation-95e2dc496e
-
-from sklearn.impute import KNNImputer
-
-# COMMAND ----------
-
 # MAGIC %md ##Remove outliers
-
-# COMMAND ----------
-
-df3.dtypes
 
 # COMMAND ----------
 
