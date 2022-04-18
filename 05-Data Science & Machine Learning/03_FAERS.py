@@ -127,11 +127,6 @@ msno.matrix(df5)
 
 # COMMAND ----------
 
-#df5.select_dtypes(exclude='object').dtypes
-df6 = df5
-
-# COMMAND ----------
-
 # curate feature set (numerical values only)
 
 #df6 = df5.copy()
@@ -303,6 +298,10 @@ display_dict_models(dict_models)
 
 # COMMAND ----------
 
+display(df5)
+
+# COMMAND ----------
+
 # identify columns that are categorical and convert to numerical
 
 # https://stats.idre.ucla.edu/other/mult-pkg/whatstat/what-is-the-difference-between-categorical-ordinal-and-numerical-variables/
@@ -319,20 +318,13 @@ df_dummies.head(2)
 
 # COMMAND ----------
 
-df_converted.select_dtypes(exclude='object').dtypes
+df_dummies.dtypes
 
 # COMMAND ----------
 
-df_converted.shape
+df7 = pd.concat([df6, df_dummies], axis=1)
 
-# COMMAND ----------
-
-# drop categorical columns and add dummies
-
-df5 = df5.drop(['mfr_sndr', 'sex', 'occr_country', 'drugname', 'route', 'dechal', 'rechal'], axis=1)
-df6 = pd.concat([df5, df_dummies], axis=1)
-df6.head()
-
+df7.head()
 
 # COMMAND ----------
 
@@ -350,6 +342,36 @@ from sklearn.impute import KNNImputer
 
 imputer = KNNImputer(n_neighbors=5)
 df8 = pd.DataFrame(imputer.fit_transform(df7),columns = df7.columns)
+
+# COMMAND ----------
+
+df8.dtypes
+
+# COMMAND ----------
+
+# X = input
+X = df8.drop('outc_cod_DE', axis= 1)
+
+# y = output
+y = df8['outc_cod_DE']
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.3, random_state = 0)
+ 
+# show size of each dataset (records, columns)
+print("Dataset sizes: \nX_train", X_train.shape," \nX_test", X_test.shape, " \ny_train", y_train.shape, "\ny_test", y_test.shape)
+ 
+data = {
+    "train":{"X": X_train, "y": y_train},        
+    "test":{"X": X_test, "y": y_test}
+}
+ 
+print ("Data contains", len(data['train']['X']), "training samples and",len(data['test']['X']), "test samples")
+
+# COMMAND ----------
+
+dict_models = batch_classify(X_train, y_train, X_test, y_test, no_classifiers = 10)
+ 
+display_dict_models(dict_models)
 
 # COMMAND ----------
 
