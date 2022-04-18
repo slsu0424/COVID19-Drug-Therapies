@@ -1,5 +1,5 @@
 # Databricks notebook source
-# MAGIC %md #Part 3: Feature Engineering & Baseline Modeling
+# MAGIC %md #Part 3: Baseline Modeling & Feature Engineering
 
 # COMMAND ----------
 
@@ -14,26 +14,12 @@ import matplotlib.pyplot as plt # for data visualization
 import seaborn as sns #for data visualization
 from statistics import mode
 import scipy as sp
-
-# library settings
-pd.set_option('display.max_columns', None)
-pd.set_option('display.max_rows', None)
-pd.set_option('display.width', None)
-pd.set_option('display.max_colwidth', None)
-
-from matplotlib.colors import ListedColormap
-
-# COMMAND ----------
-
-import pandas as pd
-import numpy as np
-import seaborn as sns
-import matplotlib.pyplot as plt
 import time
 
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler, LabelEncoder
 
+from sklearn.dummy import DummyClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
@@ -46,12 +32,18 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.gaussian_process import GaussianProcessClassifier
-
 #from xgboost import XGBClassifier
 
+from sklearn.model_selection import train_test_split
 from sklearn.metrics import precision_score, recall_score, f1_score, fbeta_score, classification_report
 
-from sklearn.model_selection import train_test_split
+from matplotlib.colors import ListedColormap
+
+# library settings
+pd.set_option('display.max_columns', None)
+pd.set_option('display.max_rows', None)
+pd.set_option('display.width', None)
+pd.set_option('display.max_colwidth', None)
 
 # COMMAND ----------
 
@@ -77,11 +69,59 @@ df1 = df.toPandas()
 
 # COMMAND ----------
 
-df1.dtypes
+# MAGIC %md #Build baseline classifier
 
 # COMMAND ----------
 
-# MAGIC %md #Feature Engineering (Basic)
+# input
+X = df1.drop('outc_cod_DE', axis= 1)
+
+# output
+y = df1['outc_cod_DE']
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.3, random_state = 0)
+
+# show size of each dataset (records, columns)
+print("Dataset sizes: \nX_train", X_train.shape," \nX_test", X_test.shape, " \ny_train", y_train.shape, "\ny_test", y_test.shape)
+
+data = {
+    "train":{"X": X_train, "y": y_train},        
+    "test":{"X": X_test, "y": y_test}
+}
+
+print ("Data contains", len(data['train']['X']), "training samples and",len(data['test']['X']), "test samples")
+
+# COMMAND ----------
+
+strategies = ['most_frequent', 'stratified', 'uniform', 'constant']
+
+test_scores = []
+for s in strategies:
+	if s =='constant':
+		dclf = DummyClassifier(strategy = s, random_state = 0, constant = 1)
+	else:
+		dclf = DummyClassifier(strategy = s, random_state = 0)
+	dclf.fit(X_train, y_train)
+	score = dclf.score(X_test, y_test)
+	test_scores.append(score)
+
+# COMMAND ----------
+
+# constant strategy (predicting minority class) --> most closely approximates F-1 measure
+
+ax = sns.stripplot(strategies, test_scores);
+ax.set(xlabel ='Strategy', ylabel ='Test Score')
+plt.show()
+
+# COMMAND ----------
+
+# any other model would have to do better than > 0.16
+
+print(test_scores)
+
+# COMMAND ----------
+
+# MAGIC %md #Feature Engineering
 
 # COMMAND ----------
 
