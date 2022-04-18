@@ -51,6 +51,30 @@ df1.dtypes
 
 # COMMAND ----------
 
+# MAGIC %md ##Encode categorical variables
+
+# COMMAND ----------
+
+# identify columns that are categorical and convert to numerical
+
+# https://stats.idre.ucla.edu/other/mult-pkg/whatstat/what-is-the-difference-between-categorical-ordinal-and-numerical-variables/
+
+df1.select_dtypes(include='object').head(5).T
+
+# COMMAND ----------
+
+# convert categorical features to numerical as these will be useful features for modeling
+
+df2 = pd.get_dummies(df1, columns=['mfr_sndr', 'sex', 'occr_country', 'drugname', 'route', 'dechal', 'rechal'], drop_first=True)
+
+df2.head(2)
+
+# COMMAND ----------
+
+df2.dtypes
+
+# COMMAND ----------
+
 # MAGIC %md ##Impute missing values
 
 # COMMAND ----------
@@ -61,7 +85,7 @@ df1.dtypes
 
 # check null values in numerical variables 
 
-df1.select_dtypes(exclude='object').isnull().sum()
+df2.select_dtypes(exclude='object').isnull().sum()
 
 # COMMAND ----------
 
@@ -77,15 +101,15 @@ df1.select_dtypes(exclude='object').isnull().sum()
 
 from sklearn.impute import SimpleImputer
 
-df4 = df1.copy() 
+df3 = df2.copy() 
 
 imputer = SimpleImputer(missing_values=np.nan, strategy= 'median')
 
-df4.age_in_yrs = imputer.fit_transform(df4['age_in_yrs'].values.reshape(-1,1)) # only convert age if age_cod is in years.
-df4.wt_in_lbs = imputer.fit_transform(df4['wt_in_lbs'].values.reshape(-1,1))
-df4.dose_amt = imputer.fit_transform(df4['dose_amt'].values.reshape(-1,1))
+df3.age_in_yrs = imputer.fit_transform(df4['age_in_yrs'].values.reshape(-1,1)) # only convert age if age_cod is in years.
+df3.wt_in_lbs = imputer.fit_transform(df4['wt_in_lbs'].values.reshape(-1,1))
+df3.dose_amt = imputer.fit_transform(df4['dose_amt'].values.reshape(-1,1))
 
-display(df4)
+display(df3)
 
 # COMMAND ----------
 
@@ -95,23 +119,23 @@ display(df4)
 
 # check null values in categorical variables 
 
-df4.select_dtypes(include='object').isnull().sum()
+df3.select_dtypes(include='object').isnull().sum()
 
 # COMMAND ----------
 
 # we are interested to impute for sex, route, dechal, dose_freq
 
 # impute with most frequent
-df5 = df4.copy()
+df4 = df3.copy()
 
 imputer = SimpleImputer(missing_values=None, strategy= 'most_frequent')
 
-df5.sex = imputer.fit_transform(df5['sex'].values.reshape(-1,1))
-df5.route = imputer.fit_transform(df5['route'].values.reshape(-1,1))
-df5.dechal = imputer.fit_transform(df5['dechal'].values.reshape(-1,1))
+df4.sex = imputer.fit_transform(df4['sex'].values.reshape(-1,1))
+df4.route = imputer.fit_transform(df4['route'].values.reshape(-1,1))
+df4.dechal = imputer.fit_transform(df4['dechal'].values.reshape(-1,1))
 #df5.dose_freq = imputer.fit_transform(df5['dose_freq'].values.reshape(-1,1))
 
-display(df5)
+display(df4)
 
 # COMMAND ----------
 
@@ -119,7 +143,7 @@ display(df5)
 
 import missingno as msno
 
-msno.matrix(df5)
+msno.matrix(df4)
 
 # COMMAND ----------
 
@@ -127,11 +151,9 @@ msno.matrix(df5)
 
 # COMMAND ----------
 
-# curate feature set (numerical values only)
+# curate feature set
 
-#df6 = df5.copy()
-
-df6 = df5.select_dtypes(exclude='object')
+df5 = df4.select_dtypes(exclude='object')
 
 #df6 = df5.select_dtypes(exclude='object') \
 #                            .drop(['primaryid','caseid','caseversion','event_dt','mfr_dt','init_fda_dt','fda_dt','age','wt', \
@@ -139,15 +161,15 @@ df6 = df5.select_dtypes(exclude='object')
 
 # COMMAND ----------
 
-display(df6)
+display(df5)
 
 # COMMAND ----------
 
 # X = input
-X = df6.drop('outc_cod_DE', axis= 1)
+X = df5.drop('outc_cod_DE', axis= 1)
 
 # y = output
-y = df6['outc_cod_DE']
+y = df5['outc_cod_DE']
 
 # COMMAND ----------
 
@@ -291,34 +313,6 @@ display_dict_models(dict_models)
 # COMMAND ----------
 
 # MAGIC %md #Advanced Feature Engineering
-
-# COMMAND ----------
-
-# MAGIC %md ##Encode categorical variables
-
-# COMMAND ----------
-
-display(df1)
-
-# COMMAND ----------
-
-# identify columns that are categorical and convert to numerical
-
-# https://stats.idre.ucla.edu/other/mult-pkg/whatstat/what-is-the-difference-between-categorical-ordinal-and-numerical-variables/
-
-df1.select_dtypes(include='object').head(5).T
-
-# COMMAND ----------
-
-# convert select categorical features to numerical as these will be useful features for modeling
-
-df_dummies = pd.get_dummies(df1, columns=['mfr_sndr', 'sex', 'occr_country', 'drugname', 'route', 'dechal', 'rechal'], drop_first=True)
-
-df_dummies.head(2)
-
-# COMMAND ----------
-
-df_dummies.dtypes
 
 # COMMAND ----------
 
