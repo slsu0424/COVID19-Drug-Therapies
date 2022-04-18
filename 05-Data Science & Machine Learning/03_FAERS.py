@@ -1,9 +1,9 @@
 # Databricks notebook source
-# MAGIC %md #Part 3: Basic Feature Engineering & Baseline Modeling
+# MAGIC %md #Part 3: Feature Engineering & Baseline Modeling
 
 # COMMAND ----------
 
-# pip install missingno pandasql pycaret[full]
+# pip install pycaret[full]
 
 # COMMAND ----------
 
@@ -22,6 +22,36 @@ pd.set_option('display.width', None)
 pd.set_option('display.max_colwidth', None)
 
 from matplotlib.colors import ListedColormap
+
+# COMMAND ----------
+
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+import time
+
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler, LabelEncoder
+
+from sklearn.linear_model import LogisticRegression
+from sklearn.svm import SVC
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn import tree
+from sklearn.neural_network import MLPClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.gaussian_process.kernels import RBF
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import AdaBoostClassifier
+from sklearn.naive_bayes import GaussianNB
+from sklearn.gaussian_process import GaussianProcessClassifier
+
+#from xgboost import XGBClassifier
+
+from sklearn.metrics import precision_score, recall_score, f1_score, fbeta_score, classification_report
+
+from sklearn.model_selection import train_test_split
 
 # COMMAND ----------
 
@@ -48,6 +78,10 @@ df1 = df.toPandas()
 # COMMAND ----------
 
 df1.dtypes
+
+# COMMAND ----------
+
+# MAGIC %md #Feature Engineering (Basic)
 
 # COMMAND ----------
 
@@ -79,13 +113,9 @@ df2.dtypes
 
 # COMMAND ----------
 
-# MAGIC %md ###Numerical
+# check null values per variable
 
-# COMMAND ----------
-
-# check null values in numerical variables 
-
-df2.select_dtypes(exclude='object').isnull().sum()
+df2.isnull().sum()
 
 # COMMAND ----------
 
@@ -105,45 +135,11 @@ df3 = df2.copy()
 
 imputer = SimpleImputer(missing_values=np.nan, strategy= 'median')
 
-df3.age_in_yrs = imputer.fit_transform(df4['age_in_yrs'].values.reshape(-1,1)) # only convert age if age_cod is in years.
-df3.wt_in_lbs = imputer.fit_transform(df4['wt_in_lbs'].values.reshape(-1,1))
-df3.dose_amt = imputer.fit_transform(df4['dose_amt'].values.reshape(-1,1))
+df3.age_in_yrs = imputer.fit_transform(df3['age_in_yrs'].values.reshape(-1,1)) # only convert age if age_cod is in years.
+df3.wt_in_lbs = imputer.fit_transform(df3['wt_in_lbs'].values.reshape(-1,1))
+df3.dose_amt = imputer.fit_transform(df3['dose_amt'].values.reshape(-1,1))
 
 display(df3)
-
-# COMMAND ----------
-
-# MAGIC %md ###Categorical
-
-# COMMAND ----------
-
-# check null values in categorical variables 
-
-df3.select_dtypes(include='object').isnull().sum()
-
-# COMMAND ----------
-
-# we are interested to impute for sex, route, dechal, dose_freq
-
-# impute with most frequent
-df4 = df3.copy()
-
-imputer = SimpleImputer(missing_values=None, strategy= 'most_frequent')
-
-df4.sex = imputer.fit_transform(df4['sex'].values.reshape(-1,1))
-df4.route = imputer.fit_transform(df4['route'].values.reshape(-1,1))
-df4.dechal = imputer.fit_transform(df4['dechal'].values.reshape(-1,1))
-#df5.dose_freq = imputer.fit_transform(df5['dose_freq'].values.reshape(-1,1))
-
-display(df4)
-
-# COMMAND ----------
-
-# inspect remaining missing values in data
-
-import missingno as msno
-
-msno.matrix(df4)
 
 # COMMAND ----------
 
@@ -153,27 +149,15 @@ msno.matrix(df4)
 
 # curate feature set
 
-df5 = df4.select_dtypes(exclude='object')
-
-#df6 = df5.select_dtypes(exclude='object') \
-#                            .drop(['primaryid','caseid','caseversion','event_dt','mfr_dt','init_fda_dt','fda_dt','age','wt', \
-#                                    'rept_dt','last_case_version','val_vbm','start_dt','end_dt','drug_seq','dsg_drug_seq', 'nda_num'], axis=1)
+df3.dtypes
 
 # COMMAND ----------
 
-display(df5)
+# input
+X = df3.drop('outc_cod_DE', axis= 1)
 
-# COMMAND ----------
-
-# X = input
-X = df5.drop('outc_cod_DE', axis= 1)
-
-# y = output
-y = df5['outc_cod_DE']
-
-# COMMAND ----------
-
-from sklearn.model_selection import train_test_split
+# output
+y = df3['outc_cod_DE']
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.3, random_state = 0)
 
@@ -186,34 +170,6 @@ data = {
 }
 
 print ("Data contains", len(data['train']['X']), "training samples and",len(data['test']['X']), "test samples")
-
-# COMMAND ----------
-
-import pandas as pd
-import numpy as np
-import seaborn as sns
-import matplotlib.pyplot as plt
-import time
-
-from sklearn.decomposition import PCA
-from sklearn.preprocessing import StandardScaler, LabelEncoder
-
-from sklearn.linear_model import LogisticRegression
-from sklearn.svm import SVC
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn import tree
-from sklearn.neural_network import MLPClassifier
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.ensemble import GradientBoostingClassifier
-from sklearn.gaussian_process.kernels import RBF
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.ensemble import AdaBoostClassifier
-from sklearn.naive_bayes import GaussianNB
-from sklearn.gaussian_process import GaussianProcessClassifier
-
-#from xgboost import XGBClassifier
-
-from sklearn.metrics import precision_score, recall_score, f1_score, fbeta_score, classification_report
 
 # COMMAND ----------
 
@@ -321,7 +277,7 @@ display_dict_models(dict_models)
 from sklearn.preprocessing import MinMaxScaler
 
 scaler = MinMaxScaler()
-df_dummies1 = pd.DataFrame(scaler.fit_transform(df_dummies), columns = df_dummies.columns)
+df4 = pd.DataFrame(scaler.fit_transform(df3), columns = df3.columns)
 
 # COMMAND ----------
 
@@ -333,17 +289,17 @@ from sklearn.impute import KNNImputer
 
 # https://medium.com/@kyawsawhtoon/a-guide-to-knn-imputation-95e2dc496e
 
-imputer = KNNImputer(n_neighbors=5)
-df_dummies2 = pd.DataFrame(imputer.fit_transform(df_dummies1),columns = df_dummies1.columns)
-df_dummies2.head()
+imputer = KNNImputer(n_neighbors=3)
+df5 = pd.DataFrame(imputer.fit_transform(df4),columns = df4.columns)
+df5.head()
 
 # COMMAND ----------
 
-# X = input
-X = df_dummies2.drop('outc_cod_DE', axis= 1)
+# input
+X = df5.drop('outc_cod_DE', axis= 1)
 
-# y = output
-y = df_dummies2['outc_cod_DE']
+# output
+y = df5['outc_cod_DE']
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.3, random_state = 0)
  
@@ -380,48 +336,6 @@ display_dict_models(dict_models)
 # MAGIC Kurtosis - What is the measure of thickness or heaviness of the distribution?  
 # MAGIC 
 # MAGIC https://tekmarathon.com/2015/11/13/importance-of-data-distribution-in-training-machine-learning-models/
-
-# COMMAND ----------
-
-#pd.option_context('display.max_rows', None, 'display.max_columns', None)
-#https://stackoverflow.com/questions/19124601/pretty-print-an-entire-pandas-series-dataframe
-df5.dtypes
-
-# COMMAND ----------
-
-# drop data entry errors
-
-# review selected numerical variables of interest
-num_cols = ['age','wt','drug_seq','dose_amt','dsg_drug_seq']
-
-plt.figure(figsize=(18,9))
-df5[num_cols].boxplot()
-plt.title("Numerical variables in the Corticosteroid dataset", fontsize=20)
-plt.show()
-
-# COMMAND ----------
-
-df5['dose_amt'].max()
-
-# COMMAND ----------
-
-# inspect record
-
-df5[df5['dose_amt'] == 30000].head(5)
-
-# COMMAND ----------
-
-# get all records with IU dose unit
-
-df5[df5['dose_unit'] == 'IU'].head(10)
-
-# COMMAND ----------
-
-# this looks to be an outlier, drop this record
-
-# https://thispointer.com/python-pandas-how-to-drop-rows-in-dataframe-by-conditions-on-column-values/
-
-df5.drop(df5[df5['dose_amt'] == 30000].index, inplace=True)
 
 # COMMAND ----------
 
