@@ -393,7 +393,6 @@ df5.shape
 
 # drop columns that will not be used for training and inference
 
-# list all columns
 df5.dtypes
 
 # COMMAND ----------
@@ -422,11 +421,28 @@ df6.dtypes
 
 # COMMAND ----------
 
-#df6 = df6.drop(['age', 'age_cod'], axis=1)
+df6.shape
 
 # COMMAND ----------
 
-df6.shape
+# input
+X = df1.drop('outc_cod_DE', axis= 1)
+
+# output
+y = df1['outc_cod_DE']
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.33, random_state = 0)
+#X_train, X_test, y_train, y_test = train_test_split(X, y, random_state = 0)
+
+# show size of each dataset (records, columns)
+print("Dataset sizes: \nX_train", X_train.shape," \nX_test", X_test.shape, " \ny_train", y_train.shape, "\ny_test", y_test.shape)
+
+data = {
+    "train":{"X": X_train, "y": y_train},        
+    "test":{"X": X_test, "y": y_test}
+}
+
+print ("Data contains", len(data['train']['X']), "training samples and",len(data['test']['X']), "test samples")
 
 # COMMAND ----------
 

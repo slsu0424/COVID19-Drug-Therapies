@@ -79,7 +79,8 @@ X = df1.drop('outc_cod_DE', axis= 1)
 # output
 y = df1['outc_cod_DE']
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.3, random_state = 0)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.33, random_state = 0)
+#X_train, X_test, y_train, y_test = train_test_split(X, y, random_state = 0)
 
 # show size of each dataset (records, columns)
 print("Dataset sizes: \nX_train", X_train.shape," \nX_test", X_test.shape, " \ny_train", y_train.shape, "\ny_test", y_test.shape)
@@ -107,17 +108,17 @@ for s in strategies:
 
 # COMMAND ----------
 
-# constant strategy (predicting minority class) --> most closely approximates F-1 measure
+print(test_scores)
+
+# COMMAND ----------
+
+# view visually
+
+# constant strategy (predicting minority class) --> most closely approximates F-1 measure.  Any model would have to do better than F-1 >= 0.16
 
 ax = sns.stripplot(strategies, test_scores);
 ax.set(xlabel ='Strategy', ylabel ='Test Score')
 plt.show()
-
-# COMMAND ----------
-
-# any other model would have to do better than > 0.16
-
-print(test_scores)
 
 # COMMAND ----------
 
