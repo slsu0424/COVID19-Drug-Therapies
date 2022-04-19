@@ -405,22 +405,20 @@ df5.dtypes
 # drop columns
 
 df6 = df5.drop(['primaryid', 'caseid', 'caseversion', 'i_f_code', \
-#df6 = df5.drop(['event_dt', 'mfr_dt', 'init_fda_dt', 'fda_dt', \
                 'event_dt', 'mfr_dt', 'init_fda_dt', 'fda_dt', \
-                'rept_cod', 'auth_num', 'mfr_num', \
-                'age', 'age_cod', 
-                'age_grp', 'e_sub', \
-                'wt', 'wt_cod', 'rept_dt', 'to_mfr', \
-                'occp_cod', 'reporter_country', 'last_case_version', \
-                'role_cod', 'prod_ai', 'val_vbm', 'dose_vbm', 'cum_dose_chr', 'cum_dose_unit', 'lot_num', 'nda_num', \
-                'dose_unit','dose_form', 'dose_freq', \
-                'drug_seq', 'dsg_drug_seq', \
-                'pt','outc_cod', 'start_dt', 'end_dt'], axis=1)
+                'rept_cod', 'auth_num', 'mfr_num', 'age', \
+                'age_cod', 'age_grp', 'e_sub', 'wt', \
+                'wt_cod', 'rept_dt', 'to_mfr', 'occp_cod', \
+                'reporter_country', 'last_case_version', 'role_cod', 'prod_ai', 
+                'val_vbm', 'dose_vbm', 'cum_dose_chr', 'cum_dose_unit', \
+                'lot_num', 'nda_num', 'dose_unit', 'dose_form', \
+                'dose_freq', 'drug_seq', 'dsg_drug_seq', 'pt', \
+                'outc_cod', 'start_dt', 'end_dt'], axis=1)
 
 
 # COMMAND ----------
 
-# final columns that will be used for training
+# final columns to be used for training
 
 df6.dtypes
 
