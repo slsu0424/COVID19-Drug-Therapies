@@ -381,10 +381,12 @@ df4['wt_in_lbs'].nlargest(n=10)
 
 # https://www.cdc.gov/obesity/adult/defining.html
 
-df5 = df4[df4.wt_in_lbs != 1690.94554954]
+#df5 = df4[df4.wt_in_lbs != 1690.94554954]
 #df5 = df4.drop(df4.index[df4['wt_in_lbs'] == '1124.357536'], inplace=True)
 
 # COMMAND ----------
+
+df5 = df4
 
 df5.shape
 
