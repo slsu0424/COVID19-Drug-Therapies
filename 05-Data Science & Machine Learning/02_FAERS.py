@@ -19,6 +19,9 @@ pd.set_option('display.max_colwidth', None)
 
 from matplotlib.colors import ListedColormap
 
+from sklearn.dummy import DummyClassifier
+from sklearn.model_selection import train_test_split
+
 # COMMAND ----------
 
 # MAGIC %md #Load data
@@ -425,11 +428,15 @@ df6.shape
 
 # COMMAND ----------
 
+# MAGIC %md #Build baseline classifier
+
+# COMMAND ----------
+
 # input
-X = df1.drop('outc_cod_DE', axis= 1)
+X = df6.drop('outc_cod_DE', axis= 1)
 
 # output
-y = df1['outc_cod_DE']
+y = df6['outc_cod_DE']
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.33, random_state = 0)
 #X_train, X_test, y_train, y_test = train_test_split(X, y, random_state = 0)
@@ -443,6 +450,32 @@ data = {
 }
 
 print ("Data contains", len(data['train']['X']), "training samples and",len(data['test']['X']), "test samples")
+
+# COMMAND ----------
+
+strategies = ['most_frequent', 'stratified', 'uniform', 'constant']
+
+test_scores = []
+for s in strategies:
+	if s =='constant':
+		dclf = DummyClassifier(strategy = s, random_state = 0, constant = 1)
+	else:
+		dclf = DummyClassifier(strategy = s, random_state = 0)
+	dclf.fit(X_train, y_train)
+	score = dclf.score(X_test, y_test)
+	test_scores.append(score)
+    
+print(test_scores)
+
+# COMMAND ----------
+
+# view visually
+
+# constant strategy (predicting minority class) --> most closely approximates F-1 measure.  Any model would have to do better than F-1 >= 0.16
+
+ax = sns.stripplot(strategies, test_scores);
+ax.set(xlabel ='Strategy', ylabel ='Test Score')
+plt.show()
 
 # COMMAND ----------
 
