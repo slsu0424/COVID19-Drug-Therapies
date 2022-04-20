@@ -103,7 +103,7 @@ for s in strategies:
 	score = dclf.score(X_test, y_test)
 	test_scores.append(score)
     
-print(test_scores)
+print("Accuracy of baseline model classifiers on test set are:", test_scores)
 
 # COMMAND ----------
 
@@ -115,28 +115,6 @@ print(test_scores)
 
 ax = sns.stripplot(strategies, test_scores);
 ax.set(xlabel ='Strategy', ylabel ='Test Score')
-plt.show()
-
-# COMMAND ----------
-
-y_pred_dummy = model_dummy.predict(X_test)
-print("Accuracy of baseline model classifier on test set: {:.2f}".format(model_dummy.score(X_test, y_test)))
-
-Accuracy of baseline model classifier on test set: 0.48
-
-# plotting ROC Curve
-logit_roc_auc = roc_auc_score(y_test, model_dummy.predict(X_test))
-fpr, tpr, thresholds = roc_curve(y_test, model_dummy.predict_proba(X_test)[:,1])
-plt.figure()
-plt.plot(fpr, tpr, label='Baseline Model (area = %0.2f)' % logit_roc_auc)
-plt.plot([0, 1], [0, 1],'r--')
-plt.xlim([0.0, 1.0])
-plt.ylim([0.0, 1.05])
-plt.xlabel('False Positive Rate')
-plt.ylabel('True Positive Rate')
-plt.title('Receiver operating characteristic')
-plt.legend(loc="lower right")
-#plt.savefig('Log_ROC')
 plt.show()
 
 # COMMAND ----------
@@ -196,11 +174,31 @@ df4.head()
 
 # COMMAND ----------
 
-# MAGIC %md #Batch Classification
+# input
+X = df4.drop('outc_cod_DE', axis= 1)
+
+# output
+y = df4['outc_cod_DE']
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.33, random_state = 0)
+
+strategies = ['most_frequent', 'stratified', 'uniform', 'constant']
+
+test_scores = []
+for s in strategies:
+	if s =='constant':
+		dclf = DummyClassifier(strategy = s, random_state = 0, constant = 1)
+	else:
+		dclf = DummyClassifier(strategy = s, random_state = 0)
+	dclf.fit(X_train, y_train)
+	score = dclf.score(X_test, y_test)
+	test_scores.append(score)
+    
+print("Accuracy of baseline model classifiers on the test set are:", test_scores)
 
 # COMMAND ----------
 
-# MAGIC %md ## Train-test split vs. Cross-Validation
+# MAGIC %md #Batch Classification
 
 # COMMAND ----------
 
@@ -290,6 +288,134 @@ def display_dict_models(dict_models, sort_by='test_score'):
         df_.loc[ii, 'train_time'] = training_t[ii]
     
     display(df_.sort_values(by=sort_by, ascending=False))
+
+# COMMAND ----------
+
+dict_classifiers = {
+    "Logistic Regression": LogisticRegression(),
+    "Nearest Neighbors": KNeighborsClassifier(),
+    "Linear SVM": SVC(),
+    "Gradient Boosting Classifier": GradientBoostingClassifier(n_estimators=1000),
+    "Decision Tree": tree.DecisionTreeClassifier(),
+    "Random Forest": RandomForestClassifier(n_estimators=100),
+    "Neural Net": MLPClassifier(alpha = 1),
+    "Naive Bayes": GaussianNB(),
+    "AdaBoost": AdaBoostClassifier(),
+    #"QDA": QuadraticDiscriminantAnalysis(),
+    "Gaussian Process": GaussianProcessClassifier() #http://www.ideal.ece.utexas.edu/seminar/GP-austin.pdf
+}
+
+def model_classifier(X, y, cv, no_classifiers = 9, verbose = True):
+    """
+    Creates folds manually, perform 
+    Returns an array of validation (recall) scores
+    """
+    #scores = []
+    
+    
+    #for train_index,test_index in cv.split(X,y):
+    #    X_train,X_test = X.loc[train_index],X.loc[test_index]
+    #    y_train,y_test = y.loc[train_index],y.loc[test_index]
+
+        # Fit the model on the training data
+    #    model_obj = model.fit(X_train, y_train)
+    #    y_pred = model_obj.predict(X_test)
+    #    y_pred_prob = model_obj.predict_proba(X_test)[:,1]
+        # Score the model on the validation data
+    #    score = accuracy_score(y_test, y_pred)
+    #    report = classification_report(y_test, y_pred)
+    #    conf_matrix = confusion_matrix(y_test, y_pred)
+        
+    #    scores.append(score)
+    #    mean_score = np.array(scores).mean() 
+
+
+    dict_models = {}
+    
+    for classifier_name, classifier in list(dict_classifiers.items())[:no_classifiers]:
+        for train_index,test_index in cv.split(X,y):
+            X_train,X_test = X.loc[train_index],X.loc[test_index]
+            y_train,y_test = y.loc[train_index],y.loc[test_index]
+        
+            t_start = time.process_time()
+            classifier.fit(X_train, y_train)
+            predictions = classifier.predict(X_test)
+            t_end = time.process_time()
+        
+            t_diff = t_end - t_start
+            train_score = classifier.score(X_train, y_train) # training accuracy
+            test_score = classifier.score(X_test, y_test) # test accuracy
+            precision = precision_score(y_test, predictions) # fraction of positive predictions that were correct. TP / (TP + FP)
+            recall = recall_score(y_test, predictions) # fraction of positive predictions that were correctly identified.  TP / (TP + FN)
+            f1 = f1_score(y_test, predictions) # avg of precision + recall ratios
+            fbeta = fbeta_score(y_test, predictions, beta=0.5)
+            class_report = classification_report(y_test, predictions)
+        
+            dict_models[classifier_name] = {'model': classifier, \
+                                        'train_score': train_score, \
+                                        'test_score': test_score, \
+                                        'precision': precision_score, \
+                                        'recall': recall_score, \
+                                        'f1': f1, \
+                                        'fbeta': fbeta, \
+                                        'train_time': t_diff, 
+                                        'class_report': class_report}
+            if verbose:
+                print("trained {c} in {f:.2f} s".format(c=classifier_name, f=t_diff))
+    return dict_models
+
+
+def display_dict_models(dict_models, sort_by='test_score'):
+    cls = [key for key in dict_models.keys()]
+    test_s = [dict_models[key]['test_score'] for key in cls]
+    training_s = [dict_models[key]['train_score'] for key in cls]
+    precision_s = [dict_models[key]['precision'] for key in cls]
+    recall_s = [dict_models[key]['recall'] for key in cls]
+    f1_s = [dict_models[key]['f1'] for key in cls]
+    fbeta_s = [dict_models[key]['fbeta'] for key in cls]
+    training_t = [dict_models[key]['train_time'] for key in cls]
+    report = [dict_models[key]['class_report'] for key in cls]
+    
+    #df_ = pd.DataFrame(data=np.zeros(shape=(len(cls),9)), columns = ['classifier', 'train_score', 'test_score', 'precision', 'recall', 'f1', 'fbeta', 'train_time', 'class_report'])
+    df_ = pd.DataFrame(data=np.zeros(shape=(len(cls),7)), columns = ['classifier', 'train_score', 'test_score', 'f1', 'fbeta', 'class_report', 'train_time'])
+    for ii in range(0,len(cls)):
+        df_.loc[ii, 'classifier'] = cls[ii]
+        df_.loc[ii, 'train_score'] = training_s[ii]
+        df_.loc[ii, 'test_score'] = test_s[ii]
+        df_.loc[ii, 'precision'] = precision_s[ii]
+        df_.loc[ii, 'recall'] = recall_s[ii]
+        df_.loc[ii, 'f1'] = f1_s[ii]
+        df_.loc[ii, 'fbeta'] = fbeta_s[ii]
+        df_.loc[ii, 'class_report'] = report[ii]
+        df_.loc[ii, 'train_time'] = training_t[ii]
+    
+    display(df_.sort_values(by=sort_by, ascending=False))
+
+# COMMAND ----------
+
+dict_models = model_classifier(X_train, y_train, X_test, y_test, no_classifiers = 10)
+
+display_dict_models(dict_models)
+
+# COMMAND ----------
+
+# Logistic Regression
+#from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import StratifiedKFold
+
+#lr = LogisticRegression()
+
+#kf = KFold(n_splits = 10, shuffle = True, random_state = 4)
+skf = StratifiedKFold(n_splits = 10, shuffle = True, random_state = 4)
+
+# KFold
+#model_classifier(lr, X, y, kf)
+
+# Stratified Kfold
+#model_classifier(lr, X, y, skf)
+dict_models = model_classifier(X, y, skf, no_classifiers = 10)
+
+display_dict_models(dict_models)
 
 # COMMAND ----------
 
