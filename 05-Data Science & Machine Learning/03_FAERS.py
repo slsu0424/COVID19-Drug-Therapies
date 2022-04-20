@@ -302,10 +302,10 @@ dict_classifiers = {
     "Naive Bayes": GaussianNB(),
     "AdaBoost": AdaBoostClassifier(),
     #"QDA": QuadraticDiscriminantAnalysis(),
-    "Gaussian Process": GaussianProcessClassifier() #http://www.ideal.ece.utexas.edu/seminar/GP-austin.pdf
+    #"Gaussian Process": GaussianProcessClassifier() #http://www.ideal.ece.utexas.edu/seminar/GP-austin.pdf
 }
 
-def model_classifier(X, y, cv, no_classifiers = 9, verbose = True):
+def model_classifier(X, y, cv, no_classifiers, verbose = True):
     """
     Creates folds manually, perform 
     Returns an array of validation (recall) scores
@@ -330,6 +330,9 @@ def model_classifier(X, y, cv, no_classifiers = 9, verbose = True):
     #    mean_score = np.array(scores).mean() 
 
 
+    scores = []
+    
+    dict_models0 ={}
     dict_models = {}
     
     for classifier_name, classifier in list(dict_classifiers.items())[:no_classifiers]:
@@ -350,8 +353,21 @@ def model_classifier(X, y, cv, no_classifiers = 9, verbose = True):
             f1 = f1_score(y_test, predictions) # avg of precision + recall ratios
             fbeta = fbeta_score(y_test, predictions, beta=0.5)
             class_report = classification_report(y_test, predictions)
+            #conf_matrix = confusion_matrix(y_test, predictions)
+            
+            # append scores for each variable
+            # train_scores.append(train_score)
+            # test_scores.append(test_score)
+            # precisions.append(precision)
+            # recalls.append(recall)
+            # f1s.append(f1)
+            # fbetas.append(fbeta)
+            
+            # mean_train_score = np.array(train_scores).mean()
+            # mean_train_score = np.array(train_scores).mean() 
+            
         
-            dict_models[classifier_name] = {'model': classifier, \
+            dict_models0[classifier_name] = {'model': classifier, \
                                         'train_score': train_score, \
                                         'test_score': test_score, \
                                         'precision': precision_score, \
@@ -360,9 +376,33 @@ def model_classifier(X, y, cv, no_classifiers = 9, verbose = True):
                                         'fbeta': fbeta, \
                                         'train_time': t_diff, 
                                         'class_report': class_report}
+            
             if verbose:
                 print("trained {c} in {f:.2f} s".format(c=classifier_name, f=t_diff))
+                print("f1 score:", f1)
+      
+       # dict_models.update(dict_models)
+    
+        #return dict_models
+        
+            print(dict_models0)
+
+        for dicts in dict_models0:
+            dict_models.update(dicts)
+            print(dict_models)
+        
     return dict_models
+
+print(dict_models)
+
+#dict_models.update(dict_models)    
+#test_dict = {}
+
+#for dicts in dict_models:
+    # updating using update()
+#    test_dict.update(dicts)
+
+#print(test_dict)
 
 
 def display_dict_models(dict_models, sort_by='test_score'):
@@ -393,9 +433,27 @@ def display_dict_models(dict_models, sort_by='test_score'):
 
 # COMMAND ----------
 
-dict_models = model_classifier(X_train, y_train, X_test, y_test, no_classifiers = 10)
+# Python3 code to demonstrate working of
+# Update dictionary with dictionary list
+# Using update() + loop
 
-display_dict_models(dict_models)
+# initializing dictionary
+test_dict = {"Gfg" : 2, "is" : 1, "Best" : 3}
+
+# printing original dictionary
+print("The original dictionary is : " + str(test_dict))
+
+# initializing dictionary list
+dict_list = [{'for' : 3, 'all' : 7}, {'geeks' : 10}, {'and' : 1, 'CS' : 9}]
+
+for dicts in dict_list:
+	
+	# updating using update()
+	test_dict.update(dicts)
+
+# printing result
+print("The updated dictionary : " + str(test_dict))
+
 
 # COMMAND ----------
 
@@ -406,36 +464,20 @@ from sklearn.model_selection import StratifiedKFold
 #lr = LogisticRegression()
 
 #kf = KFold(n_splits = 10, shuffle = True, random_state = 4)
-skf = StratifiedKFold(n_splits = 10, shuffle = True, random_state = 4)
+skf = StratifiedKFold(n_splits = 3, shuffle = True, random_state = 4)
 
 # KFold
 #model_classifier(lr, X, y, kf)
 
 # Stratified Kfold
 #model_classifier(lr, X, y, skf)
-dict_models = model_classifier(X, y, skf, no_classifiers = 10)
+dict_models = model_classifier(X, y, skf, no_classifiers = 2)
 
 display_dict_models(dict_models)
 
-# COMMAND ----------
+#test_dict = model_classifier(X, y, skf, no_classifiers = 2)
 
-# input
-X = df4.drop('outc_cod_DE', axis= 1)
-
-# output
-y = df4['outc_cod_DE']
-
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.3, random_state = 0)
- 
-# show size of each dataset (records, columns)
-print("Dataset sizes: \nX_train", X_train.shape," \nX_test", X_test.shape, " \ny_train", y_train.shape, "\ny_test", y_test.shape)
- 
-data = {
-    "train":{"X": X_train, "y": y_train},        
-    "test":{"X": X_test, "y": y_test}
-}
- 
-print ("Data contains", len(data['train']['X']), "training samples and",len(data['test']['X']), "test samples")
+#display_dict_models(test_dict)
 
 # COMMAND ----------
 
