@@ -63,15 +63,12 @@ print((df.count(), len(df.columns)))
 
 # COMMAND ----------
 
-# convert to pandas
-
-df1 = df.toPandas()
-
-# COMMAND ----------
-
 # MAGIC %md #Build baseline classifier
 
 # COMMAND ----------
+
+# convert to pandas
+df1 = df.toPandas()
 
 # input
 X = df1.drop('outc_cod_DE', axis= 1)
@@ -150,67 +147,38 @@ df2.dtypes
 
 # COMMAND ----------
 
-# MAGIC %md ##Impute missing values
+# MAGIC %md ##Scale Data
 
 # COMMAND ----------
 
-# check null values per variable
+# simple scaling
 
-df2.isnull().sum()
+from sklearn.preprocessing import MinMaxScaler
 
-# COMMAND ----------
-
-# we are interested to impute for age, wt, dose_amt
-
-# use mean (not too many outliers) or median (skewed distribution).  Median will be used due to skewed distributions.
-
-# https://machinelearningbites.com/missing-values-imputation-strategies/
-# https://vitalflux.com/imputing-missing-data-sklearn-simpleimputer/
-# https://www.shanelynn.ie/pandas-iloc-loc-select-rows-and-columns-dataframe/#1-pandas-iloc-data-selection
-# https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.copy.html
-# https://datascientyst.com/reshape-pandas-series-into-2d-array/
-
-from sklearn.impute import SimpleImputer
-
-df3 = df2.copy() 
-
-imputer = SimpleImputer(missing_values=np.nan, strategy= 'median')
-
-df3.age_in_yrs = imputer.fit_transform(df3['age_in_yrs'].values.reshape(-1,1)) # only convert age if age_cod is in years.
-df3.wt_in_lbs = imputer.fit_transform(df3['wt_in_lbs'].values.reshape(-1,1))
-df3.dose_amt = imputer.fit_transform(df3['dose_amt'].values.reshape(-1,1))
-
-display(df3)
+scaler = MinMaxScaler()
+df3 = pd.DataFrame(scaler.fit_transform(df2), columns = df2.columns)
 
 # COMMAND ----------
 
-# MAGIC %md #Build baseline model
+# MAGIC %md ##Impute Missing Values
 
 # COMMAND ----------
 
-# curate feature set
+from sklearn.impute import KNNImputer
 
-df3.dtypes
+# https://medium.com/@kyawsawhtoon/a-guide-to-knn-imputation-95e2dc496e
+
+imputer = KNNImputer(n_neighbors=3)
+df4 = pd.DataFrame(imputer.fit_transform(df3),columns = df3.columns)
+df4.head()
 
 # COMMAND ----------
 
-# input
-X = df3.drop('outc_cod_DE', axis= 1)
+# MAGIC %md #Batch Classification
 
-# output
-y = df3['outc_cod_DE']
+# COMMAND ----------
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.3, random_state = 0)
-
-# show size of each dataset (records, columns)
-print("Dataset sizes: \nX_train", X_train.shape," \nX_test", X_test.shape, " \ny_train", y_train.shape, "\ny_test", y_test.shape)
-
-data = {
-    "train":{"X": X_train, "y": y_train},        
-    "test":{"X": X_test, "y": y_test}
-}
-
-print ("Data contains", len(data['train']['X']), "training samples and",len(data['test']['X']), "test samples")
+# MAGIC %md ## Train-test split vs. Cross-Validation
 
 # COMMAND ----------
 
@@ -303,44 +271,11 @@ def display_dict_models(dict_models, sort_by='test_score'):
 
 # COMMAND ----------
 
-dict_models = batch_classify(X_train, y_train, X_test, y_test, no_classifiers = 10)
-
-display_dict_models(dict_models)
-
-# COMMAND ----------
-
-# MAGIC %md #Advanced Feature Engineering
-
-# COMMAND ----------
-
-# simple scaling
-
-from sklearn.preprocessing import MinMaxScaler
-
-scaler = MinMaxScaler()
-df4 = pd.DataFrame(scaler.fit_transform(df3), columns = df3.columns)
-
-# COMMAND ----------
-
-# MAGIC %md ##Impute missing values (KNN)
-
-# COMMAND ----------
-
-from sklearn.impute import KNNImputer
-
-# https://medium.com/@kyawsawhtoon/a-guide-to-knn-imputation-95e2dc496e
-
-imputer = KNNImputer(n_neighbors=3)
-df5 = pd.DataFrame(imputer.fit_transform(df4),columns = df4.columns)
-df5.head()
-
-# COMMAND ----------
-
 # input
-X = df5.drop('outc_cod_DE', axis= 1)
+X = df4.drop('outc_cod_DE', axis= 1)
 
 # output
-y = df5['outc_cod_DE']
+y = df4['outc_cod_DE']
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.3, random_state = 0)
  
@@ -356,9 +291,29 @@ print ("Data contains", len(data['train']['X']), "training samples and",len(data
 
 # COMMAND ----------
 
+from sklearn.model_selection import KFold
+from sklearn.model_selection import cross_val_score
+from sklearn.linear_model import LogisticRegression
+
+num_folds = 5
+seed = 7
+
+kfold = KFold(n_splits=num_folds, random_state=seed)
+model = LogisticRegression()
+scores = cross_val_score(model, features, labels, cv=kfold)
+print("Scores:", scores)
+print("Mean:", scores.mean())
+print("Standard deviation:", scores.std())
+
+# COMMAND ----------
+
 dict_models = batch_classify(X_train, y_train, X_test, y_test, no_classifiers = 10)
- 
+
 display_dict_models(dict_models)
+
+# COMMAND ----------
+
+# MAGIC %md Improve Model - cutoff (F-1 Score > 0.16) would be AdaBoost and above.  Take top 3?
 
 # COMMAND ----------
 

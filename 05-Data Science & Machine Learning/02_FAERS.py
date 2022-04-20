@@ -479,7 +479,7 @@ plt.show()
 
 # COMMAND ----------
 
-# MAGIC %md #Export for AML
+# MAGIC %md #Save to ADLS
 
 # COMMAND ----------
 
