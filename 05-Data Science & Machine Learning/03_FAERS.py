@@ -102,19 +102,41 @@ for s in strategies:
 	dclf.fit(X_train, y_train)
 	score = dclf.score(X_test, y_test)
 	test_scores.append(score)
-
-# COMMAND ----------
-
+    
 print(test_scores)
 
 # COMMAND ----------
 
 # view visually
 
-# constant strategy (predicting minority class) --> most closely approximates F-1 measure.  Any model would have to do better than F-1 >= 0.16
+# constant strategy (predicting minority class) --> most closely approximates F-1 measure.  
+
+# Based on the raw data, any model would have to do better than F-1 >= 0.16.  Lets see if we can improve our dataset before modeling.
 
 ax = sns.stripplot(strategies, test_scores);
 ax.set(xlabel ='Strategy', ylabel ='Test Score')
+plt.show()
+
+# COMMAND ----------
+
+y_pred_dummy = model_dummy.predict(X_test)
+print("Accuracy of baseline model classifier on test set: {:.2f}".format(model_dummy.score(X_test, y_test)))
+
+Accuracy of baseline model classifier on test set: 0.48
+
+# plotting ROC Curve
+logit_roc_auc = roc_auc_score(y_test, model_dummy.predict(X_test))
+fpr, tpr, thresholds = roc_curve(y_test, model_dummy.predict_proba(X_test)[:,1])
+plt.figure()
+plt.plot(fpr, tpr, label='Baseline Model (area = %0.2f)' % logit_roc_auc)
+plt.plot([0, 1], [0, 1],'r--')
+plt.xlim([0.0, 1.0])
+plt.ylim([0.0, 1.05])
+plt.xlabel('False Positive Rate')
+plt.ylabel('True Positive Rate')
+plt.title('Receiver operating characteristic')
+plt.legend(loc="lower right")
+#plt.savefig('Log_ROC')
 plt.show()
 
 # COMMAND ----------
