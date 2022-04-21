@@ -303,7 +303,7 @@ dict_classifiers = {
     "Logistic Regression": LogisticRegression(),
     "Nearest Neighbors": KNeighborsClassifier(),
     "Linear SVM": SVC(),
-    #"Gradient Boosting Classifier": GradientBoostingClassifier(n_estimators=1000),
+    "Gradient Boosting Classifier": GradientBoostingClassifier(n_estimators=1000),
     "Decision Tree": tree.DecisionTreeClassifier(),
     "Random Forest": RandomForestClassifier(n_estimators=100),
     "Neural Net": MLPClassifier(alpha = 1),
