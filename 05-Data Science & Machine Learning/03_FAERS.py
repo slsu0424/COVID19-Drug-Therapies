@@ -151,12 +151,14 @@ df2.dtypes
 
 # COMMAND ----------
 
-# simple scaling
+# simple scaling - scale all values to be between 0 and 1
 
 from sklearn.preprocessing import MinMaxScaler
 
 scaler = MinMaxScaler()
 df3 = pd.DataFrame(scaler.fit_transform(df2), columns = df2.columns)
+
+print(df3)
 
 # COMMAND ----------
 
@@ -168,7 +170,7 @@ from sklearn.impute import KNNImputer
 
 # https://medium.com/@kyawsawhtoon/a-guide-to-knn-imputation-95e2dc496e
 
-imputer = KNNImputer(n_neighbors=3)
+imputer = KNNImputer(n_neighbors=5)
 df4 = pd.DataFrame(imputer.fit_transform(df3),columns = df3.columns)
 #df4.head()
 
@@ -291,11 +293,17 @@ def display_dict_models(dict_models, sort_by='test_score'):
 
 # COMMAND ----------
 
+dict_models = batch_classify(X_train, y_train, X_test, y_test, no_classifiers = 10)
+
+display_dict_models(dict_models)
+
+# COMMAND ----------
+
 dict_classifiers = {
     "Logistic Regression": LogisticRegression(),
     "Nearest Neighbors": KNeighborsClassifier(),
     "Linear SVM": SVC(),
-    "Gradient Boosting Classifier": GradientBoostingClassifier(n_estimators=1000),
+    #"Gradient Boosting Classifier": GradientBoostingClassifier(n_estimators=1000),
     "Decision Tree": tree.DecisionTreeClassifier(),
     "Random Forest": RandomForestClassifier(n_estimators=100),
     "Neural Net": MLPClassifier(alpha = 1),
@@ -304,9 +312,6 @@ dict_classifiers = {
     #"QDA": QuadraticDiscriminantAnalysis(),
     #"Gaussian Process": GaussianProcessClassifier() #http://www.ideal.ece.utexas.edu/seminar/GP-austin.pdf
 }   
-
-#dict_models0 = {}
-#dict_models = {}
 
 def model_classifier(X, y, cv, no_classifiers, verbose = True):
     """
@@ -359,7 +364,6 @@ def model_classifier(X, y, cv, no_classifiers, verbose = True):
             mean_fbetas = np.array(fbetas).mean()
             
             dict_models[classifier_name] = {'model': classifier, \
-           #dict_models0[classifier_name] = {'model': classifier, \
                                         'train_score': mean_train_score, \
                                         'test_score': mean_test_score, \
                                         'precision': mean_precisions, \
@@ -369,7 +373,7 @@ def model_classifier(X, y, cv, no_classifiers, verbose = True):
                                         'train_time': t_diff }
                                         #'class_report': class_report}
             
-            print(dict_models)
+            #print(dict_models)
             
             #convert dictionary to a dataframe
             #df = pd.DataFrame.from_dict(dict_models, orient='index')
@@ -385,30 +389,6 @@ def model_classifier(X, y, cv, no_classifiers, verbose = True):
 
 # COMMAND ----------
 
-# Python3 code to demonstrate working of
-# Update dictionary with dictionary list
-# Using update() + loop
-
-# initializing dictionary
-test_dict = {"Gfg" : 2, "is" : 1, "Best" : 3}
-
-# printing original dictionary
-print("The original dictionary is : " + str(test_dict))
-
-# initializing dictionary list
-dict_list = [{'for' : 3, 'all' : 7}, {'geeks' : 10}, {'and' : 1, 'CS' : 9}]
-
-for dicts in dict_list:
-	
-	# updating using update()
-	test_dict.update(dicts)
-
-# printing result
-print("The updated dictionary : " + str(test_dict))
-
-
-# COMMAND ----------
-
 # Logistic Regression
 #from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import StratifiedKFold
@@ -416,14 +396,14 @@ from sklearn.model_selection import StratifiedKFold
 #lr = LogisticRegression()
 
 #kf = KFold(n_splits = 10, shuffle = True, random_state = 4)
-skf = StratifiedKFold(n_splits = 3, shuffle = True, random_state = 4)
+skf = StratifiedKFold(n_splits = 10, shuffle = True, random_state = 4)
 
 # KFold
 #model_classifier(lr, X, y, kf)
 
 # Stratified Kfold
 #model_classifier(lr, X, y, skf)
-dict_models = model_classifier(X, y, skf, no_classifiers = 2)
+dict_models = model_classifier(X, y, skf, no_classifiers = 6)
 
 #display_dict_models(dict_models)
 
@@ -442,12 +422,6 @@ scores = cross_val_score(model, features, labels, cv=kfold)
 print("Scores:", scores)
 print("Mean:", scores.mean())
 print("Standard deviation:", scores.std())
-
-# COMMAND ----------
-
-dict_models = batch_classify(X_train, y_train, X_test, y_test, no_classifiers = 10)
-
-display_dict_models(dict_models)
 
 # COMMAND ----------
 
