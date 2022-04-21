@@ -351,22 +351,17 @@ def model_classifier(X, y, cv, no_classifiers, verbose = True):
             
             print(dict_models)
             
-            #insert dictionary of results as a dataframe
-            df = pd.DataFrame.from_dict(dict_models, orient='index')
+            #convert dictionary to a dataframe
+            #df = pd.DataFrame.from_dict(dict_models, orient='index')
+            df = pd.DataFrame(dict_models)
             
             if verbose:
                 print("trained {c} in {f:.2f} s".format(c=classifier_name, f=t_diff))
                 print("f1 score:", f1)
-
-    #for dicts in dict_models0:
-    #    dict_models.update(dicts)
-       
-        #print(dicts_models)
         
-        #insert dictionary of results as a dataframe
-    
-    #return dict_models
-    print(df)                               
+        df1 = df.append(df, ignore_index=True)
+        
+    print(df1)                               
 
 # COMMAND ----------
 
@@ -410,11 +405,7 @@ skf = StratifiedKFold(n_splits = 3, shuffle = True, random_state = 4)
 #model_classifier(lr, X, y, skf)
 dict_models = model_classifier(X, y, skf, no_classifiers = 2)
 
-display_dict_models(dict_models)
-
-#test_dict = model_classifier(X, y, skf, no_classifiers = 2)
-
-#display_dict_models(test_dict)
+#display_dict_models(dict_models)
 
 # COMMAND ----------
 
