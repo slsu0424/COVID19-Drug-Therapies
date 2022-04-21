@@ -338,7 +338,8 @@ def model_classifier(X, y, cv, no_classifiers, verbose = True):
             class_report = classification_report(y_test, predictions)
             #conf_matrix = confusion_matrix(y_test, predictions)
             
-            dict_models0 = {'model': classifier, \
+            dict_models[classifier_name] = {'model': classifier, \
+           #dict_models0[classifier_name] = {'model': classifier, \
                                         'train_score': train_score, \
                                         'test_score': test_score, \
                                         'precision': precision_score, \
@@ -348,25 +349,45 @@ def model_classifier(X, y, cv, no_classifiers, verbose = True):
                                         'train_time': t_diff, 
                                         'class_report': class_report}
             
+            print(dict_models)
+            
             if verbose:
                 print("trained {c} in {f:.2f} s".format(c=classifier_name, f=t_diff))
                 print("f1 score:", f1)
 
-            for dicts in dict_models0:
-                dict_models.update(dicts)
-        
+    #for dicts in dict_models0:
+    #    dict_models.update(dicts)
+       
+        #print(dicts_models)
+    
     return dict_models
 
-#print(dict_models)
 
-#dict_models.update(dict_models)    
-#test_dict = {}
-
-#for dicts in dict_models:
-    # updating using update()
-#    test_dict.update(dicts)
-
-#print(test_dict)
+def display_dict_models(dict_models, sort_by='test_score'):
+    cls = [key for key in dict_models.keys()]
+    test_s = [dict_models[key]['test_score'] for key in cls]
+    training_s = [dict_models[key]['train_score'] for key in cls]
+    precision_s = [dict_models[key]['precision'] for key in cls]
+    recall_s = [dict_models[key]['recall'] for key in cls]
+    f1_s = [dict_models[key]['f1'] for key in cls]
+    fbeta_s = [dict_models[key]['fbeta'] for key in cls]
+    training_t = [dict_models[key]['train_time'] for key in cls]
+    report = [dict_models[key]['class_report'] for key in cls]
+    
+    #df_ = pd.DataFrame(data=np.zeros(shape=(len(cls),9)), columns = ['classifier', 'train_score', 'test_score', 'precision', 'recall', 'f1', 'fbeta', 'train_time', 'class_report'])
+    df_ = pd.DataFrame(data=np.zeros(shape=(len(cls),7)), columns = ['classifier', 'train_score', 'test_score', 'f1', 'fbeta', 'class_report', 'train_time'])
+    for ii in range(0,len(cls)):
+        df_.loc[ii, 'classifier'] = cls[ii]
+        df_.loc[ii, 'train_score'] = training_s[ii]
+        df_.loc[ii, 'test_score'] = test_s[ii]
+        df_.loc[ii, 'precision'] = precision_s[ii]
+        df_.loc[ii, 'recall'] = recall_s[ii]
+        df_.loc[ii, 'f1'] = f1_s[ii]
+        df_.loc[ii, 'fbeta'] = fbeta_s[ii]
+        df_.loc[ii, 'class_report'] = report[ii]
+        df_.loc[ii, 'train_time'] = training_t[ii]
+    
+    display(df_.sort_values(by=sort_by, ascending=False))
 
 # COMMAND ----------
 
