@@ -313,7 +313,12 @@ def model_classifier(X, y, cv, no_classifiers, verbose = True):
     Creates folds manually, perform 
     Returns an array of validation (recall) scores
     """
-    #scores = []
+    train_scores = []
+    test_scores = []
+    precisions = []
+    recalls = []
+    f1s = []
+    fbetas = []
     
     dict_models0 = {}
     dict_models = {}
@@ -335,19 +340,34 @@ def model_classifier(X, y, cv, no_classifiers, verbose = True):
             recall = recall_score(y_test, predictions) # fraction of positive predictions that were correctly identified.  TP / (TP + FN)
             f1 = f1_score(y_test, predictions) # avg of precision + recall ratios
             fbeta = fbeta_score(y_test, predictions, beta=0.5)
-            class_report = classification_report(y_test, predictions)
+            #class_report = classification_report(y_test, predictions)
             #conf_matrix = confusion_matrix(y_test, predictions)
+            
+            # append scores for each variable
+            train_scores.append(train_score)
+            test_scores.append(test_score)
+            precisions.append(precision)
+            recalls.append(recall)
+            f1s.append(f1)
+            fbetas.append(fbeta)
+            
+            mean_train_score = np.array(train_scores).mean()
+            mean_test_score = np.array(test_scores).mean()
+            mean_precisions = np.array(precisions).mean()
+            mean_recalls = np.array(recalls).mean()
+            mean_f1s = np.array(f1s).mean()
+            mean_fbetas = np.array(fbetas).mean()
             
             dict_models[classifier_name] = {'model': classifier, \
            #dict_models0[classifier_name] = {'model': classifier, \
-                                        'train_score': train_score, \
-                                        'test_score': test_score, \
-                                        'precision': precision_score, \
-                                        'recall': recall_score, \
-                                        'f1': f1, \
-                                        'fbeta': fbeta, \
-                                        'train_time': t_diff, 
-                                        'class_report': class_report}
+                                        'train_score': mean_train_score, \
+                                        'test_score': mean_test_score, \
+                                        'precision': mean_precisions, \
+                                        'recall': mean_recalls, \
+                                        'f1': mean_f1s, \
+                                        'fbeta': mean_fbetas, \
+                                        'train_time': t_diff }
+                                        #'class_report': class_report}
             
             print(dict_models)
             
@@ -359,9 +379,9 @@ def model_classifier(X, y, cv, no_classifiers, verbose = True):
                 print("trained {c} in {f:.2f} s".format(c=classifier_name, f=t_diff))
                 print("f1 score:", f1)
         
-        df1 = df.append(df, ignore_index=True)
+        #df1 = df.append(df, ignore_index=True)
         
-    print(df1)                               
+    print(df)                               
 
 # COMMAND ----------
 
