@@ -351,6 +351,9 @@ def model_classifier(X, y, cv, no_classifiers, verbose = True):
             
             print(dict_models)
             
+            #insert dictionary of results as a dataframe
+            df = pd.DataFrame.from_dict(dict_models, orient='index')
+            
             if verbose:
                 print("trained {c} in {f:.2f} s".format(c=classifier_name, f=t_diff))
                 print("f1 score:", f1)
@@ -359,35 +362,11 @@ def model_classifier(X, y, cv, no_classifiers, verbose = True):
     #    dict_models.update(dicts)
        
         #print(dicts_models)
+        
+        #insert dictionary of results as a dataframe
     
-    return dict_models
-
-
-def display_dict_models(dict_models, sort_by='test_score'):
-    cls = [key for key in dict_models.keys()]
-    test_s = [dict_models[key]['test_score'] for key in cls]
-    training_s = [dict_models[key]['train_score'] for key in cls]
-    precision_s = [dict_models[key]['precision'] for key in cls]
-    recall_s = [dict_models[key]['recall'] for key in cls]
-    f1_s = [dict_models[key]['f1'] for key in cls]
-    fbeta_s = [dict_models[key]['fbeta'] for key in cls]
-    training_t = [dict_models[key]['train_time'] for key in cls]
-    report = [dict_models[key]['class_report'] for key in cls]
-    
-    #df_ = pd.DataFrame(data=np.zeros(shape=(len(cls),9)), columns = ['classifier', 'train_score', 'test_score', 'precision', 'recall', 'f1', 'fbeta', 'train_time', 'class_report'])
-    df_ = pd.DataFrame(data=np.zeros(shape=(len(cls),7)), columns = ['classifier', 'train_score', 'test_score', 'f1', 'fbeta', 'class_report', 'train_time'])
-    for ii in range(0,len(cls)):
-        df_.loc[ii, 'classifier'] = cls[ii]
-        df_.loc[ii, 'train_score'] = training_s[ii]
-        df_.loc[ii, 'test_score'] = test_s[ii]
-        df_.loc[ii, 'precision'] = precision_s[ii]
-        df_.loc[ii, 'recall'] = recall_s[ii]
-        df_.loc[ii, 'f1'] = f1_s[ii]
-        df_.loc[ii, 'fbeta'] = fbeta_s[ii]
-        df_.loc[ii, 'class_report'] = report[ii]
-        df_.loc[ii, 'train_time'] = training_t[ii]
-    
-    display(df_.sort_values(by=sort_by, ascending=False))
+    #return dict_models
+    print(df)                               
 
 # COMMAND ----------
 
