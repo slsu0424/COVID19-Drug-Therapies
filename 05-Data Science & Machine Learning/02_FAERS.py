@@ -68,7 +68,7 @@ df1.describe()
 
 # COMMAND ----------
 
-# MAGIC %md #Preprocessing 1
+# MAGIC %md #Preprocess Data
 
 # COMMAND ----------
 

@@ -119,7 +119,7 @@ plt.show()
 
 # COMMAND ----------
 
-# MAGIC %md #Preprocessing 2
+# MAGIC %md #Feature Engineering
 
 # COMMAND ----------
 
@@ -406,26 +406,6 @@ skf = StratifiedKFold(n_splits = 10, shuffle = True, random_state = 4)
 dict_models = model_classifier(X, y, skf, no_classifiers = 6)
 
 #display_dict_models(dict_models)
-
-# COMMAND ----------
-
-from sklearn.model_selection import KFold
-from sklearn.model_selection import cross_val_score
-from sklearn.linear_model import LogisticRegression
-
-num_folds = 5
-seed = 7
-
-kfold = KFold(n_splits=num_folds, random_state=seed)
-model = LogisticRegression()
-scores = cross_val_score(model, features, labels, cv=kfold)
-print("Scores:", scores)
-print("Mean:", scores.mean())
-print("Standard deviation:", scores.std())
-
-# COMMAND ----------
-
-# MAGIC %md Improve Model - cutoff (F-1 Score > 0.16) would be AdaBoost and above.  Take top 3?
 
 # COMMAND ----------
 

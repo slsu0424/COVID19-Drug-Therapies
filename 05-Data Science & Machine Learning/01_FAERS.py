@@ -78,17 +78,26 @@ display(dbutils.fs.ls("/mnt/adls/FAERS_output_txt"))
 
 # COMMAND ----------
 
+# loop through and update TXT to txt
+
+for i in dbutils.fs.ls("/mnt/adls/FAERS_output_txt"):
+    print(i)
+    i = i[1].lower()
+    print(i)
+
+# COMMAND ----------
+
 # Load datasets into Spark dataframe
 
 # https://intellipaat.com/community/8588/how-to-import-multiple-csv-files-in-a-single-load
 
-df_demo = spark.read.csv("/mnt/adls/FAERS_output_txt/DEMO*.txt", header="true", nullValue = "NA", inferSchema="true", sep = "$") # demographic
-df_drug = spark.read.csv("/mnt/adls/FAERS_output_txt/DRUG*.txt", header="true", nullValue = "NA", inferSchema="true", sep = "$") # drug
-df_indi = spark.read.csv("/mnt/adls/FAERS_output_txt/INDI*.txt", header="true", nullValue = "NA", inferSchema="true", sep = "$") # indication
-df_outc = spark.read.csv("/mnt/adls/FAERS_output_txt/OUTC*.txt", header="true", nullValue = "NA", inferSchema="true", sep = "$") # outcome
-df_reac = spark.read.csv("/mnt/adls/FAERS_output_txt/REAC*.txt", header="true", nullValue = "NA", inferSchema="true", sep = "$") # reaction
-df_rpsr = spark.read.csv("/mnt/adls/FAERS_output_txt/RPSR*.txt", header="true", nullValue = "NA", inferSchema="true", sep = "$") # report sources
-df_ther = spark.read.csv("/mnt/adls/FAERS_output_txt/THER*.txt", header="true", nullValue = "NA", inferSchema="true", sep = "$") # therapy
+df_demo = spark.read.csv("/mnt/adls/FAERS_output_txt/DEMO*", header="true", nullValue = "NA", inferSchema="true", sep = "$") # demographic
+df_drug = spark.read.csv("/mnt/adls/FAERS_output_txt/DRUG*", header="true", nullValue = "NA", inferSchema="true", sep = "$") # drug
+df_indi = spark.read.csv("/mnt/adls/FAERS_output_txt/INDI*", header="true", nullValue = "NA", inferSchema="true", sep = "$") # indication
+df_outc = spark.read.csv("/mnt/adls/FAERS_output_txt/OUTC*", header="true", nullValue = "NA", inferSchema="true", sep = "$") # outcome
+df_reac = spark.read.csv("/mnt/adls/FAERS_output_txt/REAC*", header="true", nullValue = "NA", inferSchema="true", sep = "$") # reaction
+df_rpsr = spark.read.csv("/mnt/adls/FAERS_output_txt/RPSR*", header="true", nullValue = "NA", inferSchema="true", sep = "$") # report sources
+df_ther = spark.read.csv("/mnt/adls/FAERS_output_txt/THER*", header="true", nullValue = "NA", inferSchema="true", sep = "$") # therapy
 
 # display sample dataset
 display(df_demo)
