@@ -78,15 +78,6 @@ display(dbutils.fs.ls("/mnt/adls/FAERS_output_txt"))
 
 # COMMAND ----------
 
-# loop through and update TXT to txt
-
-for i in dbutils.fs.ls("/mnt/adls/FAERS_output_txt"):
-    print(i)
-    i = i[1].lower()
-    print(i)
-
-# COMMAND ----------
-
 # Load datasets into Spark dataframe
 
 # https://intellipaat.com/community/8588/how-to-import-multiple-csv-files-in-a-single-load
@@ -397,6 +388,7 @@ print((df1.count(), len(df1.columns)))
 # https://www.geeksforgeeks.org/filtering-rows-based-on-column-values-in-pyspark-dataframe/
 # https://www.history.com/this-day-in-history/first-confirmed-case-of-coronavirus-found-in-us-washington-state
 
+#df2 = df1
 df2 = df1.where((df1.event_dt>='20200101'))
 #df2 = df1.where((df1.event_dt>='20190101'))
 #df2 = df1.where((df1.event_dt>='20191201'))
@@ -416,10 +408,16 @@ print((df2.count(), len(df2.columns)))
 
 # COMMAND ----------
 
+df2.write.format('parquet')\
+    .mode('overwrite')\
+    .save('/mnt/adls/FAERS_CSteroid_preprocess1')
+
+# COMMAND ----------
+
 df3 = df2.toPandas()
 
 df3.to_csv("/dbfs/mnt/adls/FAERS_CSteroid_preprocess1.csv", index=False)
 
 # COMMAND ----------
 
-df2.write.parquet('/mnt/adls/FAERS_CSteroid_preprocess1.parquet')
+#df2.write.parquet('/mnt/adls/FAERS_CSteroid_preprocess1.parquet')
