@@ -3,7 +3,6 @@ import azure.functions as func
 import json
 import logging
 import io
-#import os
 import zipfile
 #import pandas as pd
 from azure.storage.blob import BlobServiceClient
@@ -26,8 +25,11 @@ def main(req: func.HttpRequest, obj: func.InputStream) -> func.HttpResponse:
     # set input blob
     blob_client = blob_service_client.get_blob_client(container="raw/FAERS", blob = inputFileName)
 
-    # set output container
-    container_client = blob_service_client.get_container_client("curated/FAERS_output_txt_AZFunction")
+    # set output container1
+    container_client1 = blob_service_client.get_container_client("curated/FAERS_output_txt_AZFunction")
+
+    # set output container2
+    container_client2 = blob_service_client.get_container_client("curated/FAERS_output_txt_parquet")
 
     # download input blob as a stream
     with io.BytesIO() as b:
@@ -37,7 +39,7 @@ def main(req: func.HttpRequest, obj: func.InputStream) -> func.HttpResponse:
         except ResourceNotFoundError:
             logging.info(f"No blob found")
 
-    # open stream in READ mode
+        # open stream in READ mode
         with zipfile.ZipFile(b) as zip:
         
             # print all contents of the zip file
@@ -47,7 +49,8 @@ def main(req: func.HttpRequest, obj: func.InputStream) -> func.HttpResponse:
             logging.info(f"Extracting files now...")
 
             for filename in zip.namelist():
-
+            
+                # 1) Copy txt files to target
                 logging.info(f"Extracting files now...")
                 logging.info(f"Extracting file: {filename}")
 
@@ -61,7 +64,9 @@ def main(req: func.HttpRequest, obj: func.InputStream) -> func.HttpResponse:
                         else:
                             filename_target = filename
                         
-                        container_client.get_blob_client(filename_target).upload_blob(f)
+                        container_client1.get_blob_client(filename_target).upload_blob(f)
+                
+
                 else:
                     # do not process any non .txt/TXT files 
                     skip            
