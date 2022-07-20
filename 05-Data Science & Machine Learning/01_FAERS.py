@@ -408,9 +408,13 @@ print((df2.count(), len(df2.columns)))
 
 # COMMAND ----------
 
+import datetime
+currentdatetime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+print(currentdatetime)
+
 df2.write.format('parquet')\
     .mode('overwrite')\
-    .save('/mnt/adls/FAERS_CSteroid_preprocess1')
+    .save('/mnt/adls/FAERS_CSteroid_preprocess1'+'_'+currentdatetime)
 
 # COMMAND ----------
 
