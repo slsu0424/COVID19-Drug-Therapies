@@ -28,8 +28,6 @@ def main(req: func.HttpRequest, obj: func.InputStream) -> func.HttpResponse:
 
     # set output container
     container_client = blob_service_client.get_container_client("curated/FAERS_output_txt_AZFunction")
-    
-    #logging.info(f"Looking up file in Azure Storage...found: {blob_client}")
 
     # download input blob as a stream
     with io.BytesIO() as b:
@@ -52,43 +50,6 @@ def main(req: func.HttpRequest, obj: func.InputStream) -> func.HttpResponse:
 
                 logging.info(f"Extracting files now...")
                 logging.info(f"Extracting file: {filename}")
-                #logging.info(f"Extracting file type: {type(filename)}")
-
-                # get path of files in the zip file
-                #path = pathlib.Path(filename)
-
-                # traverse directory
-                #if path.is_dir():
-                #    logging.info(f"File is a directory: {path.is_dir()}")
-
-                #    for member in path.iterdir():
-                #        logging.info(f"File value: {member}")
-                #        logging.info(f"File value type: {type(member)}")
-                #        logging.info(f"File name: {member.name}")
-
-
-                # get files
-                #if not filename.endswith('/'):
-                #    # get text files only
-                #    if filename.endswith('.txt'):
-                #        with zip.open(filename, mode='r') as f:
-                #            container_client.get_blob_client(filename).upload_blob(f)
-                #else:
-                    # file is a directory
-                    #filename_dir = os.path.dirname(filename)
-                    #logging.info(f"Directory file name: {filename_dir}")
-
-                    # set to scan
-                    #object = os.scandir(filename_dir)
-
-                    #for n in object:
-                    #    with zip.open(n, mode='r') as f:
-                    #        container_client.get_blob_client(n).upload_blob(f)
-                    #for filename in filename:
-
-                 #   with zip.open(filename, mode='r') as f:
-                 #       logging.info(f"Directory file name: {f}")
-                 #       container_client.get_blob_client(filename).upload_blob(f)
 
                 if filename.endswith('.TXT'):
 
