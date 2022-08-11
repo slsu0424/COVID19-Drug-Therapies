@@ -2,8 +2,8 @@ import azure.functions as func
 import json
 import logging
 import io
-import zipfile
 import pandas as pd
+import zipfile
 from azure.storage.blob import BlobServiceClient
 from azure.core.exceptions import ResourceNotFoundError
 from unittest import skip
@@ -51,15 +51,15 @@ def main(req: func.HttpRequest, obj: func.InputStream) -> func.HttpResponse:
 
                     with zip.open(filename, mode='r') as f:
                     
-                        # 1) copy txt files -> load to target
+                        # 1) copy txt files and load to target
                         if '/' in filename:
                             filename_target = filename.split('/', 1)[1]
                         else:
                             filename_target = filename
                         
-                        container_client1.get_blob_client(filename_target).upload_blob(f)
+                        container_client1.get_blob_client(filename_target).upload_blob(f, overwrite = True)
                 
-                        # 2) read txt files and convert to parquet -> load to target
+                        # 2) convert txt to parquet and load to target
                         filename_target2 = filename_target.replace('.TXT', '.parquet', 1)
                         
                         filetoread = io.BytesIO(zip.read(filename))
@@ -72,7 +72,7 @@ def main(req: func.HttpRequest, obj: func.InputStream) -> func.HttpResponse:
                         df.to_parquet(parquet_file)
                         parquet_file.seek(0)
 
-                        container_client2.get_blob_client(filename_target2).upload_blob(parquet_file)
+                        container_client2.get_blob_client(filename_target2).upload_blob(parquet_file, overwrite = True)
 
                 else:
                     # do not process any non .txt/TXT files 
