@@ -1,0 +1,26 @@
+{
+	"name": "Destination_copyLocation",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "adls2_ssudata",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Diabetes"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileSystem": "diabetes"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

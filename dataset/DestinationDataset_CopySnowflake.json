@@ -1,0 +1,27 @@
+{
+	"name": "DestinationDataset_CopySnowflake",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Snowflake1",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Snowflake"
+		},
+		"annotations": [],
+		"type": "SnowflakeTable",
+		"schema": [
+			{
+				"name": "ENCOUNTER_ID",
+				"type": "VARCHAR",
+				"precision": 0,
+				"scale": 0
+			}
+		],
+		"typeProperties": {
+			"schema": "PUBLIC",
+			"table": "ENCOUNTERS"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

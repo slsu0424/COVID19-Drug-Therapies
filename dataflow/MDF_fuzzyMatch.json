@@ -1,0 +1,39 @@
+{
+	"name": "MDF_fuzzyMatch",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DelimitedText1",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				},
+				{
+					"dataset": {
+						"referenceName": "DelimitedText2",
+						"type": "DatasetReference"
+					},
+					"name": "source2"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DelimitedText3",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "Join1"
+				}
+			],
+			"script": "source(output(\n\t\tPayer_Id as string,\n\t\tPatient_Id as string,\n\t\tSubscriber_Id as string,\n\t\tFirst_Name as string,\n\t\tMiddle_Name as string,\n\t\tLast_Name as string,\n\t\tGender as string,\n\t\tDOB as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source1\nsource(output(\n\t\tPayer_Id as string,\n\t\tPatient_Id as string,\n\t\tSubscriber_Id as string,\n\t\tFirst_Name as string,\n\t\tMiddle_Name as string,\n\t\tLast_Name as string,\n\t\tGender as string,\n\t\tDOB as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source2\nsource1, source2 join(soundex(source1@Last_Name) == soundex(source2@Last_Name),\n\tjoinType:'inner',\n\tmatchType:'exact',\n\tignoreSpaces: false,\n\tbroadcast: 'auto')~> Join1\nJoin1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tPayer_Id as string,\n\t\tPatient_Id as string,\n\t\tSubscriber_Id as string,\n\t\tFirst_Name as string,\n\t\tMiddle_Name as string,\n\t\tLast_Name as string,\n\t\tGender as string,\n\t\tDOB as string\n\t),\n\tumask: 0022,\n\tpreCommands: [],\n\tpostCommands: [],\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sink1"
+		}
+	}
+}

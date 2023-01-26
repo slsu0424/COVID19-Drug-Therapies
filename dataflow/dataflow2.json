@@ -1,0 +1,35 @@
+{
+	"name": "dataflow2",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "Source_copyPatients",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "Destination_copyPatients",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "DerivedColumn1"
+				},
+				{
+					"name": "AlterRow1"
+				}
+			],
+			"script": "source(output(\n\t\trow_id as string,\n\t\tsubject_id as string,\n\t\tgender as string,\n\t\tdob as string,\n\t\tdod as string,\n\t\tdod_hosp as string,\n\t\tdod_ssn as string,\n\t\texpire_flag as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source1\nAlterRow1 derive(STG_ID = random(1000),\n\t\tACTIVE_FLAG = \"Y\",\n\t\tSTG_EFF_START = currentDate(),\n\t\tSTG_EFF_END = toDate('9999-12-31'),\n\t\t{STG_CHECKSUM } = md5(subject_id)) ~> DerivedColumn1\nsource1 alterRow(insertIf(true())) ~> AlterRow1\nDerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\trow_id as long,\n\t\tsubject_id as long,\n\t\tgender as string,\n\t\tdob as timestamp,\n\t\tdod as timestamp,\n\t\tdod_hosp as timestamp,\n\t\tdod_ssn as timestamp,\n\t\texpire_flag as long,\n\t\tSTG_ID as long,\n\t\tACTIVE_FLG as string,\n\t\tSTG_EFF_START as timestamp,\n\t\tSTG_EFF_END as timestamp,\n\t\tSTG_CHECKSUM as string\n\t),\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:true,\n\tkeys:['row_id'],\n\tformat: 'table',\n\tstaged: true,\n\tallowCopyCommand: true,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError',\n\tmapColumn(\n\t\trow_id,\n\t\tsubject_id,\n\t\tgender,\n\t\tdob,\n\t\tdod,\n\t\tdod_hosp,\n\t\tdod_ssn,\n\t\texpire_flag,\n\t\tACTIVE_FLG = ACTIVE_FLAG,\n\t\tSTG_EFF_START,\n\t\tSTG_EFF_END,\n\t\tSTG_CHECKSUM = {STG_CHECKSUM }\n\t)) ~> sink1"
+		}
+	}
+}

@@ -1,0 +1,65 @@
+{
+	"name": "copyChartEvents_Postgres2ADLS",
+	"properties": {
+		"activities": [
+			{
+				"name": "Mimic_copyChartEvents_Postgres",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [
+					{
+						"name": "Source",
+						"value": "mimiciii.chartevents"
+					},
+					{
+						"name": "Destination",
+						"value": "mimic//"
+					}
+				],
+				"typeProperties": {
+					"source": {
+						"type": "PostgreSqlSource"
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".csv"
+						}
+					},
+					"enableStaging": false,
+					"validateDataConsistency": false
+				},
+				"inputs": [
+					{
+						"referenceName": "Source_copyChartEvents_Postgres2ALDS",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Destination_copyChartEvents_Postgres2ADLS",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "Mimic"
+		},
+		"annotations": [],
+		"lastPublishTime": "2021-04-26T19:19:58Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

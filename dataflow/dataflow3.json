@@ -1,0 +1,43 @@
+{
+	"name": "dataflow3",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "Destination_copyAdmissions_Postgres2ADLS",
+						"type": "DatasetReference"
+					},
+					"name": "existingAdmissions"
+				},
+				{
+					"dataset": {
+						"referenceName": "newAdmissions",
+						"type": "DatasetReference"
+					},
+					"name": "newAdmissions"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "Destination_copyAdmissions_ADLS2Synapse",
+						"type": "DatasetReference"
+					},
+					"name": "sink2"
+				}
+			],
+			"transformations": [
+				{
+					"name": "Union1"
+				},
+				{
+					"name": "MapDrifted1",
+					"description": "Creates an explicit mapping for each drifted column"
+				}
+			],
+			"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tlimit: 100,\n\tignoreNoFilesFound: false) ~> existingAdmissions\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> newAdmissions\nnewAdmissions, existingAdmissions union(byName: true)~> Union1\nUnion1 derive(row_id = toString(byName('row_id')),\n\t\tsubject_id = toString(byName('subject_id')),\n\t\thadm_id = toString(byName('hadm_id')),\n\t\tNewCol1 = toString(byName('NewCol1')),\n\t\tadmittime = toString(byName('admittime')),\n\t\tdischtime = toString(byName('dischtime')),\n\t\tdeathtime = toString(byName('deathtime')),\n\t\tadmission_type = toString(byName('admission_type')),\n\t\tadmission_location = toString(byName('admission_location')),\n\t\tdischarge_location = toString(byName('discharge_location')),\n\t\thealth_coverage = toString(byName('health_coverage')),\n\t\tlanguage = toString(byName('language')),\n\t\treligion = toString(byName('religion')),\n\t\tmarital_status = toString(byName('marital_status')),\n\t\tethnicity = toString(byName('ethnicity')),\n\t\tedregtime = toString(byName('edregtime')),\n\t\tedouttime = toString(byName('edouttime')),\n\t\tdiagnosis = toString(byName('diagnosis')),\n\t\thospital_expire_flag = toString(byName('hospital_expire_flag')),\n\t\thas_chartevents_data = toString(byName('has_chartevents_data')),\n\t\tinsurance = toString(byName('insurance')),\n\t\teach(match(name=='insurance'||name=='health_coverage'), 'insurance_consolidated' = $$)) ~> MapDrifted1\nMapDrifted1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\trecreate:true,\n\tformat: 'table',\n\tstaged: true,\n\tallowCopyCommand: true,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError') ~> sink2"
+		}
+	}
+}

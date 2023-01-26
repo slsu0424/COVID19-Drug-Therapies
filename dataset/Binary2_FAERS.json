@@ -1,0 +1,19 @@
+{
+	"name": "Binary2_FAERS",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "adls2_sdudsynapseadls2",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "FAERS_Output_v4",
+				"fileSystem": "sdudsynapsefilesystem"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

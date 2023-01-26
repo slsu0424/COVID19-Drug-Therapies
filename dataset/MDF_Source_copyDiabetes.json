@@ -1,0 +1,237 @@
+{
+	"name": "MDF_Source_copyDiabetes",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SqlServer2_Diabetes2",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Diabetes"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "encounter_id",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "patient_nbr",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "race",
+				"type": "nvarchar"
+			},
+			{
+				"name": "gender",
+				"type": "nvarchar"
+			},
+			{
+				"name": "age",
+				"type": "nvarchar"
+			},
+			{
+				"name": "weight",
+				"type": "nvarchar"
+			},
+			{
+				"name": "admission_type_id",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "discharge_disposition_id",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "admission_source_id",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "time_in_hospital",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "payer_code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "medical_specialty",
+				"type": "nvarchar"
+			},
+			{
+				"name": "num_lab_procedures",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "num_procedures",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "num_medications",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "number_outpatient",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "number_emergency",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "number_inpatient",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "diag_1",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "diag_2",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "diag_3",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "number_diagnoses",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "max_glu_serum",
+				"type": "nvarchar"
+			},
+			{
+				"name": "A1Cresult",
+				"type": "nvarchar"
+			},
+			{
+				"name": "metformin",
+				"type": "nvarchar"
+			},
+			{
+				"name": "repaglinide",
+				"type": "nvarchar"
+			},
+			{
+				"name": "nateglinide",
+				"type": "nvarchar"
+			},
+			{
+				"name": "chlorpropamide",
+				"type": "nvarchar"
+			},
+			{
+				"name": "glimepiride",
+				"type": "nvarchar"
+			},
+			{
+				"name": "acetohexamide",
+				"type": "nvarchar"
+			},
+			{
+				"name": "glipizide",
+				"type": "nvarchar"
+			},
+			{
+				"name": "glyburide",
+				"type": "nvarchar"
+			},
+			{
+				"name": "tolbutamide",
+				"type": "nvarchar"
+			},
+			{
+				"name": "pioglitazone",
+				"type": "nvarchar"
+			},
+			{
+				"name": "rosiglitazone",
+				"type": "nvarchar"
+			},
+			{
+				"name": "acarbose",
+				"type": "nvarchar"
+			},
+			{
+				"name": "miglitol",
+				"type": "nvarchar"
+			},
+			{
+				"name": "troglitazone",
+				"type": "nvarchar"
+			},
+			{
+				"name": "tolazamide",
+				"type": "nvarchar"
+			},
+			{
+				"name": "examide",
+				"type": "nvarchar"
+			},
+			{
+				"name": "citoglipton",
+				"type": "nvarchar"
+			},
+			{
+				"name": "insulin",
+				"type": "nvarchar"
+			},
+			{
+				"name": "glyburide-metformin",
+				"type": "nvarchar"
+			},
+			{
+				"name": "glipizide-metformin",
+				"type": "nvarchar"
+			},
+			{
+				"name": "glimepiride-pioglitazone",
+				"type": "nvarchar"
+			},
+			{
+				"name": "metformin-rosiglitazone",
+				"type": "nvarchar"
+			},
+			{
+				"name": "metformin-pioglitazone",
+				"type": "nvarchar"
+			},
+			{
+				"name": "change",
+				"type": "nvarchar"
+			},
+			{
+				"name": "diabetesMed",
+				"type": "nvarchar"
+			},
+			{
+				"name": "readmitted",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "diabetic_data"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

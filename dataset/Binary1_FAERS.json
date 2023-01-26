@@ -1,0 +1,32 @@
+{
+	"name": "Binary1_FAERS",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "adls2_sdudsynapseadls2",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"filename": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().fileName",
+					"type": "Expression"
+				},
+				"folderPath": "FAERS_v3",
+				"fileSystem": "sdudsynapsefilesystem"
+			},
+			"compression": {
+				"type": "ZipDeflate",
+				"level": "Optimal"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

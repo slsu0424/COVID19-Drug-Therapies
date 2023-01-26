@@ -1,0 +1,78 @@
+{
+	"name": "copyDiabetesSHIR_withParameter",
+	"properties": {
+		"description": "2021-11-17 - Created",
+		"activities": [
+			{
+				"name": "Copy diabetes data with parameter",
+				"description": "Copy dbo.diabetic_data table from on-prem SQL DB",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [
+					{
+						"name": "Source",
+						"value": "dbo.diabetic_data"
+					},
+					{
+						"name": "Destination",
+						"value": "diabetes//"
+					}
+				],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"sqlReaderQuery": {
+							"value": "@concat('Select * from dbo.diabetic_data where gender=''',pipeline().parameters.gender,'''')",
+							"type": "Expression"
+						},
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".csv"
+						}
+					},
+					"enableStaging": false,
+					"validateDataConsistency": false
+				},
+				"inputs": [
+					{
+						"referenceName": "MDF_Source_copyDiabetes",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Destination_copyDiabetesWithParameter",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"parameters": {
+			"gender": {
+				"type": "string",
+				"defaultValue": "Female"
+			}
+		},
+		"folder": {
+			"name": "Diabetes"
+		},
+		"annotations": [],
+		"lastPublishTime": "2021-11-18T19:03:28Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

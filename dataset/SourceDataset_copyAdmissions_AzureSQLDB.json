@@ -1,0 +1,20 @@
+{
+	"name": "SourceDataset_copyAdmissions_AzureSQLDB",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "SHIR_AzureIR"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "ADMISSIONS"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

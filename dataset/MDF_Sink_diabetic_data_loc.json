@@ -1,0 +1,231 @@
+{
+	"name": "MDF_Sink_diabetic_data_loc",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "adls2_ssudata",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Diabetes"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileSystem": "diabetes"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "encounter_id",
+				"type": "String"
+			},
+			{
+				"name": "patient_nbr",
+				"type": "String"
+			},
+			{
+				"name": "race",
+				"type": "String"
+			},
+			{
+				"name": "gender",
+				"type": "String"
+			},
+			{
+				"name": "age",
+				"type": "String"
+			},
+			{
+				"name": "weight",
+				"type": "String"
+			},
+			{
+				"name": "admission_type_id",
+				"type": "String"
+			},
+			{
+				"name": "discharge_disposition_id",
+				"type": "String"
+			},
+			{
+				"name": "admission_source_id",
+				"type": "String"
+			},
+			{
+				"name": "time_in_hospital",
+				"type": "String"
+			},
+			{
+				"name": "payer_code",
+				"type": "String"
+			},
+			{
+				"name": "medical_specialty",
+				"type": "String"
+			},
+			{
+				"name": "num_lab_procedures",
+				"type": "String"
+			},
+			{
+				"name": "num_procedures",
+				"type": "String"
+			},
+			{
+				"name": "num_medications",
+				"type": "String"
+			},
+			{
+				"name": "number_outpatient",
+				"type": "String"
+			},
+			{
+				"name": "number_emergency",
+				"type": "String"
+			},
+			{
+				"name": "number_inpatient",
+				"type": "String"
+			},
+			{
+				"name": "diag_1",
+				"type": "String"
+			},
+			{
+				"name": "diag_2",
+				"type": "String"
+			},
+			{
+				"name": "diag_3",
+				"type": "String"
+			},
+			{
+				"name": "number_diagnoses",
+				"type": "String"
+			},
+			{
+				"name": "max_glu_serum",
+				"type": "String"
+			},
+			{
+				"name": "A1Cresult",
+				"type": "String"
+			},
+			{
+				"name": "metformin",
+				"type": "String"
+			},
+			{
+				"name": "repaglinide",
+				"type": "String"
+			},
+			{
+				"name": "nateglinide",
+				"type": "String"
+			},
+			{
+				"name": "chlorpropamide",
+				"type": "String"
+			},
+			{
+				"name": "glimepiride",
+				"type": "String"
+			},
+			{
+				"name": "acetohexamide",
+				"type": "String"
+			},
+			{
+				"name": "glipizide",
+				"type": "String"
+			},
+			{
+				"name": "glyburide",
+				"type": "String"
+			},
+			{
+				"name": "tolbutamide",
+				"type": "String"
+			},
+			{
+				"name": "pioglitazone",
+				"type": "String"
+			},
+			{
+				"name": "rosiglitazone",
+				"type": "String"
+			},
+			{
+				"name": "acarbose",
+				"type": "String"
+			},
+			{
+				"name": "miglitol",
+				"type": "String"
+			},
+			{
+				"name": "troglitazone",
+				"type": "String"
+			},
+			{
+				"name": "tolazamide",
+				"type": "String"
+			},
+			{
+				"name": "examide",
+				"type": "String"
+			},
+			{
+				"name": "citoglipton",
+				"type": "String"
+			},
+			{
+				"name": "insulin",
+				"type": "String"
+			},
+			{
+				"name": "glyburide-metformin",
+				"type": "String"
+			},
+			{
+				"name": "glipizide-metformin",
+				"type": "String"
+			},
+			{
+				"name": "glimepiride-pioglitazone",
+				"type": "String"
+			},
+			{
+				"name": "metformin-rosiglitazone",
+				"type": "String"
+			},
+			{
+				"name": "metformin-pioglitazone",
+				"type": "String"
+			},
+			{
+				"name": "change",
+				"type": "String"
+			},
+			{
+				"name": "diabetesMed",
+				"type": "String"
+			},
+			{
+				"name": "readmitted",
+				"type": "String"
+			},
+			{
+				"name": "City",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

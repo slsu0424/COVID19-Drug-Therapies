@@ -1,0 +1,19 @@
+{
+	"name": "SourceDataset_copySPOList",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SharePointOnlineList1",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "SPOList"
+		},
+		"annotations": [],
+		"type": "SharePointOnlineListResource",
+		"schema": [],
+		"typeProperties": {
+			"listName": "IssueTracker_Test"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,22 @@
+{
+	"name": "SqlServer_Diabetes",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SqlServer2_Diabetes2",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "TableName",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "diabetes_diabetic_data_with_location_fromADLS2"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

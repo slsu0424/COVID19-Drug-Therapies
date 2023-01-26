@@ -1,0 +1,118 @@
+{
+	"name": "copyDiabetesSHIR_toASQLDB_andLog",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy-Table",
+				"description": "Copy dbo.diabetic_data table from on-prem SQL DB",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [
+					{
+						"name": "Source",
+						"value": "dbo.diabetic_data"
+					},
+					{
+						"name": "Destination",
+						"value": "diabetes//"
+					}
+				],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"tableOption": "autoCreate",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"validateDataConsistency": false
+				},
+				"inputs": [
+					{
+						"referenceName": "MDF_Source_copyDiabetes",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "AzureSqlTable1",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Create Azure SQL DB Log",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Copy-Table",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"sqlReaderQuery": {
+							"value": "SELECT '@{pipeline().DataFactory}' as DataFactory_Name,\n'@{pipeline().Pipeline}' as Pipeline_Name,\n'@{pipeline().RunId}' as RunId,\n'@{item().src_name}' as Source,\n'@{item().dst_name}' as Destination,\n'@{pipeline().TriggerType}' as TriggerType,\n'@{pipeline().TriggerId}' as TriggerId,\n'@{pipeline().TriggerName}' as TriggerName,\n'@{pipeline().TriggerTime}' as TriggerTime,\n'@{activity('Copy-Table').output.rowsCopied}' as rowsCopied,\n'@{activity('Copy-Table').output.rowsRead}' as RowsRead,\n'@{activity('Copy-Table').output.usedParallelCopies}' as No_ParallelCopies,\n'@{activity('Copy-Table').output.copyDuration}' as copyDuration_in_secs,\n'@{activity('Copy-Table').output.effectiveIntegrationRuntime}' as effectiveIntegrationRuntime,\n'@{activity('Copy-Table').output.executionDetails[0].source.type}' as Source_Type,\n'@{activity('Copy-Table').output.executionDetails[0].sink.type}' as Sink_Type,\n'@{activity('Copy-Table').output.executionDetails[0].status}' as Execution_Status,\n'@{activity('Copy-Table').output.executionDetails[0].start}' as CopyActivity_Start_Time,\n'@{utcnow()}' as CopyActivity_End_Time,\n'@{activity('Copy-Table').output.executionDetails[0].detailedDurations.queuingDuration}' as CopyActivity_queuingDuration_in_secs,\n'@{activity('Copy-Table').output.executionDetails[0].detailedDurations.timeToFirstByte}' as CopyActivity_timeToFirstByte_in_secs,\n'@{activity('Copy-Table').output.executionDetails[0].detailedDurations.transferDuration}' as CopyActivity_transferDuration_in_secs",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "MDF_Source_copyDiabetes",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "AzureSqlTable2",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "Diabetes"
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-01-25T23:20:47Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

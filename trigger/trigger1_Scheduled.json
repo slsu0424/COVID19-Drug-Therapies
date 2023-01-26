@@ -1,0 +1,25 @@
+{
+	"name": "trigger1_Scheduled",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "copyCMSZIP",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Minute",
+				"interval": 15,
+				"startTime": "2022-06-27T17:45:00Z",
+				"endTime": "2022-06-28T18:41:00Z",
+				"timeZone": "UTC"
+			}
+		}
+	}
+}

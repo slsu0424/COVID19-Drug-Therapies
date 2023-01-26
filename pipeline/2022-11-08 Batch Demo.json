@@ -1,0 +1,39 @@
+{
+	"name": "2022-11-08 Batch Demo",
+	"properties": {
+		"activities": [
+			{
+				"name": "Test_python_sum",
+				"type": "Custom",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"command": "addition.py",
+					"resourceLinkedService": {
+						"referenceName": "ssudata",
+						"type": "LinkedServiceReference"
+					},
+					"folderPath": "batch",
+					"referenceObjects": {
+						"linkedServices": [],
+						"datasets": []
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "AzureBatch1",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2022-11-09T04:02:23Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

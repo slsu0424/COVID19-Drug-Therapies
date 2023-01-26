@@ -1,0 +1,28 @@
+{
+	"name": "newAdmissions",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "adls2_ssudata",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Mimic"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "admissions_postgres3.csv",
+				"folderPath": "NewAdmissions",
+				"fileSystem": "mimic"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

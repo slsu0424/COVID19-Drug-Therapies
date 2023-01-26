@@ -1,0 +1,217 @@
+{
+	"name": "MDF_copyDiabetes",
+	"properties": {
+		"description": "2020-02-05 - Copy diabetes_data from on-prem SQL DB",
+		"activities": [
+			{
+				"name": "Copy diabetes data",
+				"description": "Copy dbo.diabetic_data table from on-prem SQL DB",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [
+					{
+						"name": "Source",
+						"value": "dbo.diabetic_data"
+					},
+					{
+						"name": "Destination",
+						"value": "diabetes//"
+					}
+				],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".csv"
+						}
+					},
+					"enableStaging": false,
+					"validateDataConsistency": false
+				},
+				"inputs": [
+					{
+						"referenceName": "MDF_Source_copyDiabetes",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Destination_copyDiabetes",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Run diabetes_part1",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "Data flow1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/sansu@microsoft.com/HLS/Diabetes/2020-08-24_diabetes_part1 (secureaccess)"
+				},
+				"linkedServiceName": {
+					"referenceName": "AzureDatabricks_ssudb",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Send success email",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Run diabetes_part1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://prod-26.eastus2.logic.azure.com:443/workflows/eea4d660e8284d7aaa76eccd9be6ac7b/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=E1TFYzOLLGEc0kD82bF6BtyBTewH9v4au8OAxX069ag",
+					"method": "POST",
+					"headers": {
+						"Content-Type": "application/json"
+					},
+					"body": {
+						"value": "{\n\"DataFactoryName\": \"@{pipeline().DataFactory}\",\n\n\"PipelineName\": \"@{pipeline().Pipeline}\",\n\n\"Subject\": \"A pipeline success has occurred!\",\n\n\"SuccessMessage\": \"The ADF pipeline has succeeded!\n\nThe data science team can pick up the file in Databricks.\n\nThe citizen data science team can pick up the file in Azure Machine Learning.\n\nThe data analytics team can pick up the file in Synapse.\n\nAll others, please check the logs.\",\n\n\"EmailTo\": \"sansu@microsoft.com\"\n\n}",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Copy location",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [
+					{
+						"name": "Source",
+						"value": "dbo.us_cities_states_counties_v2"
+					},
+					{
+						"name": "Destination",
+						"value": "diabetes//"
+					}
+				],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".csv"
+						}
+					},
+					"enableStaging": false,
+					"validateDataConsistency": false
+				},
+				"inputs": [
+					{
+						"referenceName": "MDF_Source_copyLocation",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Destination_copyLocation",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Data flow1",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "Copy diabetes data",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Copy location",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "dataflow1",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"folder": {
+			"name": "Diabetes"
+		},
+		"annotations": [],
+		"lastPublishTime": "2021-05-04T17:16:12Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

@@ -1,0 +1,60 @@
+{
+	"name": "Source_copyPatients",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "adls2_ssudata",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Mimic"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "PATIENTS.csv",
+				"fileSystem": "mimic"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "row_id",
+				"type": "String"
+			},
+			{
+				"name": "subject_id",
+				"type": "String"
+			},
+			{
+				"name": "gender",
+				"type": "String"
+			},
+			{
+				"name": "dob",
+				"type": "String"
+			},
+			{
+				"name": "dod",
+				"type": "String"
+			},
+			{
+				"name": "dod_hosp",
+				"type": "String"
+			},
+			{
+				"name": "dod_ssn",
+				"type": "String"
+			},
+			{
+				"name": "expire_flag",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

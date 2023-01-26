@@ -1,0 +1,34 @@
+{
+	"name": "MDF_Source_copyLocation",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SqlServer2_Diabetes2",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Diabetes"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "encounter_id",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "city",
+				"type": "nvarchar"
+			},
+			{
+				"name": "state",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "loc"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

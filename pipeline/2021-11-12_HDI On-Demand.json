@@ -1,0 +1,37 @@
+{
+	"name": "2021-11-12_HDI On-Demand",
+	"properties": {
+		"activities": [
+			{
+				"name": "CreateClusterRunJob",
+				"type": "HDInsightHive",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"scriptPath": "adfgetstarted/hivescripts/partitionweblogs.hql",
+					"defines": {
+						"Output": "wasbs://adfgetstarted@ssuhdi.blob.core.windows.net/outputfolder/"
+					},
+					"scriptLinkedService": {
+						"referenceName": "HDIStorageLinkedService",
+						"type": "LinkedServiceReference"
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "HDInsightLinkedService",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2021-11-12T21:08:40Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

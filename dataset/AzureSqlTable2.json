@@ -1,0 +1,112 @@
+{
+	"name": "AzureSqlTable2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "DataFactory_Name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Pipeline_Name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "RunId",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Source",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Destination",
+				"type": "nvarchar"
+			},
+			{
+				"name": "TriggerType",
+				"type": "nvarchar"
+			},
+			{
+				"name": "TriggerId",
+				"type": "nvarchar"
+			},
+			{
+				"name": "TriggerName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "TriggerTime",
+				"type": "nvarchar"
+			},
+			{
+				"name": "rowsCopied",
+				"type": "nvarchar"
+			},
+			{
+				"name": "RowsRead",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "No_ParallelCopies",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "copyDuration_in_secs",
+				"type": "nvarchar"
+			},
+			{
+				"name": "effectiveIntegrationRuntime",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Source_Type",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Sink_Type",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Execution_Status",
+				"type": "nvarchar"
+			},
+			{
+				"name": "CopyActivity_Start_Time",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "CopyActivity_End_Time",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "CopyActivity_queuingDuration_in_secs",
+				"type": "nvarchar"
+			},
+			{
+				"name": "CopyActivity_timeToFirstByte_in_secs",
+				"type": "nvarchar"
+			},
+			{
+				"name": "CopyActivity_transferDuration_in_secs",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "pipeline_log"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,44 @@
+{
+	"name": "copyDiabetes_addHeader",
+	"properties": {
+		"activities": [
+			{
+				"name": "MDF_copyDiabetes_addHeader",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "1.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "MDF_copyDiabetes_addHeader2",
+						"type": "DataFlowReference",
+						"parameters": {
+							"parameter1": "['encounter_id','patient_nbr','race']"
+						}
+					},
+					"staging": {
+						"linkedService": {
+							"referenceName": "linkedService1",
+							"type": "LinkedServiceReference"
+						},
+						"folderPath": "data"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2021-11-02T19:50:52Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

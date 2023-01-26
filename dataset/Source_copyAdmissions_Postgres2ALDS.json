@@ -1,0 +1,20 @@
+{
+	"name": "Source_copyAdmissions_Postgres2ALDS",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "PostgreSql1",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Mimic"
+		},
+		"annotations": [],
+		"type": "PostgreSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "mimiciii",
+			"table": "admissions"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

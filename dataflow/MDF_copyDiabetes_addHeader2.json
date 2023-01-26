@@ -1,0 +1,32 @@
+{
+	"name": "MDF_copyDiabetes_addHeader2",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "MDF_Source_copyDiabetes_noHeader",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "Desination_MDF_copyDiabetes_addHeader",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "ParamReplace"
+				}
+			],
+			"script": "parameters{\n\tparameter1 as string[] (['encounter_id','patient_nbr','race'])\n}\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinferDriftedColumnTypes: true,\n\tignoreNoFilesFound: false) ~> source1\nsource1 select(mapColumn(\n\t\teach(match(position==1),\n\t\t\t$parameter1[1] = $$),\n\t\teach(match(position==2),\n\t\t\t$parameter1[2] = $$),\n\t\teach(match(position==3),\n\t\t\t$parameter1[3] = $$)\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> ParamReplace\nParamReplace sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tstaged: true,\n\tallowCopyCommand: true,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError') ~> sink1"
+		}
+	}
+}

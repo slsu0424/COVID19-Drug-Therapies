@@ -1,0 +1,58 @@
+{
+	"name": "copyDiabetesSHIR_withLookup",
+	"properties": {
+		"activities": [
+			{
+				"name": "Lookup - Table Name",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "SqlServer_Diabetes",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": true
+				}
+			},
+			{
+				"name": "Execute Pipeline - copyDiabetesSHIR",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Lookup - Table Name",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "copyDiabetesSHIR",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"folder": {
+			"name": "Diabetes"
+		},
+		"annotations": [],
+		"lastPublishTime": "2021-11-18T19:03:28Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

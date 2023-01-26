@@ -1,0 +1,20 @@
+{
+	"name": "Desination_MDF_copyDiabetes_addHeader",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSynapseAnalytics1",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Diabetes"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "diabetes_data_withHeader"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

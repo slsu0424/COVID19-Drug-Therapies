@@ -1,0 +1,83 @@
+{
+	"name": "Destination_copyPatients",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSynapseAnalytics1",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Mimic"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "row_id",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "subject_id",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "gender",
+				"type": "nvarchar"
+			},
+			{
+				"name": "dob",
+				"type": "datetime2",
+				"scale": 0
+			},
+			{
+				"name": "dod",
+				"type": "datetime2",
+				"scale": 0
+			},
+			{
+				"name": "dod_hosp",
+				"type": "datetime2",
+				"scale": 0
+			},
+			{
+				"name": "dod_ssn",
+				"type": "datetime2",
+				"scale": 0
+			},
+			{
+				"name": "expire_flag",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "STG_ID",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "ACTIVE_FLG",
+				"type": "nvarchar"
+			},
+			{
+				"name": "STG_EFF_START",
+				"type": "datetime2",
+				"scale": 0
+			},
+			{
+				"name": "STG_EFF_END",
+				"type": "datetime2",
+				"scale": 0
+			},
+			{
+				"name": "STG_CHECKSUM",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "patients"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

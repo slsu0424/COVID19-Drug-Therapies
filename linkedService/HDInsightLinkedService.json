@@ -1,0 +1,31 @@
+{
+	"name": "HDInsightLinkedService",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "HDInsightOnDemand",
+		"typeProperties": {
+			"clusterType": "spark",
+			"clusterSize": 4,
+			"timeToLive": "00:15:00",
+			"version": "4.0",
+			"hostSubscriptionId": "9edd9e25-815c-4cdb-9bc8-d2ba127ec752",
+			"clusterResourceGroup": "2021-11-12_HDITest",
+			"servicePrincipalId": "7c9dfcbf-cec8-4d4c-a260-46c3ee5bdf96",
+			"osType": "Linux",
+			"tenant": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+			"clusterNamePrefix": "ssu",
+			"clusterUserName": "admin",
+			"clusterSshUserName": "sshuser",
+			"additionalLinkedServiceNames": [],
+			"linkedServiceName": {
+				"referenceName": "HDIStorageLinkedService",
+				"type": "LinkedServiceReference"
+			},
+			"headNodeSize": "",
+			"dataNodeSize": "",
+			"zookeeperNodeSize": "",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQDRGQkNEQjZELUFCRjYtNEY1OC1CRUNCLTUxMUJGMDMwNENCMF9mYmI1YTNkZC1jNTBlLTQ3ZjEtYjU1MC02YWFlMTgyMjI0NWEiDQp9"
+		}
+	}
+}
