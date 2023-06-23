@@ -109,6 +109,6 @@ Any use of third-party trademarks or logos are subject to those third-party's po
 
 ## Acknowledgements
 
-This project is developed as part of the Microsoft Healthcare & Life Sciences Customer Success Unit Data Science & AI Transformational Projects Initiative.
+This project was developed as part of the Microsoft Healthcare & Life Sciences Customer Success Unit Data Science & AI Transformational Projects Initiative.
 
 Author: Sandy Su
